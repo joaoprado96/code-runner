@@ -2,10 +2,25 @@
 import json
 import requests
 import time
+from datetime import datetime
 from requests.auth import HTTPBasicAuth
 
 # Importa os módulos internos
 from globais import *
+
+
+def imprime_mensagem(prefixo, mensagem):
+    """
+    Imprime uma mensagem formatada com a data, hora, prefixo e a própria mensagem.
+
+    :param prefixo (str): O prefixo que precede a mensagem. 
+    :param mensagem (str): A mensagem a ser impressa.
+    :return: None
+    """
+    agora = datetime.now()
+    data_hora_formatada = agora.strftime("%d/%m/%Y %H:%M:%S.%f")
+    print(f"{data_hora_formatada} {prefixo} {mensagem}")
+
 
 def validate_json_keys(json_obj, keys):
     """

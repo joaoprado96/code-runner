@@ -9,7 +9,7 @@ BROWSE         = 'component/build'
 BROWSEBASELINE = 'component/checkin'
 
 # Definição de URLS e rotas do zOS/MF
-URLZOSMF       = 'http://localhost:'
+URLZOSMF       = 'http://172.17.0.1:' #URL do HOST
 JOBS           = '8000/'
 #URLZOSMF       = 'https://zosmfbd.itau:1600/zosmf/'
 #JOBS           = 'restjobs/jobs'
@@ -24,6 +24,12 @@ HEADERZOS={
     "X-IBM-Intdr-Recfm"   : "F",
     "jobid"               : "teste"
 }
+
+# Prefixos de mensagens
+PCONNECTION    = '( CONN )'
+PDESCONNECTION = '( DESC )'
+PSEND          = '( SEND )'
+PRECIVE        = '( RECV )'
 
 # Mensagens de erro
 NOBODY         = 'Script: Não foi recebido body'
