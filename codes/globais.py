@@ -9,6 +9,27 @@ BROWSE         = 'component/build'
 BROWSEBASELINE = 'component/checkin'
 
 # Definição de URLS e rotas do zOS/MF
-URLZOSMF       = 'https://zosmfbd.itau:1600/zosmf/'
-JOBS           = 'restjobs/jobs'
-FILES          = 'restfiles/ds'
+URLZOSMF       = 'http://localhost:'
+JOBS           = '8000/'
+#URLZOSMF       = 'https://zosmfbd.itau:1600/zosmf/'
+#JOBS           = 'restjobs/jobs'
+#FILES          = 'restfiles/ds'
+FILES          = '8000/'
+
+HEADERZOS={
+    "X-CSRF-ZOSMF-HEADER" : "xx",
+    "Content-Type"        : "text/plain",
+    "X-IBM-Intdr-Class"   : "A",
+    "X-IBM-Intdr-Mode"    : "TEXT",
+    "X-IBM-Intdr-Recfm"   : "F",
+    "jobid"               : "teste"
+}
+
+# Mensagens de erro
+NOBODY         = 'Script: Não foi recebido body'
+BODYNODATA     = 'Script: Body da requisição está faltando dados'
+NOSUBMIT       = 'Erro na submissão do JOB'
+FALHA          = 'Falha'
+NORETCODE      = 'Nao encontrado "retcode" na consulta'
+JOBNOFINISH    = 'Não finalizou a execução do JOB: '
+NOSTATUS       = 'Não encontrado "status" na consulta'

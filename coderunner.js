@@ -56,7 +56,7 @@ app.get('/codes/:scriptName', (req, res) => {
     const scriptName = req.params.scriptName;
 
     if (!runningScripts[scriptName]) {
-        res.status(404).send({message: `${scriptName} não está rodando`});
+        res.status(404).send({message: `O script ${scriptName}.py não está rodando`});
         return;
     }
 
