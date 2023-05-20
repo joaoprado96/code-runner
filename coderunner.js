@@ -3,6 +3,8 @@ const express = require('express');
 
 // Biblioteca JavaScript para fazer requisições HTTP
 const axios = require('axios');
+
+//Criando aplicação Code Runner
 const app = express();
 
 //Definição da Porta Local da Aplicação
