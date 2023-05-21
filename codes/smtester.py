@@ -265,6 +265,26 @@ async def main():
         print(BODYNODATA)
         return
 
+        # Define o tamanho padrão dos valores das chaves
+    dict_size = {
+        "monitor": 'N',
+        "porta": 'N',
+        "endIP": 'N',
+        "nome_conexao": 8,
+        "timeout": 'N',
+        "latencia": 'N',
+        "numero_serie": 5,
+        "quantidade": 'N',
+        "agencia": 4,
+        "protocolo": 5,
+        "transacao": 3,
+        "servico": 'N',
+        "entrada": 'N'
+    }
+    if not validate_json_sizes(data, dict_size):
+        print(BODYNOTAM)
+        return (BODYNOTAM)
+    
     # Cadastrar serviços neste trecho
     add_service("Input", "Indicacao que sera passado entrada")
     add_service("VQ00001x", "<root><data>Algum XML aqui</data></root>")

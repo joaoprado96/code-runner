@@ -33,6 +33,38 @@ def validate_json_keys(json_obj, keys):
 
     return all(key in json_obj for key in keys)
 
+def validate_json_sizes(json_dict, size_dict):
+    """
+    Valida os tamanhos dos valores em um JSON.
+
+    :param json_dict: é o dicionário JSON que queremos validar.
+    :param size_dict: é um dicionário que mapeia os campos do JSON para os tamanhos de referência esperados.
+                      Se o tamanho esperado for 'N', o tamanho desse campo não será verificado.
+    :return: True se todos os tamanhos forem válidos, False caso contrário.
+    """
+    # Iterar sobre cada campo no dicionário de tamanhos
+    for field, expected_size in size_dict.items():
+        # Pular a verificação se o tamanho esperado é 'N'
+        if expected_size == 'N':
+            continue
+
+        # Verificar se o campo existe no JSON
+        if field not in json_dict:
+            print(f"Campo {field} não encontrado no JSON.")
+            return False
+
+        # Obter o tamanho real do campo
+        actual_size = len(str(json_dict[field]))
+
+        # Verificar se o tamanho real corresponde ao tamanho esperado
+        if actual_size != expected_size:
+            print(f"Tamanho incorreto para o campo {field}. Esperado: {expected_size}, obtido: {actual_size}.")
+            return False
+
+    # Se chegarmos até aqui, todos os tamanhos são válidos
+    return True
+
+
 def payload_job_line(racf):
     """
     Cria a linha de JOB do payload.
@@ -73,7 +105,7 @@ def payload_jcl(particionado,job):
 '''
     return submit
 
-def payload_rexx(particionado,rexx,entrada):
+def payload_rexx(rexx,entrada):
     """
     Cria um payload REXX padrão para submissão de jobs dentro do mainframe.
 
@@ -86,7 +118,7 @@ def payload_rexx(particionado,rexx,entrada):
     rexx = "'"+rexx
     submit='''
 //REXX1   EXEC PGM=IKJEFT1B,REGION=0M,PARM='''+rexx+''''
-//SYSPROC  DD DISP=SHR,DSN='''+particionado+'''
+//SYSPROC  DD DISP=SHR,DSN=MI.GRBEDES.RTFREXX
 //SYSOUT   DD SYSOUT=*
 //SYSTSPRT DD SYSOUT=*
 //SYSTSIN  DUMMY
@@ -133,7 +165,7 @@ def cartao_wait(jobname, mensagens):
     """
     input_wait = '''
 //ENTRA01  DD *
-JOBNAME  ''' + jobname
+JOBNAME  ''' + jobname + ''' 50 5'''
 
     # Itera sobre as mensagens, adicionando cada uma com sua respectiva posição
     for i, mensagem in enumerate(mensagens, start=1):
@@ -166,38 +198,49 @@ def cartao_gcomando(jobnames, comandos):
 '''
     return input_gcomando
 
-def payload_batch_misb(programa,particionado,particionado2,proc):
+def cartao_entrada(entrada):
+    """
+    Cria o cartao ENTRADA.
+    
+    :return: cartao ENTRA01.
+    """
+    # Inicia a string
+    input_entrada = '''
+//ENTRA01  DD *
+'''+entrada+'''
+//SYSTSPRT DD SYSOUT=*
+'''
+    return input_entrada
+
+
+def payload_batch_misb(particionado,proc):
     """
     Cria um payload para executar o programa batch MISB.
 
-    :param racf: é a identificao do usuário dentro do mainframe.
-    :param programa: é o programa que queremos executar.
     :param particionado: é o dataset que contem a proc.
-    :param particionado2: é onde está o load modulo do programa.
     :param proc: é a proc dentro do particionado que queremos executar.
     :return: payload preparado para request do zOS/mf.
     """
     submit='''
-//MISB01  EXEC PGM='''+programa+''',REGION=0K,TIME=1440
+//MISB01  EXEC PGM=MISB,REGION=0K,TIME=1440
 //SYSPDS   DD DISP=SHR,DSN='''+particionado+'''('''+proc+''')
 //SYSOUT   DD SYSOUT=(*,INTRDR)
-//STEPLIB  DD DISP=SHR,DSN='''+particionado2+'''
+//STEPLIB  DD DISP=SHR,DSN=MI.GRBEDES.RTFLOAD
 '''
     return submit
 
-def payload_batch_mi(programa,monitores,comandos,particionado2):
+def payload_batch_mi(programa,monitores,comandos):
     """
     Cria um payload para executar o programa batch MI
 
     :param programa: é o programa que queremos executar.
-    :param particionado2: é onde está o load modulo do programa.
     :param monitores: é uma lista de monitores dentro do particionado que queremos executar.
     :param comandos: é uma lista de comandos para serem executados.
     :return: payload preparado para request do zOS/mf.
     """
     submit='''
 //MIOZ    EXEC PGM='''+programa+'''
-//STEPLIB  DD DISP=SHR,DSN='''+particionado2+'''
+//STEPLIB  DD DISP=SHR,DSN=MI.GRBEDES.RTFLOAD
 //CTLGRBE  DD DSN=XI.BEDES.GRBECTL,DISP=SHR
 //GRBEPNX  DD DSN=XI.BEDES.GRBEPND.VSAM,DISP=SHR
 //PRTOUT01 DD SYSOUT=*
