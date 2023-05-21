@@ -1,8 +1,11 @@
 import requests
 import time
 
-url   = "http://localhost:3000/codes/tpns"  # substitua 'seu_script' pelo nome do seu script
-url2  = "http://localhost:3000/codes/cria"  # substitua 'seu_script' pelo nome do seu script
+url   = "http://localhost:3000/codes/tpns" 
+url2  = "http://localhost:3000/codes/cria" 
+url3  = "http://localhost:3000/codes/smtester" 
+
+header = {'num-scripts': '10'}
 
 # O body da sua requisição
 data = {
@@ -17,14 +20,32 @@ data = {
     "tempo_consulta": 1000
 }
 
-response = requests.post(url, json=data)
-print(response.text)
-response = requests.post(url2, json=data)
-print(response.text)
+data2 = {
+    "monitor": "monitor",
+    "porta": "12345",
+    "endIP": "127.0.0.1",
+    "nome_conexao": "SMTESTE0",
+    "num_conexoes": 1,
+    "timeout": 10,
+    "latencia": 1000,
+    "numero_serie": "65789",
+    "quantidade": 10,
+    "agencia": "0260",
+    "transacao": "OTH",
+    "servico":"PW10002X",
+    "entrada":"00000000002OTH@@@@@@@@@GET /DELAY=200"
+}
 
-time.sleep(3)
+response = requests.post(url, headers=header ,json=data)
+print(response.text)
+response = requests.post(url2, headers=header ,json=data)
+print(response.text)
+response = requests.post(url3, headers=header ,json=data2)
+print(response.text)
 
 response = requests.get(url)
 print(response.text)
 response = requests.get(url2)
+print(response.text)
+response = requests.get(url3)
 print(response.text)

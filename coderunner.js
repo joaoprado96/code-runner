@@ -23,34 +23,44 @@ let runningScripts = {};
 
 app.post('/codes/:scriptName', (req, res) => {
     const scriptName = req.params.scriptName;
-    const diretorio = path.join(__dirname, 'codes', `${scriptName}.py`)
+    const diretorio = path.join(__dirname, 'codes', `${scriptName}.py`);
     if (!fs.existsSync(diretorio)) {
         res.status(404).send({message:`Code não encontrado em ${scriptName}`});
         return;
     }
 
+    const numScripts = req.headers['num-scripts']; // Lê o valor do cabeçalho 'num-scripts'
+    if (!numScripts) numScripts = 1; // Se não houver cabeçalho 'num-scripts', apenas um script será iniciado
+
+    // Verifica se numScripts é maior que 100
+    if (numScripts > 100) {
+        res.status(400).send({message: `O número máximo de scripts é 100`});
+        return;
+    }
     const options = {
         mode: 'text',
         pythonOptions: ['-u'], // get print results in real-time
         args: [JSON.stringify(req.body)]
     };
 
-    let pyShell = new PythonShell(path.join('codes', `${scriptName}.py`), options);
+    for(let i = 0; i < numScripts; i++) {
+        let pyShell = new PythonShell(path.join('codes', `${scriptName}.py`), options);
+        runningScripts[`${scriptName}${i}`] = pyShell;
 
-    runningScripts[scriptName] = pyShell;
+        pyShell.on('message', (message) => {
+            console.log(message);
+        });
 
-    pyShell.on('message', (message) => {
-        console.log(message);
-    });
+        pyShell.end((err, code, signal) => {
+            if (err) throw err;
+            console.log(`Code Runner: O(s) script(s) (${scriptName}.py) finalizaram com Exit Code: ` + code + ' Exit Signal: ' +signal);
+            delete runningScripts[`${scriptName}${i}`];
+        });
+    }
 
-    pyShell.end((err, code, signal) => {
-        if (err) throw err;
-        console.log(`Code Runner: Script(${scriptName}.py) Exit Code: ` + code + ' Exit Signal: ' +signal);
-        delete runningScripts[scriptName];
-    });
-
-    res.send({message: `O script ${scriptName}.py foi iniciado`});
+    res.send({message: `Os (${numScripts}) scripts ${scriptName}.py foram iniciados`});
 });
+
 
 app.get('/codes/:scriptName', (req, res) => {
     const scriptName = req.params.scriptName;
