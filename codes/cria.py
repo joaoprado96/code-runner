@@ -32,20 +32,24 @@ def main():
     input_logs = cartao_lista_logs("AGENRT4",['MONITN  +THPS.900E','MONITW   ABED'])
     input_gcomando = cartao_gcomando(['SAK0075#','SAK0075@'],['ALT,TMN1,0','ALT,TMN3,0'])
     
+    job_line = payload_job_line(data["racf"])
+
     # Gera payload JCL para chamar submeter no mainframe
     payload1=payload_jcl(data["particionado"],data["job"])
+    payload1 = job_line + payload1
     print(payload1)
     print('  ')
     payload2=payload_rexx(data["particionado"],data["job"],input_wait)
     print(payload2)
     print('  ')
     payload3=payload_rexx(data["particionado"],data["job"],input_logs)
+    payload3 = job_line + payload1 + payload2 + payload3
     print(payload3)
     print('  ')
     payload4=payload_rexx(data["particionado"],data["job"],input_gcomando)
     print(payload4)
     print('  ')
-    payload5=payload_batch_mi0z(data["job"],['AGENRT3','AGENRT4'],['FIM,NORMAL','ALT,TMN1,0'],data["particionado"])
+    payload5=payload_batch_mi(data["job"],['AGENRT3','AGENRT4'],['FIM,NORMAL','ALT,TMN1,0'],data["particionado"])
     print(payload5)
     print('  ')
 

@@ -185,9 +185,9 @@ def payload_batch_misb(programa,particionado,particionado2,proc):
 '''
     return submit
 
-def payload_batch_mi0z(programa,monitores,comandos,particionado2):
+def payload_batch_mi(programa,monitores,comandos,particionado2):
     """
-    Cria um payload para executar o programa batch MI0Z.
+    Cria um payload para executar o programa batch MI
 
     :param programa: é o programa que queremos executar.
     :param particionado2: é onde está o load modulo do programa.
