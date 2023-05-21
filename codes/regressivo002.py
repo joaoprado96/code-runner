@@ -46,7 +46,7 @@ def main():
     dataset = "/MI.GRBEDES.RTFJOBS("+job+")"
 
     # Obtem o JCL que sera submetido
-    jcl = get_jcl(dataset, job, racf, senha)
+    jcl = get_jcl(dataset, racf, senha)
 
     # Submete  JOB no mainframe e obtém o jobid que será utilizado para consulta de return code
     job = submit_jcl(jcl,racf,senha)
@@ -59,29 +59,6 @@ def main():
         resultado = NOSUBMIT
 
     print(resultado)
-    
-    # Preparação do TPNS
-    tpns = {
-        "monitor": "TESTEM26",
-        "porta": "12345",
-        "endIP": "127.0.0.1",
-        "nome_conexao": "SMTESTE0",
-        "timeout": 10,
-        "latencia": 10,
-        "numero_serie": "60026",
-        "quantidade": 1000,
-        "protocolo": "2000A",
-        "agencia": "0260",
-        "transacao": "OTH",
-        "servico":"Input",
-        "entrada":"00000000002OTH@@@@@@@@@GET /DELAY=200"
-    }
-    
-    # Faz o POST para a API chamando o SMTESTER para colocar carga
-    url3  = "http://localhost:3000/codes/smtester"
-    header = {'num-scripts': '1'}
-    response = requests.post(url3, headers=header ,json=tpns)
-    print(response.text)
 
     return
 
