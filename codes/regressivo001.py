@@ -1,6 +1,7 @@
 import sys
 import json
 import time
+import requests
 
 #Importação de módulos internos
 from globais import *
@@ -42,8 +43,8 @@ def main():
     job_line = payload_job_line(racf)
     sobe_monitor = payload_batch_misb("MI.GRBEDES.RTFPROC","AGENRT3O")
     reset_modulo = payload_batch_mi("MIOC",['AGENRT3'],['BATCHBE RESET   MODULO     MIOH01'])
-    comandos_mon = payload_rexx('GCOMANDA',cartao_gcomando(['SAK00075$'],['ALT,THTP,10']))
-    aguarda_ini  = payload_rexx('GWAITMSG',cartao_wait("SAK0075$",['+=MCSI.058I 3SI-(X)']))
+    comandos_mon = payload_rexx('MI.GRBEDES.RTFREXX','GCOMANDA',cartao_gcomando(['SAK00075$'],['ALT,THTP,10']))
+    aguarda_ini  = payload_rexx('MI.GRBEDES.RTFREXX','GWAITMSG',cartao_wait("SAK0075$",['+=MCSI.058I 3SI-(X)']))
     
     payload = job_line + sobe_monitor + reset_modulo + comandos_mon + aguarda_ini
 
@@ -60,6 +61,29 @@ def main():
         resultado = NOSUBMIT
 
     print(resultado)
+    
+    # Preparação do TPNS
+    tpns = {
+        "monitor": "TESTEM26",
+        "porta": "12345",
+        "endIP": "127.0.0.1",
+        "nome_conexao": "SMTESTE0",
+        "timeout": 10,
+        "latencia": 10,
+        "numero_serie": "60026",
+        "quantidade": 1000,
+        "protocolo": "2000A",
+        "agencia": "0260",
+        "transacao": "OTH",
+        "servico":"Input",
+        "entrada":"00000000002OTH@@@@@@@@@GET /DELAY=200"
+    }
+    
+    # Faz o POST para a API chamando o SMTESTER para colocar carga
+    url3  = "http://localhost:3000/codes/smtester"
+    header = {'num-scripts': '1'}
+    response = requests.post(url3, headers=header ,json=tpns)
+    print(response.text)
 
     return
 

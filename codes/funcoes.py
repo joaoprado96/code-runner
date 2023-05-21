@@ -105,7 +105,7 @@ def payload_jcl(particionado,job):
 '''
     return submit
 
-def payload_rexx(rexx,entrada):
+def payload_rexx(particionado,rexx,entrada):
     """
     Cria um payload REXX padrão para submissão de jobs dentro do mainframe.
 
@@ -118,7 +118,7 @@ def payload_rexx(rexx,entrada):
     rexx = "'"+rexx
     submit='''
 //REXX1   EXEC PGM=IKJEFT1B,REGION=0M,PARM='''+rexx+''''
-//SYSPROC  DD DISP=SHR,DSN=MI.GRBEDES.RTFREXX
+//SYSPROC  DD DISP=SHR,DSN='''+particionado+''''
 //SYSOUT   DD SYSOUT=*
 //SYSTSPRT DD SYSOUT=*
 //SYSTSIN  DUMMY
@@ -260,6 +260,36 @@ def payload_batch_mi(programa,monitores,comandos):
         submit += '\n' + comando
 
     return submit
+
+def get_jcl(dataset, racf, senha):
+    """
+    Esta função faz uma requisição GET para obter o conteúdo de um JCL no z/OSMF.
+
+    Parâmetros:
+    dataset (str): O dataset a ser buscado.
+    racf (str): O usuário do z/OSMF.
+    senha (str): A senha do usuário do z/OSMF.
+
+    Retorna:
+    str: O conteúdo do JCL.
+    """
+    # Realiza a requisição GET
+    response = requests.request(
+        "GET", 
+        URLZOSMF + FILES + dataset, 
+        headers=HEADERZOS, 
+        auth=HTTPBasicAuth(racf, senha),
+        verify=False
+    ) 
+
+    # Verifica o status da resposta
+    if response.status_code == 200:
+        print(response.text)
+    else:
+        print(f"Erro na requisição: {response.status_code} - {response.text}")
+
+    return response.text
+
 
 def submit_jcl(payload,racf,senha):
     """

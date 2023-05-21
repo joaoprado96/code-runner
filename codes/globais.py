@@ -21,8 +21,7 @@ HEADERZOS={
     "Content-Type"        : "text/plain",
     "X-IBM-Intdr-Class"   : "A",
     "X-IBM-Intdr-Mode"    : "TEXT",
-    "X-IBM-Intdr-Recfm"   : "F",
-    "jobid"               : "teste"
+    "X-IBM-Intdr-Recfm"   : "F"
 }
 
 # Prefixos de mensagens
