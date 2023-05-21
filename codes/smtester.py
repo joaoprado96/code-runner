@@ -92,14 +92,13 @@ def transacao_4000a(agencia,hexa,xml,token):
     """
     return ('4000A0001004341'+agencia+'QT 710'+str(hexa)+'01QTIF1'+xml+token)
 
-async def envia_mensagem(writer, message, monitor, latencia):
+async def envia_mensagem(writer, message, monitor):
     """
     Função para enviar uma mensagem em "cp500".
     
     :param writer: Escritor da conexão.
     :param message: Mensagem a ser enviada.
     :param monitor: Identificador do monitor.
-    :param latencia: Latência da conexão.
 
     """
     try:
@@ -113,7 +112,6 @@ async def envia_mensagem(writer, message, monitor, latencia):
         mensagem = bytestammsg + bytemsg
         writer.write(mensagem)
         await writer.drain()
-        time.sleep(latencia/1000) #Tempo ente mensagens
     except:
         imprime_mensagem(PSEND,f'Erro ao enviar a mensagem para {monitor}')
 
@@ -165,7 +163,7 @@ async def recebe_resposta(reader, monitor, IP, porta, timeout):
     except:
         imprime_mensagem(PRECIVE,f'Timeout na resposta de {monitor} IP {IP} e porta {porta}')
 
-async def transacionar(monitor, porta, IP, nome_conexao, num_conexoes, timeout, latencia, numero_serie, quantidade, agencia, transacao, servico, entrada):
+async def transacionar(monitor, porta, IP, nome_conexao, timeout, latencia, numero_serie, quantidade, agencia, transacao, servico, entrada):
     """
     Função para realizar transações.
     
@@ -173,7 +171,6 @@ async def transacionar(monitor, porta, IP, nome_conexao, num_conexoes, timeout, 
     :param porta: Porta para a conexão.
     :param IP: Endereço IP para a conexão.
     :param nome_conexao: Nome da conexão.
-    :param num_conexoes: Número de conexões.
     :param timeout: Tempo limite para a conexão.
     :param latencia: Latência da conexão.
     :param numero_serie: Número de série do terminal.
@@ -187,18 +184,21 @@ async def transacionar(monitor, porta, IP, nome_conexao, num_conexoes, timeout, 
     reader_main, writer_main =await conecta(monitor, IP, porta, timeout)
     # Faz comando M da fila (conexao)
     msg = comando_conexao(nome_conexao)
-    await envia_mensagem(writer_main,msg,monitor,latencia)
+    await envia_mensagem(writer_main,msg,monitor)
     await recebe_resposta(reader_main, monitor, IP, porta,timeout)
+    time.sleep(latencia/1000) #Tempo ente mensagens
 
     msg = comando_terminal(agencia,numero_serie,nome_conexao)
-    await envia_mensagem(writer_main,msg,monitor,latencia)
+    await envia_mensagem(writer_main,msg,monitor)
     resposta = await recebe_resposta(reader_main, monitor, IP, porta,timeout)
+    time.sleep(latencia/1000) #Tempo ente mensagens
     token = resposta[9:59]
 
     for j in range(quantidade):
         msg = transacao_2000a(transacao, agencia, "HHHHH", entrada, token)
-        await envia_mensagem(writer_main,msg,monitor,latencia)
+        await envia_mensagem(writer_main,msg,monitor)
         await recebe_resposta(reader_main, monitor, IP, porta,timeout)
+        time.sleep(latencia/1000) #Tempo ente mensagens
     
     await encerra_conexao(monitor, IP, porta, writer_main)
     return
@@ -218,7 +218,7 @@ async def main():
     data = json.loads(body)
 
     # Define as keys obrigatórias
-    keys = ["monitor", "porta", "endIP", "nome_conexao", "num_conexoes", "timeout", "latencia", "numero_serie", "quantidade", "agencia", "transacao", "servico", "entrada"]
+    keys = ["monitor", "porta", "endIP", "nome_conexao", "timeout", "latencia", "numero_serie", "quantidade", "agencia", "transacao", "servico", "entrada"]
     if not validate_json_keys(data, keys):  # Verifica se está faltando alguma 'key'
         print(BODYNODATA)
         return
@@ -227,7 +227,6 @@ async def main():
     porta         = data["porta"]
     endIP         = data["endIP"]
     nome_conexao  = data["nome_conexao"]
-    num_conexoes  = data["num_conexoes"]
     timeout       = data["timeout"]
     latencia      = data["latencia"]
     numero_serie  = data["numero_serie"]
@@ -237,7 +236,7 @@ async def main():
     servico       = data["servico"]
     entrada       = data["entrada"]
 
-    await transacionar(monitor, porta, endIP, nome_conexao, num_conexoes, timeout, latencia, numero_serie, quantidade, agencia, transacao, servico, entrada)
+    await transacionar(monitor, porta, endIP, nome_conexao, timeout, latencia, numero_serie, quantidade, agencia, transacao, servico, entrada)
 
 # Inicia a execução da função principal
 if __name__ == "__main__":

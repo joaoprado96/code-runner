@@ -1,11 +1,11 @@
 import requests
 import time
 
-url   = "http://localhost:3000/codes/tpns" 
+url   = "http://localhost:3000/codes/cria" 
 url2  = "http://localhost:3000/codes/cria" 
 url3  = "http://localhost:3000/codes/smtester" 
 
-header = {'num-scripts': '10'}
+header = {'num-scripts': '50'}
 
 # O body da sua requisição
 data = {
@@ -25,11 +25,10 @@ data2 = {
     "porta": "12345",
     "endIP": "127.0.0.1",
     "nome_conexao": "SMTESTE0",
-    "num_conexoes": 1,
     "timeout": 10,
-    "latencia": 1000,
+    "latencia": 1,
     "numero_serie": "65789",
-    "quantidade": 10,
+    "quantidade": 100,
     "agencia": "0260",
     "transacao": "OTH",
     "servico":"PW10002X",
