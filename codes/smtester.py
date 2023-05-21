@@ -11,6 +11,9 @@ import random
 from globais import *
 from funcoes import *
 
+# Criação de um "banco de dados" em memória na forma de um dicionário
+service_database = {}
+
 async def conecta(monitor, IP, porta, timeout):
     """
     Função para abrir uma conexão TCP/IP.
@@ -163,7 +166,7 @@ async def recebe_resposta(reader, monitor, IP, porta, timeout):
     except:
         imprime_mensagem(PRECIVE,f'Timeout na resposta de {monitor} IP {IP} e porta {porta}')
 
-async def transacionar(monitor, porta, IP, nome_conexao, timeout, latencia, numero_serie, quantidade, agencia, transacao, servico, entrada):
+async def transacionar(monitor, porta, IP, nome_conexao, timeout, latencia, numero_serie, quantidade, agencia, protocolo, transacao, servico, entrada):
     """
     Função para realizar transações.
     
@@ -176,32 +179,71 @@ async def transacionar(monitor, porta, IP, nome_conexao, timeout, latencia, nume
     :param numero_serie: Número de série do terminal.
     :param quantidade: Quantidade de transações.
     :param agencia: Número da agência.
+    :param protocolo: Informa em qual protocolo virá a mensagem.
     :param transacao: Transação a ser realizada.
     :param servico: Serviço a ser usado.
     :param entrada: Dados de entrada.
     """
     # Abrir conexão com o monitor
     reader_main, writer_main =await conecta(monitor, IP, porta, timeout)
+    time.sleep(0.3) #Tempo após abrir conexão
     # Faz comando M da fila (conexao)
     msg = comando_conexao(nome_conexao)
     await envia_mensagem(writer_main,msg,monitor)
     await recebe_resposta(reader_main, monitor, IP, porta,timeout)
-    time.sleep(latencia/1000) #Tempo ente mensagens
+    time.sleep(0.3) #Tempo ente depois do comado M
 
+     # Faz comando M do terminal e obtem o token
     msg = comando_terminal(agencia,numero_serie,nome_conexao)
     await envia_mensagem(writer_main,msg,monitor)
     resposta = await recebe_resposta(reader_main, monitor, IP, porta,timeout)
-    time.sleep(latencia/1000) #Tempo ente mensagens
+    time.sleep(0.3) #Tempo ente mensagens
     token = resposta[9:59]
 
+    if servico == "Input":
+        if protocolo == "2000A":
+            msg = transacao_2000a(transacao, agencia, "HHHHH", entrada, token)
+        else:
+            msg = transacao_4000a(agencia, "HHHHH", entrada, token)
+    else:
+        # Criar um banco de dados para buscar nele, qual é a entrada para aquele serviço
+        xml = busca_servico(servico)
+        msg = transacao_4000a(agencia, "HHHHH", xml, token)
+
     for j in range(quantidade):
-        msg = transacao_2000a(transacao, agencia, "HHHHH", entrada, token)
         await envia_mensagem(writer_main,msg,monitor)
         await recebe_resposta(reader_main, monitor, IP, porta,timeout)
         time.sleep(latencia/1000) #Tempo ente mensagens
     
     await encerra_conexao(monitor, IP, porta, writer_main)
     return
+
+def add_service(service_name, xml_data):
+    """
+    Função para adicionar um serviço e seu XML associado ao banco de dados.
+
+    Parâmetros:
+    service_name (str): O nome do serviço a ser adicionado.
+    xml_data (str): O XML associado a esse serviço.
+    """
+    service_database[service_name] = xml_data
+
+
+def busca_servico(service_name):
+    """
+    Função para retornar o XML de um serviço.
+
+    Parâmetros:
+    service_name (str): O nome do serviço cujo XML deve ser recuperado.
+
+    Retorna:
+    str: O XML associado ao serviço, ou uma mensagem de erro se o serviço não for encontrado.
+    """
+    if service_name in service_database:
+        return service_database[service_name]
+    else:
+        return NOSERVICE
+
 
 async def main():
     """
@@ -218,11 +260,15 @@ async def main():
     data = json.loads(body)
 
     # Define as keys obrigatórias
-    keys = ["monitor", "porta", "endIP", "nome_conexao", "timeout", "latencia", "numero_serie", "quantidade", "agencia", "transacao", "servico", "entrada"]
+    keys = ["monitor", "porta", "endIP", "nome_conexao", "timeout", "latencia", "numero_serie", "quantidade", "agencia","protocolo", "transacao", "servico", "entrada"]
     if not validate_json_keys(data, keys):  # Verifica se está faltando alguma 'key'
         print(BODYNODATA)
         return
 
+    # Cadastrar serviços neste trecho
+    add_service("Input", "Indicacao que sera passado entrada")
+    add_service("VQ00001x", "<root><data>Algum XML aqui</data></root>")
+    
     monitor       = data["monitor"]
     porta         = data["porta"]
     endIP         = data["endIP"]
@@ -232,11 +278,16 @@ async def main():
     numero_serie  = data["numero_serie"]
     quantidade    = data["quantidade"]
     agencia       = data["agencia"]
+    protocolo     = data["protocolo"]
     transacao     = data["transacao"]
     servico       = data["servico"]
     entrada       = data["entrada"]
 
-    await transacionar(monitor, porta, endIP, nome_conexao, timeout, latencia, numero_serie, quantidade, agencia, transacao, servico, entrada)
+    if busca_servico(servico) ==  NOSERVICE:
+        print(NOSERVICE)
+        return
+
+    await transacionar(monitor, porta, endIP, nome_conexao, timeout, latencia, numero_serie, quantidade, agencia, protocolo,transacao, servico, entrada)
 
 # Inicia a execução da função principal
 if __name__ == "__main__":

@@ -33,9 +33,16 @@ def validate_json_keys(json_obj, keys):
 
     return all(key in json_obj for key in keys)
 
+def payload_job_line(racf):
+    """
+    Cria a linha de JOB do payload.
 
+    :param racf: é a identificação do usuário dentro do mainframe.
+    :return: linha de JOB do payload.
+    """
+    return '//{}J JOB {},GDMBE,CLASS=J,MSGCLASS=1,NOTIFY=&SYSUID'.format(racf, racf)
 
-def payload_jcl(racf,particionado,job):
+def payload_jcl(particionado,job):
     """
     Cria um payload JCL padrão para submissão de jobs dentro do mainframe.
 
@@ -45,7 +52,6 @@ def payload_jcl(racf,particionado,job):
     :return: payload preparado para request do zOS/mf.
     """
     submit='''
-//'''+racf+'''J JOB '''+racf+''',GDMBE,CLASS=J,MSGCLASS=1,NOTIFY=&SYSUID
 //STEP1   EXEC PGM=IKJEFT01,DYNAMNBR=30,REGION=0M
 //SYSTSPRT DD SYSOUT=*
 //SYSEXEC  DD DSN='''+particionado+'''('''+job+'''),DISP=SHR
@@ -67,7 +73,7 @@ def payload_jcl(racf,particionado,job):
 '''
     return submit
 
-def payload_rexx(racf,particionado,rexx,entrada):
+def payload_rexx(particionado,rexx,entrada):
     """
     Cria um payload REXX padrão para submissão de jobs dentro do mainframe.
 
@@ -79,17 +85,137 @@ def payload_rexx(racf,particionado,rexx,entrada):
     """
     rexx = "'"+rexx
     submit='''
-//'''+racf+'''J JOB '''+racf+''',GDMBE,CLASS=J,MSGCLASS=1,NOTIFY=&SYSUID
-//STEP1   EXEC PGM=IKJEFT1B,REGION=0M,PARM='''+rexx+''''
+//REXX1   EXEC PGM=IKJEFT1B,REGION=0M,PARM='''+rexx+''''
 //SYSPROC  DD DISP=SHR,DSN='''+particionado+'''
 //SYSOUT   DD SYSOUT=*
 //SYSTSPRT DD SYSOUT=*
 //SYSTSIN  DUMMY
 //SYSPRINT DD SYSOUT=*
-//ENTRA01  DD *
 '''+entrada+'''
+'''
+    return submit
+
+def cartao_lista_logs(monitor, mensagens):
+    """
+    Cria o cartao LISTA LOGS para consulta de logs.
+    Exemplo: 
+    monitor = 'AGENRT3'
+    mensagens = ['MONITN   +=THPS.900E', 'MONITW   ABEND']
+
+    :return: cartao LISTA LOGS.
+    """
+    final = monitor[-3:]
+    final2 = monitor[-1:]
+    input_logs = '''
+//ENTRA01  DD DSN=MI.GRBEDES.RTFARQ.ATV''' + final + ''',DISP=SHR
+//ENTRA02  DD *'''
+    # Itera sobre as mensagens, adicionando cada uma na string input_logs
+    for mensagem in mensagens:
+        input_logs += '\n' + mensagem
+
+    input_logs += '''
+//SAIDA01  DD DSN=MI.GRBEDES.RTFARQ.BLACK0''' + final2 + ''',
+//         DISP=(,CATLG,DELETE),
+//         SPACE=(TRK,(10,5),RLSE),UNIT=SYSDA,LRECL=133,
+//         RECFM=FB    
+//ENTRA04 DD DSN=MI.GRBEDES.RTFARQ.WHITEARQ,DISP=SHR
+'''
+    return input_logs
+
+def cartao_wait(jobname, mensagens):
+    """
+    Cria o cartao WAIT para esperar a conclusão do job.
+    Exemplo: 
+        jobname = 'SAK0075$'
+        mensagens = ['+#MIL1.001I 301* (CAR)', '+#MIL1.002I 302* (CAR)']
+
+    :return: cartao WAIT.
+    """
+    input_wait = '''
+//ENTRA01  DD *
+JOBNAME  ''' + jobname
+
+    # Itera sobre as mensagens, adicionando cada uma com sua respectiva posição
+    for i, mensagem in enumerate(mensagens, start=1):
+        input_wait += '\n' + str(i) + '        ' + mensagem
+
+    return input_wait
+
+def cartao_gcomando(jobnames, comandos):
+    """
+    Cria o cartao GCOMANDO para execução de comandos.
+    Exemplo: 
+        jobnames = ['SAK0075$', 'SAK0075@']
+        comandos = ['ALT,THTP,0', 'ALT,THTP,1']
+    
+    :return: cartao GCOMANDO.
+    """
+    # Inicia a string
+    input_gcomando = '''
+//ENTRA01  DD *
+'''
+    # Itera sobre cada jobname
+    for jobname in jobnames:
+        # Para cada jobname, itera sobre todos os comandos
+        for comando in comandos:
+            input_gcomando += jobname + ' ' + comando + '\n'
+
+    # Adiciona o final da string
+    input_gcomando += '''
 //SYSTSPRT DD SYSOUT=*
 '''
+    return input_gcomando
+
+def payload_batch_misb(programa,particionado,particionado2,proc):
+    """
+    Cria um payload para executar o programa batch MISB.
+
+    :param racf: é a identificao do usuário dentro do mainframe.
+    :param programa: é o programa que queremos executar.
+    :param particionado: é o dataset que contem a proc.
+    :param particionado2: é onde está o load modulo do programa.
+    :param proc: é a proc dentro do particionado que queremos executar.
+    :return: payload preparado para request do zOS/mf.
+    """
+    submit='''
+//MISB01  EXEC PGM='''+programa+''',REGION=0K,TIME=1440
+//SYSPDS   DD DISP=SHR,DSN='''+particionado+'''('''+proc+''')
+//SYSOUT   DD SYSOUT=(*,INTRDR)
+//STEPLIB  DD DISP=SHR,DSN='''+particionado2+'''
+'''
+    return submit
+
+def payload_batch_mi0z(programa,monitores,comandos,particionado2):
+    """
+    Cria um payload para executar o programa batch MI0Z.
+
+    :param programa: é o programa que queremos executar.
+    :param particionado2: é onde está o load modulo do programa.
+    :param monitores: é uma lista de monitores dentro do particionado que queremos executar.
+    :param comandos: é uma lista de comandos para serem executados.
+    :return: payload preparado para request do zOS/mf.
+    """
+    submit='''
+//MIOZ    EXEC PGM='''+programa+'''
+//STEPLIB  DD DISP=SHR,DSN='''+particionado2+'''
+//CTLGRBE  DD DSN=XI.BEDES.GRBECTL,DISP=SHR
+//GRBEPNX  DD DSN=XI.BEDES.GRBEPND.VSAM,DISP=SHR
+//PRTOUT01 DD SYSOUT=*
+//SYSPRINT DD SYSOUT=*
+//SYSABEND DD SYSOUT=*
+//SYSMON   DD *'''
+
+    # Itera sobre os monitores, adicionando cada um na string submit
+    for monitor in monitores:
+        submit += '\n' + monitor
+
+    submit += '''
+//CMDGRBE  DD *'''
+
+    # Itera sobre os comandos, adicionando cada um na string submit
+    for comando in comandos:
+        submit += '\n' + comando
+
     return submit
 
 def submit_jcl(payload,racf,senha):
@@ -148,3 +274,4 @@ def consult_jcl(jobid,racf,senha,tempo,tempo_consulta):
             aux = False
 
     return result
+

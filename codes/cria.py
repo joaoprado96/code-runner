@@ -26,10 +26,28 @@ def main():
     senha = data["senha"]
     tempo = data["tempo"]
     tempo_consulta = data["tempo_consulta"]
- 
+    
+    # Gera os cartões que serão inseridos nas REXX
+    input_wait = cartao_wait("SAK0075$",['+#MIL1.001I 301* (CAR)', '+#MIL1.002I 302* (CAR)'])
+    input_logs = cartao_lista_logs("AGENRT4",['MONITN  +THPS.900E','MONITW   ABED'])
+    input_gcomando = cartao_gcomando(['SAK0075#','SAK0075@'],['ALT,TMN1,0','ALT,TMN3,0'])
+    
     # Gera payload JCL para chamar submeter no mainframe
-    payload1=payload_jcl(data["racf"],data["particionado"],data["job"])
-    payload2=payload_rexx(data["racf"],data["particionado"],data["job"],'VALOR DO INPUT')
+    payload1=payload_jcl(data["particionado"],data["job"])
+    print(payload1)
+    print('  ')
+    payload2=payload_rexx(data["particionado"],data["job"],input_wait)
+    print(payload2)
+    print('  ')
+    payload3=payload_rexx(data["particionado"],data["job"],input_logs)
+    print(payload3)
+    print('  ')
+    payload4=payload_rexx(data["particionado"],data["job"],input_gcomando)
+    print(payload4)
+    print('  ')
+    payload5=payload_batch_mi0z(data["job"],['AGENRT3','AGENRT4'],['FIM,NORMAL','ALT,TMN1,0'],data["particionado"])
+    print(payload5)
+    print('  ')
 
     # Submete  JOB no mainframe e obtém o jobid que será utilizado para consulta de return code
     job = submit_jcl(payload1,racf,senha)
