@@ -1,7 +1,6 @@
 # Importa as bibliotecas necessárias
 import asyncio
 import codecs
-import threading
 import sys
 import json
 import time
@@ -68,11 +67,12 @@ def comando_terminal(agencia,numero_serie,nome_conexao):
     """
     return ('2000M9999710100004341'+agencia+'000000000000'+numero_serie+'004341'+agencia+nome_conexao)
 
-def transacao_2000a(transacao,agencia,hexa,xml,token):
+def transacao_2000a(transacao,sequencial,agencia,hexa,xml,token):
     """
     Função para criar transação do protocolo 2000A.
     
     :param transacao: Transação a ser realizada.
+    :param sequencial: Identificador sequencial da transação.
     :param agencia: Número da agência.
     :param hexa: Valor hexadecimal.
     :param xml: String XML.
@@ -80,7 +80,7 @@ def transacao_2000a(transacao,agencia,hexa,xml,token):
 
     :return: transação do protocolo 2000A.
     """
-    return ('2000A0001004341'+agencia+'QT 710'+str(hexa)+'01QTIF1'+transacao+xml+token)
+    return ('2000A'+sequencial+'004341'+agencia+'QT 710'+str(hexa)+'01QTIF1'+transacao+xml+token)
 
 def transacao_4000a(agencia,hexa,xml,token):
     """
@@ -108,7 +108,7 @@ async def envia_mensagem(writer, message, monitor):
         if(message[0:5]=="2000M"):
             imprime_mensagem(PSEND,f'Enviado comando M do Terminal:{message[37:42]}')
         else:
-            imprime_mensagem(PSEND,f'Enviado: Agência:{message[15:19]} Mensagem:{message[31:51]}')
+            imprime_mensagem(PSEND,f'Enviado:({message[5:9]}) {message}')
         tammsg = len(message)
         bytestammsg = tammsg.to_bytes(4,byteorder="big")
         bytemsg = codecs.encode(message,'cp500')
@@ -161,22 +161,30 @@ async def recebe_resposta(reader, monitor, IP, porta, timeout):
         tamanho = int.from_bytes(bytestammsg, byteorder="big")
         bytestammsg = await asyncio.wait_for(reader.read(tamanho), timeout = timeout)
         msgretorno = codecs.decode(bytestammsg, 'cp500')
-        imprime_mensagem(PRECIVE,f'Resposta de {monitor} Mensagem: {msgretorno}')
+        imprime_mensagem(PRECIVE,f'Resposta de {monitor}: {msgretorno}')
         return msgretorno
     except:
         imprime_mensagem(PRECIVE,f'Timeout na resposta de {monitor} IP {IP} e porta {porta}')
 
-async def transacionar(monitor, porta, IP, nome_conexao, timeout, latencia, numero_serie, quantidade, agencia, protocolo, transacao, servico, entrada):
+def int_to_base36(num):
+    # Converte um número inteiro para a base 36 como uma string.
+    chars = "0123456789abcdefghijklmnopqrstuvwxyz"
+    base36 = ""
+    while num:
+        num, i = divmod(num, 36)
+        base36 = chars[i] + base36
+    return base36.zfill(4)
+
+
+async def transacionar(monitor, porta, IP, timeout, latencia, quantidade, agencia, protocolo, transacao, servico, entrada):
     """
     Função para realizar transações.
     
     :param monitor: Identificador do monitor.
     :param porta: Porta para a conexão.
     :param IP: Endereço IP para a conexão.
-    :param nome_conexao: Nome da conexão.
     :param timeout: Tempo limite para a conexão.
     :param latencia: Latência da conexão.
-    :param numero_serie: Número de série do terminal.
     :param quantidade: Quantidade de transações.
     :param agencia: Número da agência.
     :param protocolo: Informa em qual protocolo virá a mensagem.
@@ -184,6 +192,10 @@ async def transacionar(monitor, porta, IP, nome_conexao, timeout, latencia, nume
     :param servico: Serviço a ser usado.
     :param entrada: Dados de entrada.
     """
+    #Gera um numero de serie aleatorio e nome da conexao:
+    numero_serie = str(random.randint(50000, 99999))
+    nome_conexao = "SMT" + str(numero_serie)
+
     # Abrir conexão com o monitor
     reader_main, writer_main =await conecta(monitor, IP, porta, timeout)
     time.sleep(0.3) #Tempo após abrir conexão
@@ -200,17 +212,20 @@ async def transacionar(monitor, porta, IP, nome_conexao, timeout, latencia, nume
     time.sleep(0.3) #Tempo ente mensagens
     token = resposta[9:59]
 
-    if servico == "Input":
-        if protocolo == "2000A":
-            msg = transacao_2000a(transacao, agencia, "HHHHH", entrada, token)
-        else:
-            msg = transacao_4000a(agencia, "HHHHH", entrada, token)
-    else:
-        # Criar um banco de dados para buscar nele, qual é a entrada para aquele serviço
-        xml = busca_servico(servico)
-        msg = transacao_4000a(agencia, "HHHHH", xml, token)
 
     for j in range(quantidade):
+        sequencial = int_to_base36(j) # Valor maximo 4 bytes: 1.679.615 
+        if servico == "Input":
+            if protocolo == "2000A":
+                msg = transacao_2000a(transacao, sequencial,agencia, "HHHHH", entrada, token)
+            else:
+                msg = transacao_4000a(agencia, "HHHHH", entrada, token)
+        else:
+            # Criar um banco de dados para buscar nele, qual é a entrada para aquele serviço
+            xml = busca_servico(servico)
+            msg = transacao_4000a(agencia, "HHHHH", xml, token)
+        
+        # Envia mensagem ao monitor   
         await envia_mensagem(writer_main,msg,monitor)
         await recebe_resposta(reader_main, monitor, IP, porta,timeout)
         time.sleep(latencia/1000) #Tempo ente mensagens
@@ -260,7 +275,7 @@ async def main():
     data = json.loads(body)
 
     # Define as keys obrigatórias
-    keys = ["monitor", "porta", "endIP", "nome_conexao", "timeout", "latencia", "numero_serie", "quantidade", "agencia","protocolo", "transacao", "servico", "entrada"]
+    keys = ["monitor", "porta", "endIP", "timeout", "latencia", "quantidade", "agencia","protocolo", "transacao", "servico", "entrada"]
     if not validate_json_keys(data, keys):  # Verifica se está faltando alguma 'key'
         print(BODYNODATA)
         return
@@ -270,10 +285,8 @@ async def main():
         "monitor": 'N',
         "porta": 'N',
         "endIP": 'N',
-        "nome_conexao": 8,
         "timeout": 'N',
         "latencia": 'N',
-        "numero_serie": 5,
         "quantidade": 'N',
         "agencia": 4,
         "protocolo": 5,
@@ -292,10 +305,8 @@ async def main():
     monitor       = data["monitor"]
     porta         = data["porta"]
     endIP         = data["endIP"]
-    nome_conexao  = data["nome_conexao"]
     timeout       = data["timeout"]
     latencia      = data["latencia"]
-    numero_serie  = data["numero_serie"]
     quantidade    = data["quantidade"]
     agencia       = data["agencia"]
     protocolo     = data["protocolo"]
@@ -307,7 +318,11 @@ async def main():
         print(NOSERVICE)
         return
 
-    await transacionar(monitor, porta, endIP, nome_conexao, timeout, latencia, numero_serie, quantidade, agencia, protocolo,transacao, servico, entrada)
+    if int(quantidade) >= 1679615:
+        print(MAXQTD)
+        return
+    
+    await transacionar(monitor, porta, endIP, timeout, latencia, quantidade, agencia, protocolo,transacao, servico, entrada)
 
 # Inicia a execução da função principal
 if __name__ == "__main__":

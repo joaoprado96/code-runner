@@ -25,7 +25,7 @@ app.post('/codes/:scriptName', (req, res) => {
     const scriptName = req.params.scriptName;
     const diretorio = path.join(__dirname, 'codes', `${scriptName}.py`);
     if (!fs.existsSync(diretorio)) {
-        res.status(404).send({message:`Code não encontrado em ${scriptName}`});
+        res.status(404).send({message:`CodeRunner: Code não encontrado em ${scriptName}`});
         return;
     }
 
@@ -34,7 +34,7 @@ app.post('/codes/:scriptName', (req, res) => {
 
     // Verifica se numScripts é maior que 100
     if (numScripts > 100) {
-        res.status(400).send({message: `O número máximo de scripts é 100`});
+        res.status(400).send({message: `CodeRunner: O número máximo de scripts é 100`});
         return;
     }
     const options = {
@@ -45,20 +45,27 @@ app.post('/codes/:scriptName', (req, res) => {
 
     for(let i = 0; i < numScripts; i++) {
         let pyShell = new PythonShell(path.join('codes', `${scriptName}.py`), options);
-        runningScripts[`${scriptName}${i}`] = pyShell;
+        let scriptId = `${scriptName}${i}`; // Identificador do script
+        runningScripts[scriptId] = pyShell;
 
         pyShell.on('message', (message) => {
-            console.log(message);
+            console.log(`[${scriptId}] ${message}`); // Inclui a identificação do script na mensagem
         });
 
         pyShell.end((err, code, signal) => {
-            if (err) throw err;
-            console.log(`Code Runner: O(s) script(s) (${scriptName}.py) finalizaram com Exit Code: ` + code + ' Exit Signal: ' +signal);
-            delete runningScripts[`${scriptName}${i}`];
+            if (err) {
+                console.log(`[${scriptId}] CodeRunner: Erro na execução do script ${scriptName}.py. Nome do erro: ${err.name}`);
+                console.log(`[${scriptId}] CodeRunner: Logs de erro (stack trace):\n${err.stack}`);
+            } else {
+                console.log(`[${scriptId}] Code Runner: O script ${scriptName}.py finalizou com Exit Code: ${code} Exit Signal: ${signal}`);
+            }
+            delete runningScripts[scriptId];
         });
+        
     }
 
-    res.send({message: `Os (${numScripts}) scripts ${scriptName}.py foram iniciados`});
+
+    res.send({message: `CodeRunner: Os (${numScripts}) scripts ${scriptName}.py foram iniciados`});
 });
 
 
@@ -66,29 +73,29 @@ app.get('/codes/:scriptName', (req, res) => {
     const scriptName = req.params.scriptName;
 
     if (!runningScripts[scriptName]) {
-        res.status(404).send({message: `O script ${scriptName}.py não está rodando`});
+        res.status(404).send({message: `CodeRunner: O script ${scriptName}.py não está rodando`});
         return;
     }
 
-    res.send({message: `${scriptName} está executando`});
+    res.send({message: `CodeRunner: ${scriptName} está executando`});
 });
 
 app.delete('/codes/:scriptName', (req, res) => {
     const scriptName = req.params.scriptName;
 
     if (!runningScripts[scriptName]) {
-        res.status(404).send({message: `${scriptName} não está executando`});
+        res.status(404).send({message: `CodeRunner: ${scriptName} não está executando`});
         return;
     }
 
     runningScripts[scriptName].childProcess.kill('SIGINT'); // interrompe o processo Python
     delete runningScripts[scriptName];
-    res.send({message: `${scriptName} foi interrompido`});
+    res.send({message: `CodeRunner: ${scriptName} foi interrompido`});
 });
 
 
 app.listen(port, () => {
-  console.log(`Code Runner está em: http://localhost:${port}`);
+  console.log(`CodeRunner está em: http://localhost:${port}`);
 });
 
 
