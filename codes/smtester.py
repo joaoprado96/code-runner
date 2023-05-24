@@ -302,6 +302,7 @@ async def main():
     add_service("Input", "Indicacao que sera passado entrada")
     add_service("VQ00001x", "<root><data>Algum XML aqui</data></root>")
     
+    
     monitor       = data["monitor"]
     porta         = data["porta"]
     endIP         = data["endIP"]
