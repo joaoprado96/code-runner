@@ -36,14 +36,27 @@ API
 
 A API tem três pontos de acesso:
 
-    POST /codes/:scriptName: inicia a execução de um script Python especificado pelo scriptName. O número de execuções pode ser definido no cabeçalho 'num-scripts' (por padrão, é 1; o máximo permitido é 100).
-    GET /codes/:scriptName: verifica se um script Python especificado pelo scriptName está sendo executado.
-    DELETE /codes/:scriptName: interrompe a execução de um script Python especificado pelo scriptName.
+### POST /codes/:scriptName: 
+Inicia a execução de um script Python especificado pelo scriptName. O número de execuções pode ser definido no cabeçalho `num-scripts` (por padrão, é 1; o máximo permitido é 100).
+
+### GET /codes/:scriptName: 
+Verifica se um script Python especificado pelo scriptName está sendo executado.
+
+### DELETE /codes/:scriptName: 
+Interrompe a execução de um script Python especificado pelo scriptName.
 
 ## Exemplo de uso
 
-Para iniciar um script Python chamado 'test', faça uma requisição POST para 'http://localhost:3000/codes/test'. Para verificar se 'test.py' está em execução, faça uma requisição GET para 'http://localhost:3000/codes/test'. Para parar 'test.py', faça uma requisição DELETE para 'http://localhost:3000/codes/test'.
-Observações
+Antes de utilizar você deve criar um script Python dentro da pasta codes para executar alguma ação, após isso:
+
+Para iniciar um script Python chamado 'test', faça uma requisição POST para `http://localhost:3000/codes/test` 
+
+Para verificar se 'test.py' está em execução, faça uma requisição GET para `http://localhost:3000/codes/test` 
+
+Para parar 'test.py', faça uma requisição DELETE para `http://localhost:3000/codes/test`
+
+
+## Observações
 
 Os scripts Python devem estar no diretório 'codes' e ter a extensão '.py'. A aplicação passará o corpo da solicitação POST como argumento para o script Python. A aplicação imprimirá as mensagens de saída do script Python no console e terminará a execução do script quando ele finalizar.
 
