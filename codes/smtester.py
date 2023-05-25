@@ -231,6 +231,8 @@ async def transacionar(monitor, porta, IP, timeout, latencia, quantidade, agenci
         time.sleep(latencia/1000) #Tempo ente mensagens
     
     await encerra_conexao(monitor, IP, porta, writer_main)
+    json_teste = {'message':'Todas as transações foram enviadas'}
+    print(json_teste)
     return
 
 def add_service(service_name, xml_data):
@@ -302,7 +304,7 @@ async def main():
     add_service("Input", "Indicacao que sera passado entrada")
     add_service("VQ00001x", "<root><data>Algum XML aqui</data></root>")
     
-    
+
     monitor       = data["monitor"]
     porta         = data["porta"]
     endIP         = data["endIP"]

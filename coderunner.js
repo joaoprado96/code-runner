@@ -1,4 +1,4 @@
-//Framework para a aplicação Code Runer
+// Framework para a aplicação Code Runer
 const express = require('express');
 const bodyParser = require('body-parser');
 const { PythonShell } = require('python-shell');
@@ -8,17 +8,16 @@ const path = require('path');
 // Biblioteca JavaScript para fazer requisições HTTP
 const axios = require('axios');
 
-//Criando aplicação Code Runner
+// Criando aplicação Code Runner
 const app = express();
 
-
-//Definição da Porta Local da Aplicação
+// Definição da Porta Local da Aplicação
 const port = 3000;
 
 // Configura o Express para utilizar o middleware que analisa as solicitações JSON.
 app.use(bodyParser.json());
 
-// Definição de array para salvar os scripts que estao rodando
+// Definição de array para salvar os scripts que estão rodando
 let runningScripts = {};
 
 app.post('/codes/:scriptName', (req, res) => {
@@ -29,7 +28,7 @@ app.post('/codes/:scriptName', (req, res) => {
         return;
     }
 
-    const numScripts = req.headers['num-scripts']; // Lê o valor do cabeçalho 'num-scripts'
+    let numScripts = req.headers['num-scripts']; // Lê o valor do cabeçalho 'num-scripts'
     if (!numScripts) numScripts = 1; // Se não houver cabeçalho 'num-scripts', apenas um script será iniciado
 
     // Verifica se numScripts é maior que 100
@@ -43,31 +42,62 @@ app.post('/codes/:scriptName', (req, res) => {
         args: [JSON.stringify(req.body)]
     };
 
+    // Array para guardar promessas de finalização dos scripts
+    let scriptPromises = [];
+
     for(let i = 0; i < numScripts; i++) {
         let pyShell = new PythonShell(path.join('codes', `${scriptName}.py`), options);
         let scriptId = `${scriptName}${i}`; // Identificador do script
         runningScripts[scriptId] = pyShell;
 
-        pyShell.on('message', (message) => {
-            console.log(`[${scriptId}] ${message}`); // Inclui a identificação do script na mensagem
-        });
+        let scriptOutput = null; // Variável para armazenar a saída do script
 
-        pyShell.end((err, code, signal) => {
-            if (err) {
-                console.log(`[${scriptId}] CodeRunner: Erro na execução do script ${scriptName}.py. Nome do erro: ${err.name}`);
-                console.log(`[${scriptId}] CodeRunner: Logs de erro (stack trace):\n${err.stack}`);
-            } else {
-                console.log(`[${scriptId}] Code Runner: O script ${scriptName}.py finalizou com Exit Code: ${code} Exit Signal: ${signal}`);
+        pyShell.on('message', (message) => {
+            // 'message' é a saída do script Python
+            console.log(`[${scriptId}] ${message}`);
+        
+            // Tenta parsear a mensagem como JSON
+            try {
+                let jsonMessage = JSON.parse(message);
+                // Se a mensagem puder ser parseada como JSON, salva na variável scriptOutput
+                scriptOutput = jsonMessage;
+            } catch (err) {
+                // Se a mensagem não puder ser parseada como JSON, não faz nada
             }
-            delete runningScripts[scriptId];
         });
         
+        let scriptPromise = new Promise((resolve, reject) => {
+            pyShell.end((err, code, signal) => {
+                if (err) {
+                    console.log(`[${scriptId}] CodeRunner: Erro na execução do script ${scriptName}.py. Nome do erro: ${err.name}`);
+                    console.log(`[${scriptId}] CodeRunner: Logs de erro (stack trace):\n${err.stack}`);
+                    reject(err);
+                } else {
+                    console.log(`[${scriptId}] Code Runner: O script ${scriptName}.py finalizou com Exit Code: ${code} Exit Signal: ${signal}`);
+                    resolve({ code: code, signal: signal });
+                }
+                delete runningScripts[scriptId];
+            });
+        });
+
+        scriptPromises.push(scriptPromise);
     }
 
+    const aguardar = req.headers['aguardar']; // Lê o valor do cabeçalho 'aguardar'
 
-    res.send({message: `CodeRunner: Os (${numScripts}) scripts ${scriptName}.py foram iniciados`});
+    // Se 'aguardar' estiver definido como 'sim', espera a conclusão dos scripts
+    if(aguardar === 'sim') {
+        Promise.all(scriptPromises)
+        .then(results => {
+            res.send({ message: `CodeRunner: Os scripts ${scriptName}.py foram concluídos` ,results: results });
+        })
+        .catch(err => {
+            res.status(500).send({ message: `CodeRunner: Erro ao executar os scripts ${scriptName}.py`, error: err });
+        });
+    } else {
+        res.send({message: `CodeRunner: Os (${numScripts}) scripts ${scriptName}.py foram iniciados`});
+    }
 });
-
 
 app.get('/codes/:scriptName', (req, res) => {
     const scriptName = req.params.scriptName;
@@ -93,12 +123,6 @@ app.delete('/codes/:scriptName', (req, res) => {
     res.send({message: `CodeRunner: ${scriptName} foi interrompido`});
 });
 
-
 app.listen(port, () => {
   console.log(`CodeRunner está em: http://localhost:${port}`);
 });
-
-
-
-
-
