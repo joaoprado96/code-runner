@@ -133,7 +133,6 @@
 
     <script>
         document.getElementById("button1").addEventListener("click", function() {
-            // Desabilitar button1
             this.style.backgroundColor = "#2c2c2c";
             this.disabled = true;
             var racf = document.getElementById("racf").value;
@@ -147,11 +146,8 @@
                 pacote: pacote,
                 versao: versao,
                 versao_origem: versao_origem,
-                protocolo: protocolo,
-                agencia: agencia,
-                transacao: transacao,
-                servico: servico,
-                entrada: entrada
+                tempo : 500,
+                tempo_consulta: 10000
             };
             fetch('/codes/cria', {
                 method: 'POST',
@@ -162,22 +158,39 @@
                 body: JSON.stringify(data)
             }).then(function(response) {
                 return response.json();
-            }).then(function(data) {
-                console.log(data);
             });
 
-            // Habilitar button2 após 3 segundos
             setTimeout(function() {
                 document.getElementById("button2").disabled = false;
             }, 3000);
         });
 
         document.getElementById("button2").addEventListener("click", function() {
-            
-            // Desabilitar button2
             this.disabled = true;
-            alert("Você está importando os módulos para dentro de seu pacote, aguarde um instante que será liberada a compilação.")
-            // Habilitar button3 após 3 segundos
+            var racf = document.getElementById("racf").value;
+            var senha = document.getElementById("senha").value;
+            var pacote = document.getElementById("pacote").value;
+            var versao = document.getElementById("versao").value;
+            var versao_origem = document.getElementById("versao_origem").value;
+            var data = {
+                racf: racf,
+                senha: senha,
+                pacote: pacote,
+                versao: versao,
+                versao_origem: versao_origem,
+                tempo : 500,
+                tempo_consulta: 10000
+            };
+            fetch('/codes/importar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'num-scripts': 1
+                },
+                body: JSON.stringify(data)
+            }).then(function(response) {
+                return response.json();
+            });
             
             setTimeout(function() {
                 document.getElementById("button3").disabled = false;
@@ -185,18 +198,63 @@
         });
 
         document.getElementById("button3").addEventListener("click", function() {
-            // Desabilitar button3
             this.disabled = true;
-            alert("Você está compilando todos os componentes da nova versão criada que estão dentro do seu pacote, pode acompanhar pelo SDSF procurando pelos jobs MI#*, aguarda a liberação de valdação.")
+            var racf = document.getElementById("racf").value;
+            var senha = document.getElementById("senha").value;
+            var pacote = document.getElementById("pacote").value;
+            var versao = document.getElementById("versao").value;
+            var versao_origem = document.getElementById("versao_origem").value;
+            var data = {
+                racf: racf,
+                senha: senha,
+                pacote: pacote,
+                versao: versao,
+                versao_origem: versao_origem,
+                tempo : 500,
+                tempo_consulta: 10000
+            };
+            fetch('/codes/compilar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'num-scripts': 1
+                },
+                body: JSON.stringify(data)
+            }).then(function(response) {
+                return response.json();
+            });
+
             setTimeout(function() {
                 document.getElementById("button4").disabled = false;
             }, 3000);
         });
 
         document.getElementById("button4").addEventListener("click", function() {
-            // Desabilitar button4
             this.disabled = true;
-            // Faça o que precisa ser feito após o botão 3 ser clicado
+            var racf = document.getElementById("racf").value;
+            var senha = document.getElementById("senha").value;
+            var pacote = document.getElementById("pacote").value;
+            var versao = document.getElementById("versao").value;
+            var versao_origem = document.getElementById("versao_origem").value;
+            var data = {
+                racf: racf,
+                senha: senha,
+                pacote: pacote,
+                versao: versao,
+                versao_origem: versao_origem,
+                tempo : 500,
+                tempo_consulta: 10000
+            };
+            fetch('/codes/validar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'num-scripts': 1
+                },
+                body: JSON.stringify(data)
+            }).then(function(response) {
+                return response.json();
+            });
         });
 
     </script>

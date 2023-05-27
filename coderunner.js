@@ -31,7 +31,6 @@ let runningScripts = {};
 
 app.post('/codes/:scriptName', (req, res) => {
     // Os dados do formulário estão no req.body
-    console.log(req.body);
     const scriptName = req.params.scriptName;
     const diretorio = path.join(__dirname, 'codes', `${scriptName}.py`);
     if (!fs.existsSync(diretorio)) {
