@@ -125,6 +125,10 @@
             <input type="number" id="latencia" placeholder="Latência (em milisegundos)" value="100">
         </div>
         <div class="input-group">
+            <label for="quantidade">Terminais:</label>
+            <input type="number" id="terminais" placeholder="Terminais" value="1">
+        </div>
+        <div class="input-group">
             <label for="quantidade">Quantidade:</label>
             <input type="number" id="quantidade" placeholder="Quantidade" value="100">
         </div>
@@ -204,6 +208,7 @@
             var endIP = document.getElementById("endIP").value;
             var timeout = Number(document.getElementById("timeout").value);
             var latencia = Number(document.getElementById("latencia").value);
+            var terminais = Number(document.getElementById("terminais").value);
             var quantidade = Number(document.getElementById("quantidade").value);
             var protocolo = document.getElementById("protocolo").value;
             var agencia = document.getElementById("agencia").value;
@@ -228,7 +233,8 @@
             fetch('/codes/smtester', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'num-scripts': terminais
                 },
                 body: JSON.stringify(data)
             }).then(function(response) {

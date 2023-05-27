@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Botões Sequenciais</title>
+    <style>
+        .btn {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<button type ="button" id="btn1" class="btn" onclick="clickButton(1)">Botão 1</button>
+<button type ="button" id="btn2" class="btn" disabled onclick="clickButton(2)">Botão 2</button>
+<button type ="button" id="btn3" class="btn" disabled onclick="clickButton(3)">Botão 3</button>
+
+<script>
+    let btn1 = document.getElementById('btn1');
+    let btn2 = document.getElementById('btn2');
+    let btn3 = document.getElementById('btn3');
+    function clickButton(number) {
+        console.log('Botão ' + number + ' clicado!');
+
+        if (number === 1) {
+            btn1.disabled = true;
+            setTimeout(() => { btn2.disabled = false; }, 2000);
+        } else if (number === 2) {
+            btn2.disabled = true;
+            setTimeout(() => { btn3.disabled = false; }, 2000);
+        } else if (number === 3) {
+            btn3.disabled = true;
+            setTimeout(() => { btn1.disabled = false; }, 2000);
+        }
+    }
+</script>
+</body>
+</html>
