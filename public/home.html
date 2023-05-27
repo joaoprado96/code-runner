@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Code Runer</title>
+    <link rel="icon" href="img/coderuner.png" type="image/png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        img.logo {
+            width: 350px;
+            height: auto;
+            margin-bottom: 30px;
+        }
+        .button-row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .button {
+            background-color: #F94904;
+            color: white;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            width: 200px;
+        }
+        .button:before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background-color: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            transform: scale(0.1);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .button:hover:before,
+        .button:focus:before {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .button:active:before {
+            opacity: 0;
+            transform: scale(0);
+            transition: none;
+        }
+        @keyframes pulsate {
+            0% {
+                box-shadow: 0 0 0 0 rgba(249, 73, 4, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(249, 73, 4, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(249, 73, 4, 0);
+            }
+        }
+        .button.pulsate {
+            animation: pulsate 2s infinite;
+        }
+    </style>
+</head>
+
+<body>
+    <img src="img/coderuner.png" alt="Logo" class="logo">
+    
+    <div class="button-row">
+        <button class="button" onclick="window.location.href='smtester.html'">SMTESTER</button>
+        <button class="button" onclick="window.location.href='versionbuilder.html'">VERSION BUILDER</button>
+        <button class="button" onclick="window.location.href='pagina3.html'">JOB RUNER</button>
+        <button class="button" onclick="window.location.href='pagina4.html'">Página 4</button>
+        <button class="button" onclick="window.location.href='pagina5.html'">Página 5</button>
+    </div>
+    
+    <script>
+        var buttons = document.querySelectorAll('.button');
+        buttons.forEach(function(button) {
+            button.addEventListener('mousedown', function() {
+                this.classList.add('pulsate');
+            });
+            button.addEventListener('mouseup', function() {
+                this.classList.remove('pulsate');
+            });
+        });
+    </script>
+</body>
+</html>

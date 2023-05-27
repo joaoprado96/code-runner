@@ -14,6 +14,15 @@ const app = express();
 // Definição da Porta Local da Aplicação
 const port = 3000;
 
+// Middleware para adicionar extensão .html às URLs
+app.use((req, res, next) => {
+    if (req.method === 'GET' && req.url.startsWith('/page') && !req.path.includes('.')) {
+      req.url += '.html';
+    }
+    next();
+  });
+  
+
 // Configura o Express para utilizar o middleware que analisa as solicitações JSON.
 app.use(bodyParser.json());
 
@@ -21,6 +30,8 @@ app.use(bodyParser.json());
 let runningScripts = {};
 
 app.post('/codes/:scriptName', (req, res) => {
+    // Os dados do formulário estão no req.body
+    console.log(req.body);
     const scriptName = req.params.scriptName;
     const diretorio = path.join(__dirname, 'codes', `${scriptName}.py`);
     if (!fs.existsSync(diretorio)) {
@@ -122,6 +133,12 @@ app.delete('/codes/:scriptName', (req, res) => {
     delete runningScripts[scriptName];
     res.send({message: `CodeRunner: ${scriptName} foi interrompido`});
 });
+
+//**********************************************************************************************************/
+
+// Precisamos de um middleware que entenda dados codificados como url (padrão para formulários HTML)
+app.use('/page', express.static('public'));
+  
 
 app.listen(port, () => {
   console.log(`CodeRunner está em: http://localhost:${port}`);
