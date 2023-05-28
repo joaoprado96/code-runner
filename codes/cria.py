@@ -18,7 +18,7 @@ def main():
 
     # Transforma a string JSON em um objeto Python
     data = json.loads(body)
-    return
+
     # Define as keys obrigatórias
     keys = ["racf", "senha", "versao","versao_origem","tempo","tempo_consulta"]
     if not validate_json_keys(data, keys):  # Verifica se está faltando alguma 'key'

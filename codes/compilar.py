@@ -47,8 +47,68 @@ def main():
     print(pacote)
     print(versao)
     print(versao_origem)
-    return
 
+
+    ok= 0
+    nok =0
+    nomenok = ''
+    controle = 0
+    try:
+        for i in range(NRSRC):
+            params={
+                "componentType":"SRC",
+                "compileOptions":"",
+                "component":PARMCOMPSRC[3*i]+versao,
+                "package":pacote,
+                "buildProc":"ASMG",
+                "language":"ASM",
+                "linkOptions":PARMCOMPSRC[3*i+1],
+                "listCount":1,
+                "userOption01":"N",
+                "userOption02":"N",
+                "userOption03":"N",
+                "userOption04":"N",
+                "userOption05":"N",
+                "userOption06":"N",
+                "userOption07":"N",
+                "userOption08":"N",
+                "userOption09":"N",
+                "userOption10":"N",
+                "userOption11":PARMCOMPSRC[3*i+2],
+                "userOption12":"N",
+                "userOption13":"N",
+                "userOption14":"N",
+                "userOption16":"N",
+                "userOption17":"N",
+                "userOption18":"N",
+                "userOption19":"N",
+                "userOption20":"N",
+                "useHistory":"N",
+                "jobCard01":"//MI#"+versao+str(i)+" JOB MI,CLASS=M,MSGLEVEL=(1,1),MSGCLASS=1,",
+                "jobCard02":"//          USER=CHGMAN",
+                "jobCard03":"/*XEQ DES1  PKG="+pacote+" PGM="+PARMCOMPSRC[3*i]+versao+"  TYP=SRC",
+                "jobCard04":"/*JOBPARM S=SECA   LNG=ASM         PROC =ASMG",}
+            
+            if (controle==20):
+                time.sleep(3)
+                controle = 0
+            else:
+                controle = controle + 1
+
+            r = requests.put(URLCHANGMAN+BUILD,params=params,auth=HTTPBasicAuth(racf, senha),verify=False)
+            parsed_json=json.loads(r.text)
+            print(r.text)
+
+            if(parsed_json["returnCode"]=="00"):
+                ok=ok+1
+            
+            else:
+                nok= nok+1
+                nomenok = nomenok + ' ' + PARMCOMPSRC[3*i]+versao + ','
+    except:
+        return ERROCOMPILACAO 
+
+    return SUCESSOCOMPILACAO  
 
 main()
 

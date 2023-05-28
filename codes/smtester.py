@@ -176,13 +176,12 @@ def int_to_base36(num):
     return base36.zfill(4)
 
 
-async def transacionar(monitor, porta, IP, timeout, latencia, quantidade, agencia, protocolo, transacao, servico, entrada):
+async def transacionar(monitor, porta, timeout, latencia, quantidade, agencia, protocolo, transacao, servico, entrada):
     """
     Função para realizar transações.
     
     :param monitor: Identificador do monitor.
     :param porta: Porta para a conexão.
-    :param IP: Endereço IP para a conexão.
     :param timeout: Tempo limite para a conexão.
     :param latencia: Latência da conexão.
     :param quantidade: Quantidade de transações.
@@ -197,18 +196,24 @@ async def transacionar(monitor, porta, IP, timeout, latencia, quantidade, agenci
     nome_conexao = "SMT" + str(numero_serie)
 
     # Abrir conexão com o monitor
-    reader_main, writer_main =await conecta(monitor, IP, porta, timeout)
+    # (NEW)
+    print(ENDIPS[monitor])
+    reader_main, writer_main =await conecta(monitor, ENDIPS[monitor], porta, timeout)
     time.sleep(0.3) #Tempo após abrir conexão
     # Faz comando M da fila (conexao)
     msg = comando_conexao(nome_conexao)
     await envia_mensagem(writer_main,msg,monitor)
-    await recebe_resposta(reader_main, monitor, IP, porta,timeout)
+    # (NEW)
+    await recebe_resposta(reader_main, monitor, ENDIPS[monitor], porta,timeout)
     time.sleep(0.3) #Tempo ente depois do comado M
 
      # Faz comando M do terminal e obtem o token
-    msg = comando_terminal(agencia,numero_serie,nome_conexao)
+    # (NEW)
+    print(AGEN[monitor])
+    msg = comando_terminal(AGEN[monitor],numero_serie,nome_conexao)
     await envia_mensagem(writer_main,msg,monitor)
-    resposta = await recebe_resposta(reader_main, monitor, IP, porta,timeout)
+    # (NEW)
+    resposta = await recebe_resposta(reader_main, monitor, ENDIPS[monitor], porta,timeout)
     time.sleep(0.3) #Tempo ente mensagens
     token = resposta[9:59]
 
@@ -226,11 +231,13 @@ async def transacionar(monitor, porta, IP, timeout, latencia, quantidade, agenci
             msg = transacao_4000a(agencia, "HHHHH", xml, token)
         
         # Envia mensagem ao monitor   
+        # (NEW)
         await envia_mensagem(writer_main,msg,monitor)
-        await recebe_resposta(reader_main, monitor, IP, porta,timeout)
+        await recebe_resposta(reader_main, monitor, ENDIPS[monitor], porta,timeout)
         time.sleep(latencia/1000) #Tempo ente mensagens
     
-    await encerra_conexao(monitor, IP, porta, writer_main)
+    # (NEW)
+    await encerra_conexao(monitor, ENDIPS[monitor], porta, writer_main)
     json_teste = {'message':'Todas as transações foram enviadas'}
     print(json_teste)
     return
@@ -277,7 +284,7 @@ async def main():
     data = json.loads(body)
 
     # Define as keys obrigatórias
-    keys = ["monitor", "porta", "endIP", "timeout", "latencia", "quantidade", "agencia","protocolo", "transacao", "servico", "entrada"]
+    keys = ["monitor", "porta", "timeout", "latencia", "quantidade", "agencia","protocolo", "transacao", "servico", "entrada"]
     if not validate_json_keys(data, keys):  # Verifica se está faltando alguma 'key'
         print(BODYNODATA)
         return
@@ -286,7 +293,6 @@ async def main():
     dict_size = {
         "monitor": 'N',
         "porta": 'N',
-        "endIP": 'N',
         "timeout": 'N',
         "latencia": 'N',
         "quantidade": 'N',
@@ -307,7 +313,6 @@ async def main():
 
     monitor       = data["monitor"]
     porta         = data["porta"]
-    endIP         = data["endIP"]
     timeout       = data["timeout"]
     latencia      = data["latencia"]
     quantidade    = data["quantidade"]
@@ -325,7 +330,7 @@ async def main():
         print(MAXQTD)
         return
     
-    await transacionar(monitor, porta, endIP, timeout, latencia, quantidade, agencia, protocolo,transacao, servico, entrada)
+    await transacionar(monitor, porta, timeout, latencia, quantidade, agencia, protocolo,transacao, servico, entrada)
 
 # Inicia a execução da função principal
 if __name__ == "__main__":

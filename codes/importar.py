@@ -47,8 +47,47 @@ def main():
     print(pacote)
     print(versao)
     print(versao_origem)
-    return
 
+    try:
+        for i in range(NRSRC):
+            params={
+                "componentType":"SRC",
+                "package":versao,
+                "chkInSourceLocation":1,
+                "sourceStorageMeans":6,
+                "targetComponent":PARMCOMPSRC[3*i]+versao,
+                "listCount":1,
+                "sourceLib":racf+BIBLIOTECASRC
+            }
+            r = requests.put(URLCHANGMAN+CHECKIN,params=params,auth=HTTPBasicAuth(racf, senha),verify=False)
+            parsed_json=json.loads(r.text)
+            print(r.text)
+
+    except:
+        print(ERROIMPORTACAO)
+        return ERROIMPORTACAO
+
+    try:
+        for i in range(NRCPM):
+            params={
+                "componentType":"CPM",
+                "package":versao,
+                "chkInSourceLocation":1,
+                "sourceStorageMeans":6,
+                "targetComponent":PARMCOMPCPM[3*i]+versao,
+                "listCount":1,
+                "sourceLib":racf+BIBLIOTECACPM
+            }
+            r = requests.put(URLCHANGMAN+CHECKIN,params=params,auth=HTTPBasicAuth(racf, senha),verify=False)
+            parsed_json=json.loads(r.text)
+            print(r.text)
+
+    except:
+        print(ERROIMPORTACAO)
+        return ERROIMPORTACAO
+    
+    print(SUCESSOIMPORTACAO)
+    return SUCESSOIMPORTACAO  
 
 main()
 

@@ -41,3 +41,38 @@ JOBNOFINISH    = '(SCRIPT) Não finalizou a execução do JOB: '
 NOSTATUS       = '(SCRIPT) Não encontrado "status" na consulta'
 NOSERVICE      = '(SCRIPT) Serviço não encontrado'
 MAXQTD         = '(SCRIPT) A quantidade maxima de transacoes é 1.679.615'
+
+# Enderecos de IPs
+ENDIPS= {'LOCALHOST':'127.0.0.1',
+         'AGENRT1':'127.0.0.1',
+         'AGENRT2':'127.0.0.1',
+         'AGENRT3':'127.0.0.1',
+         'AGENRT4':'127.0.0.1',
+         'AGENRT5':'127.0.0.1',
+         'AGENRT6':'127.0.0.1',
+         'TESTM26':'127.0.0.1'
+         }
+
+# Agencias para comandos M
+AGEN=   {'LOCALHOST':'1010',
+         'AGENRT1':'1100',
+         'AGENRT2':'2100',
+         'AGENRT3':'3100',
+         'AGENRT4':'4100',
+         'AGENRT5':'5100',
+         'AGENRT6':'6100',
+         'TESTM26':'0260'
+         }
+
+# Criador de versão:
+PARMCOMPSRC ={'sd'}
+NRSRC = len(PARMCOMPSRC)
+PARMCOMPCPM ={'PARM','SIADS'}
+NRCPM = len(PARMCOMPCPM)
+BIBLIOTECASRC= "CHGMAN.SRC"
+BIBLIOTECACPM = "CHGMAN.CPM"
+
+ERROCOMPILACAO      = "ERRO NO PROCESSO DE COMPILAÇÃO"
+SUCESSOCOMPILACAO   = "SUCESSO NO PROCESSO DE COMPILAÇÃO"
+ERROIMPORTACAO      = "ERRO NO PROCESSO DE IMPORTACAO"
+SUCESSOIMPORTACAO   = "SUCESSO NO PROCESSO DE IMPORTACAO"
