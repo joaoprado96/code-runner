@@ -1,17 +1,20 @@
 # Importa as bibliotecas necessárias
-import asyncio
-import codecs
+from asyncio import wait_for, open_connection, get_event_loop, sleep
+from codecs import decode,encode
 import sys
-import json
-import time
-import random
+from json import loads
+from random import randint
+import objgraph
+import gc
+
 
 # Importa módulos personalizados
-from globais import *
-from funcoes import *
+from globais import ENDIPS, AGEN, BODYNODATA, BODYNOTAM, NOSERVICE, MAXQTD, NOBODY  # Adicione as funções/variáveis globais que você está usando
+from funcoes import validate_json_keys, validate_json_sizes  # Adicione as funções que você está usando
 
 # Criação de um "banco de dados" em memória na forma de um dicionário
 service_database = {}
+
 
 async def conecta(monitor, IP, porta, timeout):
     """
@@ -24,9 +27,10 @@ async def conecta(monitor, IP, porta, timeout):
 
     :return: leitor e escritor da conexão.
     """
-    reader, writer = await asyncio.wait_for(asyncio.open_connection(IP, porta), timeout=timeout)
-    imprime_mensagem(PCONNECTION,f'Conexao efetuada com {monitor} IP {IP} e porta {porta}')
+    reader, writer = await wait_for(open_connection(IP, porta), timeout=timeout)
+    # imprime_mensagem(PCONNECTION,f'Conexao efetuada com {monitor} IP {IP} e porta {porta}')
     return reader, writer
+
 
 async def encerra_conexao(monitor, IP, porta, writer):
     """
@@ -37,13 +41,14 @@ async def encerra_conexao(monitor, IP, porta, writer):
     :param porta: Porta da conexão.
     :param writer: Escritor da conexão.
     """
-    imprime_mensagem(PDESCONNECTION,f'Encerrando conexão com {monitor} IP {IP} e porta {porta}')
+    # imprime_mensagem(PDESCONNECTION,f'Encerrando conexão com {monitor} IP {IP} e porta {porta}')
     try:
         writer.close()
         await writer.wait_closed()
     except:
-        imprime_mensagem(PDESCONNECTION,f'Erro durante a desconexão com {monitor} IP {IP} e porta {porta}')
+        # imprime_mensagem(PDESCONNECTION,f'Erro durante a desconexão com {monitor} IP {IP} e porta {porta}')
         raise
+
 
 def comando_conexao(nome_conexao):
     """
@@ -54,6 +59,7 @@ def comando_conexao(nome_conexao):
     :return: comando de conexão.
     """
     return ('2000M00000000000000000000000000000000000000000S'+nome_conexao)
+
 
 def comando_terminal(agencia,numero_serie,nome_conexao):
     """
@@ -66,6 +72,7 @@ def comando_terminal(agencia,numero_serie,nome_conexao):
     :return: comando do terminal.
     """
     return ('2000M9999710100004341'+agencia+'000000000000'+numero_serie+'004341'+agencia+nome_conexao)
+
 
 def transacao_2000a(transacao,sequencial,agencia,hexa,xml,token):
     """
@@ -82,6 +89,7 @@ def transacao_2000a(transacao,sequencial,agencia,hexa,xml,token):
     """
     return ('2000A'+sequencial+'004341'+agencia+'QT 710'+str(hexa)+'01QTIF1'+transacao+xml+token)
 
+
 def transacao_4000a(agencia,hexa,xml,token):
     """
     Função para criar transação do protocolo 4000A.
@@ -95,6 +103,7 @@ def transacao_4000a(agencia,hexa,xml,token):
     """
     return ('4000A0001004341'+agencia+'QT 710'+str(hexa)+'01QTIF1'+xml+token)
 
+
 async def envia_mensagem(writer, message, monitor):
     """
     Função para enviar uma mensagem em "cp500".
@@ -105,18 +114,15 @@ async def envia_mensagem(writer, message, monitor):
 
     """
     try:
-        if(message[0:5]=="2000M"):
-            imprime_mensagem(PSEND,f'Enviado comando M do Terminal:{message[37:42]}')
-        else:
-            imprime_mensagem(PSEND,f'Enviado:({message[5:9]}) {message}')
         tammsg = len(message)
         bytestammsg = tammsg.to_bytes(4,byteorder="big")
-        bytemsg = codecs.encode(message,'cp500')
+        bytemsg = encode(message,'cp500')
         mensagem = bytestammsg + bytemsg
         writer.write(mensagem)
         await writer.drain()
     except:
-        imprime_mensagem(PSEND,f'Erro ao enviar a mensagem para {monitor}')
+        print("Erro")
+
 
 async def recebe_comando_M(reader, monitor, IP, porta, timeout):
     """
@@ -131,18 +137,19 @@ async def recebe_comando_M(reader, monitor, IP, porta, timeout):
     :return: comando M recebido.
     """
     try:
-        imprime_mensagem(PRECIVE,f'Recebendo o comando M de {monitor} IP {IP} e porta {porta}')
-        bytestammsg = await asyncio.wait_for(reader.read(4), timeout = timeout)
+        # imprime_mensagem(PRECIVE,f'Recebendo o comando M de {monitor} IP {IP} e porta {porta}')
+        bytestammsg = await wait_for(reader.read(4), timeout = timeout)
         tamanho = int.from_bytes(bytestammsg, byteorder="big")
         bytestammsg = await reader.read(tamanho)
-        bytestammsg = await asyncio.wait_for(reader.read(4), timeout = timeout)
+        bytestammsg = await wait_for(reader.read(4), timeout = timeout)
         tamanho = int.from_bytes(bytestammsg, byteorder="big")
-        bytestammsg = await asyncio.wait_for(reader.read(tamanho), timeout = timeout)
-        msgretorno = codecs.decode(bytestammsg, 'cp500')
-        imprime_mensagem(PRECIVE,f'Comando M recebido: {msgretorno}')
+        bytestammsg = await wait_for(reader.read(tamanho), timeout = timeout)
+        msgretorno = decode(bytestammsg, 'cp500')
+        # imprime_mensagem(PRECIVE,f'Comando M recebido: {msgretorno}')
         return msgretorno
     except:
-        imprime_mensagem(PRECIVE,f'Timeout na resposta do M de {monitor} IP {IP} e porta {porta}')
+        print("ERRO")
+
 
 async def recebe_resposta(reader, monitor, IP, porta, timeout):
     """
@@ -157,14 +164,15 @@ async def recebe_resposta(reader, monitor, IP, porta, timeout):
     :return: Resposta recebida.
     """
     try:
-        bytestammsg = await asyncio.wait_for(reader.read(4), timeout = timeout)
+        bytestammsg = await wait_for(reader.read(4), timeout = timeout)
         tamanho = int.from_bytes(bytestammsg, byteorder="big")
-        bytestammsg = await asyncio.wait_for(reader.read(tamanho), timeout = timeout)
-        msgretorno = codecs.decode(bytestammsg, 'cp500')
-        imprime_mensagem(PRECIVE,f'Resposta de {monitor}: {msgretorno}')
+        bytestammsg = await wait_for(reader.read(tamanho), timeout = timeout)
+        msgretorno = decode(bytestammsg, 'cp500')
+        # imprime_mensagem(PRECIVE,f'Resposta de {monitor}: {msgretorno}')
         return msgretorno
     except:
-        imprime_mensagem(PRECIVE,f'Timeout na resposta de {monitor} IP {IP} e porta {porta}')
+        print("ERRO")
+
 
 def int_to_base36(num):
     # Converte um número inteiro para a base 36 como uma string.
@@ -192,29 +200,27 @@ async def transacionar(monitor, porta, timeout, latencia, quantidade, agencia, p
     :param entrada: Dados de entrada.
     """
     #Gera um numero de serie aleatorio e nome da conexao:
-    numero_serie = str(random.randint(50000, 99999))
+    numero_serie = str(randint(50000, 99999))
     nome_conexao = "SMT" + str(numero_serie)
 
     # Abrir conexão com o monitor
     # (NEW)
-    print(ENDIPS[monitor])
     reader_main, writer_main =await conecta(monitor, ENDIPS[monitor], porta, timeout)
-    time.sleep(0.3) #Tempo após abrir conexão
+    await sleep(0.3) #Tempo após abrir conexão
     # Faz comando M da fila (conexao)
     msg = comando_conexao(nome_conexao)
     await envia_mensagem(writer_main,msg,monitor)
     # (NEW)
     await recebe_resposta(reader_main, monitor, ENDIPS[monitor], porta,timeout)
-    time.sleep(0.3) #Tempo ente depois do comado M
+    await sleep(0.3) #Tempo ente depois do comado M
 
      # Faz comando M do terminal e obtem o token
     # (NEW)
-    print(AGEN[monitor])
     msg = comando_terminal(AGEN[monitor],numero_serie,nome_conexao)
     await envia_mensagem(writer_main,msg,monitor)
     # (NEW)
     resposta = await recebe_resposta(reader_main, monitor, ENDIPS[monitor], porta,timeout)
-    time.sleep(0.3) #Tempo ente mensagens
+    await sleep(0.3) #Tempo ente mensagens
     token = resposta[9:59]
 
 
@@ -234,13 +240,14 @@ async def transacionar(monitor, porta, timeout, latencia, quantidade, agencia, p
         # (NEW)
         await envia_mensagem(writer_main,msg,monitor)
         await recebe_resposta(reader_main, monitor, ENDIPS[monitor], porta,timeout)
-        time.sleep(latencia/1000) #Tempo ente mensagens
+        # await sleep(latencia/1000) #Tempo ente mensagens
     
     # (NEW)
     await encerra_conexao(monitor, ENDIPS[monitor], porta, writer_main)
     json_teste = {'message':'Todas as transações foram enviadas'}
     print(json_teste)
     return
+
 
 def add_service(service_name, xml_data):
     """
@@ -281,7 +288,7 @@ async def main():
     body = sys.argv[1]
 
     # Transforma a string JSON em um objeto Python
-    data = json.loads(body)
+    data = loads(body)
 
     # Define as keys obrigatórias
     keys = ["monitor", "porta", "timeout", "latencia", "quantidade", "agencia","protocolo", "transacao", "servico", "entrada"]
@@ -322,6 +329,7 @@ async def main():
     servico       = data["servico"]
     entrada       = data["entrada"]
 
+
     if busca_servico(servico) ==  NOSERVICE:
         print(NOSERVICE)
         return
@@ -334,5 +342,6 @@ async def main():
 
 # Inicia a execução da função principal
 if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
+    gc.collect()
+    loop = get_event_loop()
     loop.run_until_complete(main())

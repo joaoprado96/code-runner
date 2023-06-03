@@ -82,12 +82,13 @@
         button {
             background-color: #F94904;
             color: white;
-            padding: 10px 20px;
-            margin: 20px 0;
+            padding: 15px 0px;
+            margin: 5px 8px;
             border: none;
             align-items: right;
             border-radius: 5px;
             cursor: pointer;
+            width: 100px;
         }
         button:hover {
             background-color: #F94904;
@@ -152,6 +153,7 @@
         </div>
         <div class="button-container">
             <button type="button" id="sendButton">Enviar</button>
+            <button type="button" id="cancelButton">Cancelar</button>
         </div>
     </form>
 
@@ -236,6 +238,16 @@
             }).then(function(data) {
                 console.log(data);
             });
+        });
+
+        document.getElementById("cancelButton").addEventListener("click", function() {
+
+            fetch('/codes/smtester', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
         });
     </script>
 </body>

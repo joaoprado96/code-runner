@@ -122,15 +122,24 @@ app.get('/codes/:scriptName', (req, res) => {
 
 app.delete('/codes/:scriptName', (req, res) => {
     const scriptName = req.params.scriptName;
+    let scriptFound = false;
 
-    if (!runningScripts[scriptName]) {
-        res.status(404).send({message: `CodeRunner: ${scriptName} não está executando`});
+    // Loop através de todos os scripts em execução
+    for (let scriptId in runningScripts) {
+        // Verifique se o scriptId começa com scriptName
+        if (scriptId.startsWith(scriptName)) {
+            runningScripts[scriptId].childProcess.kill('SIGINT'); // interrompe o processo Python
+            delete runningScripts[scriptId];
+            scriptFound = true;
+        }
+    }
+
+    if (!scriptFound) {
+        res.status(404).send({message: `CodeRunner: Nenhuma execução do script ${scriptName} encontrada`});
         return;
     }
 
-    runningScripts[scriptName].childProcess.kill('SIGINT'); // interrompe o processo Python
-    delete runningScripts[scriptName];
-    res.send({message: `CodeRunner: ${scriptName} foi interrompido`});
+    res.send({message: `CodeRunner: Todas as execuções do script ${scriptName} foram interrompidas`});
 });
 
 
