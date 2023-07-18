@@ -1,3 +1,6 @@
+import json
+import datetime
+
 def verificar_mensagem(sysout, mensagens):
     """
     Verifica se as mensagens estão presentes na sysout.
@@ -99,3 +102,40 @@ def contar_prefixos_coluna(sysout, prefixos, coluna):
                 contador_prefixos[prefixo] += 1
 
     return contador_prefixos
+
+def criar_json_log(nome_executador, id_teste, observacao, versao_teste, resultado_teste, resultado_versao, programas, tabelas, procs):
+    """
+    Cria um JSON de log com informações sobre a execução de um teste.
+
+    Args:
+        nome_executador (str): O nome do executor do teste.
+        id_teste (int): O ID do teste executado.
+        observacao (str): Observação sobre o teste executado.
+        versao_teste (str): A versão em que o teste foi executado.
+        resultado_teste (str): O resultado do teste.
+        resultado_versao (str): O resultado da versão.
+        programas (list): Lista de programas utilizados pelo teste.
+        tabelas (list): Lista de tabelas utilizadas pelo teste.
+        procs (list): Lista de PROCs utilizados pelo teste.
+
+    Returns:
+        str: Uma string JSON contendo as informações de log.
+
+    """
+    log = {
+        "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "executor": nome_executador,
+        "id": id_teste,
+        "observacao": observacao,
+        "versao_grbe": versao_teste,
+        "resultado_teste": resultado_teste,
+        "resultado_versao": resultado_versao,
+        "programas": programas,
+        "tabelas": tabelas,
+        "procs": procs
+    }
+    
+    json_log = json.dumps(log, indent=4)
+    return json_log
+
+
