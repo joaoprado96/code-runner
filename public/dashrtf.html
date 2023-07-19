@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard de Execução por Versão</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dashboard de Execução por Versão</h1>
+
+    <div id="dashboard"></div>
+
+    <script>
+        // Função para fazer uma requisição assíncrona para obter os dados da base de dados
+        async function getLogs() {
+            const response = await fetch('/get_logs'); // Endpoint que retorna os registros da base de dados
+            const logs = await response.json();
+            return logs;
+        }
+
+        // Função para construir o dashboard com os dados obtidos da base de dados
+        async function buildDashboard() {
+            const logs = await getLogs();
+
+            // Agrupar os registros por versão
+            const versions = {};
+            logs.forEach(log => {
+                if (log.versao_grbe in versions) {
+                    versions[log.versao_grbe].push(log);
+                } else {
+                    versions[log.versao_grbe] = [log];
+                }
+            });
+
+            const dashboardElement = document.getElementById('dashboard');
+
+            // Construir a tabela do dashboard
+            const table = document.createElement('table');
+            const thead = document.createElement('thead');
+            const tbody = document.createElement('tbody');
+
+            // Cabeçalho da tabela
+            const headerRow = document.createElement('tr');
+            headerRow.innerHTML = `
+                <th>Versão</th>
+                <th>Quantidade de Testes</th>
+                <th>Testes Bem-sucedidos</th>
+                <th>Testes com Falha</th>
+            `;
+            thead.appendChild(headerRow);
+
+            // Linhas da tabela
+            for (const version in versions) {
+                const logsForVersion = versions[version];
+
+                const successfulTests = logsForVersion.filter(log => log.resultado_teste === 'Sucesso').length;
+                const failedTests = logsForVersion.filter(log => log.resultado_teste === 'Falha').length;
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${version}</td>
+                    <td>${logsForVersion.length}</td>
+                    <td>${successfulTests}</td>
+                    <td>${failedTests}</td>
+                `;
+                tbody.appendChild(row);
+            }
+
+            // Adicionar a tabela ao dashboard
+            table.appendChild(thead);
+            table.appendChild(tbody);
+            dashboardElement.appendChild(table);
+        }
+
+        // Chamada da função para construir o dashboard ao carregar a página
+        window.onload = buildDashboard;
+    </script>
+</body>
+</html>

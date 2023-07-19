@@ -4,6 +4,15 @@ const bodyParser = require('body-parser');
 const { PythonShell } = require('python-shell');
 const fs = require('fs');
 const path = require('path');
+const mysql = require('mysql2');
+
+// Configurações de conexão com o banco de dados
+const dbConfig = {
+    host: 'localhost',
+    user: 'root',
+    password: '12121212',
+    database: 'coderunner'
+};
 
 // Biblioteca JavaScript para fazer requisições HTTP
 const axios = require('axios');
@@ -107,6 +116,48 @@ app.post('/codes/:scriptName', (req, res) => {
     } else {
         res.send({message: `CodeRunner: Os (${numScripts}) scripts ${scriptName}.py foram iniciados`});
     }
+});
+
+app.get('/get_logs', (req, res) => {
+    // Criação da conexão com o banco de dados
+    const connection = mysql.createConnection(dbConfig);
+
+    // Consulta para obter os registros da base de dados
+    const query = 'SELECT * FROM logs';
+
+    // Execução da consulta
+    connection.query(query, (error, results) => {
+        if (error) {
+            console.error('Erro ao obter os registros da base de dados:', error);
+            res.status(500).json({ message: 'Erro ao obter os registros da base de dados' });
+        } else {
+            res.json(results);
+        }
+
+        // Fechamento da conexão com o banco de dados
+        connection.end();
+    });
+});
+
+app.get('/get_registros', (req, res) => {
+    // Criação da conexão com o banco de dados
+    const connection = mysql.createConnection(dbConfig);
+
+    // Consulta para obter os registros da tabela
+    const query = 'SELECT * FROM logs';
+
+    // Execução da consulta
+    connection.query(query, (error, results) => {
+        if (error) {
+            console.error('Erro ao obter os registros da tabela:', error);
+            res.status(500).json({ message: 'Erro ao obter os registros da tabela' });
+        } else {
+            res.json(results);
+        }
+
+        // Fechamento da conexão com o banco de dados
+        connection.end();
+    });
 });
 
 app.get('/codes/:scriptName', (req, res) => {

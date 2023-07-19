@@ -1,13 +1,12 @@
 import mysql.connector
-import datatime
-
+import datetime
 
 # Configuração da conexão com o banco de dados
 db_config = {
-    'user': 'seu_usuario',
-    'password': 'sua_senha',
+    'user': 'root',
+    'password': '12121212',
     'host': 'localhost',
-    'database': 'nome_do_banco_de_dados'
+    'database': 'coderunner'
 }
 
 # Função para criar a tabela no banco de dados
@@ -38,7 +37,11 @@ def criar_tabela():
     conn.close()
 
 # Função para inserir um registro na tabela
-def inserir_registro(log):
+def inserir_registro(timestamp=None, executor=None, id_teste=None, observacao=None, versao_grbe=None,
+                     resultado_teste=None, resultado_versao=None, programas=None, tabelas=None, procs=None):
+    if id_teste is None:
+        raise ValueError("O parâmetro 'id_teste' é obrigatório.")
+
     conn = mysql.connector.connect(**db_config)
     cursor = conn.cursor()
 
@@ -52,22 +55,21 @@ def inserir_registro(log):
             %(resultado_teste)s, %(resultado_versao)s, %(programas)s, %(tabelas)s, %(procs)s
         )
     '''
+
+    log = {
+        'timestamp': timestamp,
+        'executor': executor,
+        'id_teste': id_teste,
+        'observacao': observacao,
+        'versao_grbe': versao_grbe,
+        'resultado_teste': resultado_teste,
+        'resultado_versao': resultado_versao,
+        'programas': programas,
+        'tabelas': tabelas,
+        'procs': procs
+    }
+
     cursor.execute(insert_query, log)
-    conn.commit()
-
-    cursor.close()
-    conn.close()
-
-# Função para limpar todos os registros da tabela
-def limpar_registros():
-    conn = mysql.connector.connect(**db_config)
-    cursor = conn.cursor()
-
-    # Limpeza de registros
-    delete_query = '''
-        DELETE FROM logs
-    '''
-    cursor.execute(delete_query)
     conn.commit()
 
     cursor.close()
@@ -75,26 +77,24 @@ def limpar_registros():
 
 # Exemplo de utilização
 
-# Dados do log
-log = {
-    "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-    "executor": nome_executador,
-    "id_teste": id_teste,
-    "observacao": observacao,
-    "versao_grbe": versao_teste,
-    "resultado_teste": resultado_teste,
-    "resultado_versao": resultado_versao,
-    "programas": programas,
-    "tabelas": tabelas,
-    "procs": procs
-}
-
 # Criação da tabela (executar apenas uma vez)
 criar_tabela()
 
-# Inserção de um registro
-inserir_registro(log)
+# Inserção de um registro com alguns parâmetros sendo passados
+inserir_registro(id_teste=2, observacao='Teste de exemplo', resultado_teste='Sucesso')
+inserir_registro(id_teste=3, observacao='Teste de exemplo', resultado_teste='Sucesso')
+inserir_registro(id_teste=4, observacao='Teste de exemplo', resultado_teste='Sucesso')
+inserir_registro(id_teste=4, observacao='Teste de exemplo', resultado_teste='Falha')
 
-# Limpeza de todos os registros
-limpar_registros()
+# Inserção de um registro com todos os parâmetros sendo passados
+inserir_registro(timestamp=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                 executor='Nome do Executor', id_teste=2, observacao='Outro teste', versao_grbe='1.0',
+                 resultado_teste='Falha', resultado_versao='2.0', programas='Programa A, Programa B',
+                 tabelas='Tabela X, Tabela Y', procs='Proc 1, Proc 2')
+
+# Inserção de um registro sem o parâmetro obrigatório id_teste (irá gerar um erro)
+try:
+    inserir_registro(observacao='Teste sem id_teste')
+except ValueError as e:
+    print(e)
 
