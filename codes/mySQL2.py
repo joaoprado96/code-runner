@@ -18,13 +18,13 @@ def criar_tabela():
     create_table_query = '''
         CREATE TABLE IF NOT EXISTS logs (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            timestamp DATETIME,
-            executor VARCHAR(255),
+            timestamp TEXT,
+            executor TEXT,
             id_teste INT,
             observacao TEXT,
-            versao_grbe VARCHAR(255),
-            resultado_teste VARCHAR(255),
-            resultado_versao VARCHAR(255),
+            versao_grbe TEXT,
+            resultado_teste TEXT,
+            resultado_versao TEXT,
             programas TEXT,
             tabelas TEXT,
             procs TEXT
@@ -118,11 +118,17 @@ base_dados=[
     {"executor":"SEURACF","id_teste":"005","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","proc":"Padrão"},
     {"executor":"SEURACF","id_teste":"006","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","proc":"Padrão"},
     {"executor":"SEURACF","id_teste":"007","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","proc":"Padrão"},
-    {"executor":"SEURACF","id_teste":"008","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","proc":"Padrão"}
+    {"executor":"SEURACF","id_teste":"008","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","proc":"Padrão"},
+    {"executor":"SEURACF","id_teste":"009","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","proc":"Padrão"},
+    {"executor":"SEURACF","id_teste":"010","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","proc":"Padrão"},
+    {"executor":"SEURACF","id_teste":"011","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","proc":"Padrão"},
+    {"executor":"SEURACF","id_teste":"012","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","proc":"Padrão"},
+    {"executor":"SEURACF","id_teste":"013","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","proc":"Padrão"},
+    {"executor":"SEURACF","id_teste":"014","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","proc":"Padrão"}
 ]
 
 for i, dado in enumerate(base_dados):
-    inserir_registro(timestamp=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    inserir_registro(timestamp=datetime.datetime.now().strftime("%d/%m  %H:%M:%S"),
                     executor=dado["executor"], id_teste=dado["id_teste"], observacao=dado["observacao"], versao_grbe=dado["versao_grbe"],
                     resultado_teste=dado["resultado_teste"], resultado_versao=dado["resultado_versao"], programas=dado["programas"],
                     tabelas=dado["tabelas"], procs=dado["proc"])

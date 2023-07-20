@@ -82,6 +82,7 @@ app.post('/codes/:scriptName', (req, res) => {
                 scriptOutput = jsonMessage;
             } catch (err) {
                 // Se a mensagem não puder ser parseada como JSON, não faz nada
+                scriptOutput = '{"resposta":"Script não devolveu um JSON"}'
             }
         });
         
@@ -93,7 +94,7 @@ app.post('/codes/:scriptName', (req, res) => {
                     reject(err);
                 } else {
                     console.log(`[${scriptId}] Code Runner: O script ${scriptName}.py finalizou com Exit Code: ${code} Exit Signal: ${signal}`);
-                    resolve({ code: code, signal: signal });
+                    resolve({scriptOutput});
                 }
                 delete runningScripts[scriptId];
             });
@@ -118,6 +119,53 @@ app.post('/codes/:scriptName', (req, res) => {
     }
 });
 
+// Funcao nova para incluir na versao
+app.post('/front/:scriptName', (req, res) => {
+    // Os dados do formulário estão no req.body
+    const scriptName = req.params.scriptName;
+    const diretorio = path.join(__dirname, 'front', `${scriptName}.py`);
+    if (!fs.existsSync(diretorio)) {
+        res.status(404).send({message: `CodeRunner: Front não encontrado em ${scriptName}`});
+        return;
+    }
+
+    const options = {
+        mode: 'text',
+        pythonOptions: ['-u'], // get print results in real-time
+        args: [JSON.stringify(req.body)]
+    };
+
+    let pyShell = new PythonShell(path.join('front', `${scriptName}.py`), options);
+    let scriptOutput = null; // Variável para armazenar a saída do script
+
+    pyShell.on('message', (message) => {
+        // 'message' é a saída do script Python
+        console.log(`[${scriptName}] ${message}`);
+
+        // Tenta parsear a mensagem como JSON
+        try {
+            let jsonMessage = JSON.parse(message);
+            // Se a mensagem puder ser parseada como JSON, salva na variável scriptOutput
+            scriptOutput = jsonMessage;
+        } catch (err) {
+            // Se a mensagem não puder ser parseada como JSON, não faz nada
+            scriptOutput = { resposta: 'Script não devolveu um JSON' };
+        }
+    });
+
+    pyShell.end((err, code, signal) => {
+        if (err) {
+            console.log(`[${scriptName}] CodeRunner: Erro na execução do script ${scriptName}.py. Nome do erro: ${err.name}`);
+            console.log(`[${scriptName}] CodeRunner: Logs de erro (stack trace):\n${err.stack}`);
+            res.status(500).send({ message: `CodeRunner: Erro ao executar o script ${scriptName}.py`, error: err });
+            return;
+        }
+
+        console.log(`[${scriptName}] Code Runner: O script ${scriptName}.py finalizou com Exit Code: ${code} Exit Signal: ${signal}`);
+        res.send(scriptOutput);
+    });
+});
+
 app.get('/get_logs', (req, res) => {
     // Criação da conexão com o banco de dados
     const connection = mysql.createConnection(dbConfig);
@@ -130,27 +178,6 @@ app.get('/get_logs', (req, res) => {
         if (error) {
             console.error('Erro ao obter os registros da base de dados:', error);
             res.status(500).json({ message: 'Erro ao obter os registros da base de dados' });
-        } else {
-            res.json(results);
-        }
-
-        // Fechamento da conexão com o banco de dados
-        connection.end();
-    });
-});
-
-app.get('/get_registros', (req, res) => {
-    // Criação da conexão com o banco de dados
-    const connection = mysql.createConnection(dbConfig);
-
-    // Consulta para obter os registros da tabela
-    const query = 'SELECT * FROM logs';
-
-    // Execução da consulta
-    connection.query(query, (error, results) => {
-        if (error) {
-            console.error('Erro ao obter os registros da tabela:', error);
-            res.status(500).json({ message: 'Erro ao obter os registros da tabela' });
         } else {
             res.json(results);
         }
@@ -193,8 +220,6 @@ app.delete('/codes/:scriptName', (req, res) => {
     res.send({message: `CodeRunner: Todas as execuções do script ${scriptName} foram interrompidas`});
 });
 
-
-//(NEW) Precisamos de um middleware que entenda dados codificados como url (padrão para formulários HTML)
 app.use('/page', express.static('public'));
   
 app.listen(port, () => {

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Regressive Test Runner</title>
+    <style>
+        /* Reset de estilos */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Estilos gerais */
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            line-height: 1.5;
+            background-color: #e64100;
+        }
+
+        h1 {
+            background-color: #e64100;
+            color: #ffffff;
+            text-align: center;
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        /* Estilos da tabela */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            padding: 4px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            word-break: break-word;
+        }
+
+        /* Largura dos campos de filtro */
+        .filtro-input1 {
+            width: 45px;
+            padding: 6px;
+            border: 1px solid #dddddd;
+            border-radius: 4px;
+        }
+        .filtro-input2 {
+            width: 90px;
+            padding: 6px;
+            border: 1px solid #dddddd;
+            border-radius: 4px;
+        }
+        .filtro-input3 {
+            width: 140px;
+            padding: 6px;
+            border: 1px solid #dddddd;
+            border-radius: 4px;
+        }
+
+
+
+        /* Estilos do botão */
+        .btn {
+            background-color: #e64100;
+            color: white;
+            padding: 4px 2px;
+            width: 80px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #882a04;
+        }
+    </style>
+</head>
+<body>
+    <h1>REGRESSIVE TEST RUNNER</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Ação 1</th>
+                <th>Ação 2</th>
+                <th>ID</th>
+                <th>Timestamp</th>
+                <th>Executor</th>
+                <th>ID Teste</th>
+                <th>Observação</th>
+                <th>Versão GRBE</th>
+                <th>Resultado Teste</th>
+                <th>Resultado Versão</th>
+                <th>Programas</th>
+                <th>Tabelas</th>
+                <th>Procs</th>
+            </tr>
+            <tr>
+                <th>  </th>
+                <th>  </th>
+                <th><input type="text" id="filtro-id" class="filtro-input1" oninput="filtrarRegistros('id')" placeholder="ID"></th>
+                <th><input type="text" id="filtro-timestamp" class="filtro-input3" oninput="filtrarRegistros('timestamp')" placeholder="Hora de Inicio"></th>
+                <th><input type="text" id="filtro-executor" class="filtro-input2" oninput="filtrarRegistros('executor')" placeholder="Filtrar Executor"></th>
+                <th><input type="text" id="filtro-id_teste" class="filtro-input1" oninput="filtrarRegistros('id_teste')" placeholder="Filtrar ID Teste"></th>
+                <th><input type="text" id="filtro-observacao" class="filtro-input3" oninput="filtrarRegistros('observacao')" placeholder="Filtrar Observação"></th>
+                <th><input type="text" id="filtro-versao_grbe" class="filtro-input1" oninput="filtrarRegistros('versao_grbe')" placeholder="Filtrar Versão GRBE"></th>
+                <th><input type="text" id="filtro-resultado_teste" class="filtro-input2" oninput="filtrarRegistros('resultado_teste')" placeholder="Filtrar Resultado Teste"></th>
+                <th><input type="text" id="filtro-resultado_versao" class="filtro-input2" oninput="filtrarRegistros('resultado_versao')" placeholder="Filtrar Resultado Versão"></th>
+                <th><input type="text" id="filtro-programas" class="filtro-input2" oninput="filtrarRegistros('programas')" placeholder="Filtrar Programas"></th>
+                <th><input type="text" id="filtro-tabelas" class="filtro-input2" oninput="filtrarRegistros('tabelas')" placeholder="Filtrar Tabelas"></th>
+                <th><input type="text" id="filtro-procs" class="filtro-input2" oninput="filtrarRegistros('procs')" placeholder="Filtrar Procs"></th>
+            </tr>
+        </thead>
+        <tbody id="registros">
+        </tbody>
+    </table>
+
+    <script>
+        let registrosOriginais = []; // Armazena os registros originais sem filtro
+
+        // Função para fazer uma requisição assíncrona para obter os registros da tabela
+        async function getRegistros() {
+            const response = await fetch('/get_logs'); // Endpoint que retorna os registros da tabela
+            const registros = await response.json();
+            return registros;
+        }
+
+        async function runPython1() {
+            const response2 = await fetch('/front/respjson', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            const registros2 = await response2.json();
+            console.log(registros2);
+            return registros2;
+        }
+
+        // Função para enviar a solicitação POST ao clicar no botão
+        function enviarSolicitacao(idTeste) {
+            fetch(`/codes/regressivo/${idTeste}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id_teste: idTeste })
+            })
+            .then(response => {
+                if (response.ok) {
+                    // A solicitação foi bem-sucedida
+                    alert('Solicitação enviada com sucesso!');
+                } else {
+                    // A solicitação falhou
+                    alert('Falha ao enviar a solicitação. Por favor, tente novamente.');
+                }
+            })
+            .catch(error => {
+                console.error('Ocorreu um erro:', error);
+                alert('Ocorreu um erro ao processar a solicitação. Por favor, tente novamente.');
+            });
+        }
+        // Função para construir a tabela com os registros obtidos
+        async function buildTable() {
+            const registros = await getRegistros();
+            registrosOriginais = registros; // Armazena os registros originais
+
+            await runPython1();
+
+            const registrosElement = document.getElementById('registros');
+
+            // Limpar a tabela antes de construir
+            registrosElement.innerHTML = '';
+
+            // Construir as linhas da tabela
+            registros.forEach(registro => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><button class="btn" onclick="enviarSolicitacao(${registro.id_teste})">Submeter</button></td>
+                    <td><button class="btn" onclick="alert('Botão clicado!')">Aprovar</button></td>
+                    <td>${registro.id}</td>
+                    <td>${registro.timestamp}</td>
+                    <td>${registro.executor}</td>
+                    <td>${registro.id_teste}</td>
+                    <td>${registro.observacao}</td>
+                    <td>${registro.versao_grbe}</td>
+                    <td>${registro.resultado_teste}</td>
+                    <td>${registro.resultado_versao}</td>
+                    <td>${registro.programas}</td>
+                    <td>${registro.tabelas}</td>
+                    <td>${registro.procs}</td>
+                `;
+                registrosElement.appendChild(row);
+            });
+        }
+
+        // Função para filtrar os registros por coluna
+        function filtrarRegistros(coluna) {
+            const filtro = document.getElementById(`filtro-${coluna}`).value.toLowerCase();
+            const registrosFiltrados = registrosOriginais.filter(registro => {
+                const valorColuna = registro[coluna];
+
+                // Verificar se a coluna é numérica
+                if (!isNaN(parseFloat(valorColuna))) {
+                    const filtroNum = parseFloat(filtro);
+                    const valorColunaNum = parseFloat(valorColuna);
+                    return valorColunaNum === filtroNum;
+                }
+
+                // Verificar se o valor é uma string antes de aplicar toLowerCase
+                if (typeof valorColuna === 'string') {
+                    return valorColuna.toLowerCase().includes(filtro);
+                }
+
+                // Coluna não é numérica nem string, tratar como valor vazio
+                return false;
+            });
+
+            const registrosElement = document.getElementById('registros');
+            registrosElement.innerHTML = '';
+
+            registrosFiltrados.forEach(registro => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><button class="btn" onclick="alert('Botão clicado!')">Submter</button></td>
+                    <td><button class="btn" onclick="alert('Botão clicado!')">Aprovar</button></td>
+                    <td>${registro.id}</td>
+                    <td>${registro.timestamp}</td>
+                    <td>${registro.executor}</td>
+                    <td>${registro.id_teste}</td>
+                    <td>${registro.observacao}</td>
+                    <td>${registro.versao_grbe}</td>
+                    <td>${registro.resultado_teste}</td>
+                    <td>${registro.resultado_versao}</td>
+                    <td>${registro.programas}</td>
+                    <td>${registro.tabelas}</td>
+                    <td>${registro.procs}</td>
+                `;
+                registrosElement.appendChild(row);
+            });
+        }
+
+        // Chamada da função para construir a tabela ao carregar a página
+        window.onload = buildTable;
+    </script>
+</body>
+</html>
