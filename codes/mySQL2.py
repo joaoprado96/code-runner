@@ -69,10 +69,7 @@ def limpar_base_dados():
 
 # Função para inserir um registro na tabela
 def inserir_registro(timestamp=None, executor=None, id_teste=None, observacao=None, versao_grbe=None,
-                     resultado_teste=None, resultado_versao=None, programas=None, tabelas=None, procs=None):
-    if id_teste is None:
-        raise ValueError("O parâmetro 'id_teste' é obrigatório.")
-
+                     resultado_teste=None, resultado_versao=None, programas=None, tabelas=None, procs=None,json=None):
     conn = mysql.connector.connect(**db_config)
     cursor = conn.cursor()
 
@@ -86,19 +83,21 @@ def inserir_registro(timestamp=None, executor=None, id_teste=None, observacao=No
             %(resultado_teste)s, %(resultado_versao)s, %(programas)s, %(tabelas)s, %(procs)s
         )
     '''
-
-    log = {
-        'timestamp': timestamp,
-        'executor': executor,
-        'id_teste': id_teste,
-        'observacao': observacao,
-        'versao_grbe': versao_grbe,
-        'resultado_teste': resultado_teste,
-        'resultado_versao': resultado_versao,
-        'programas': programas,
-        'tabelas': tabelas,
-        'procs': procs
-    }
+    if id_teste is not None:
+        log = {
+            'timestamp': timestamp,
+            'executor': executor,
+            'id_teste': id_teste,
+            'observacao': observacao,
+            'versao_grbe': versao_grbe,
+            'resultado_teste': resultado_teste,
+            'resultado_versao': resultado_versao,
+            'programas': programas,
+            'tabelas': tabelas,
+            'procs': procs
+        }
+    else:
+        log=json
 
     cursor.execute(insert_query, log)
     conn.commit()
@@ -111,26 +110,29 @@ def inserir_registro(timestamp=None, executor=None, id_teste=None, observacao=No
 # criar_tabela()
 
 base_dados=[
-    {"executor":"SEURACF","id_teste":"001","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","proc":"Padrão"},
-    {"executor":"SEURACF","id_teste":"002","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","proc":"Padrão"},
-    {"executor":"SEURACF","id_teste":"003","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","proc":"Padrão"},
-    {"executor":"SEURACF","id_teste":"004","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","proc":"Padrão"},
-    {"executor":"SEURACF","id_teste":"005","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","proc":"Padrão"},
-    {"executor":"SEURACF","id_teste":"006","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","proc":"Padrão"},
-    {"executor":"SEURACF","id_teste":"007","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","proc":"Padrão"},
-    {"executor":"SEURACF","id_teste":"008","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","proc":"Padrão"},
-    {"executor":"SEURACF","id_teste":"009","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","proc":"Padrão"},
-    {"executor":"SEURACF","id_teste":"010","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","proc":"Padrão"},
-    {"executor":"SEURACF","id_teste":"011","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","proc":"Padrão"},
-    {"executor":"SEURACF","id_teste":"012","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","proc":"Padrão"},
-    {"executor":"SEURACF","id_teste":"013","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","proc":"Padrão"},
-    {"executor":"SEURACF","id_teste":"014","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","proc":"Padrão"}
+    {"executor":"SEURACF","id_teste":"001","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
+    {"executor":"SEURACF","id_teste":"002","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
+    {"executor":"SEURACF","id_teste":"003","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
+    {"executor":"SEURACF","id_teste":"004","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
+    {"executor":"SEURACF","id_teste":"005","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
+    {"executor":"SEURACF","id_teste":"006","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
+    {"executor":"SEURACF","id_teste":"007","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
+    {"executor":"SEURACF","id_teste":"008","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
+    {"executor":"SEURACF","id_teste":"009","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
+    {"executor":"SEURACF","id_teste":"010","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
+    {"executor":"SEURACF","id_teste":"011","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
+    {"executor":"SEURACF","id_teste":"012","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
+    {"executor":"SEURACF","id_teste":"013","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
+    {"executor":"SEURACF","id_teste":"014","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"}
 ]
 
 for i, dado in enumerate(base_dados):
-    inserir_registro(timestamp=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                    executor=dado["executor"], id_teste=dado["id_teste"], observacao=dado["observacao"], versao_grbe=dado["versao_grbe"],
-                    resultado_teste=dado["resultado_teste"], resultado_versao=dado["resultado_versao"], programas=dado["programas"],
-                    tabelas=dado["tabelas"], procs=dado["proc"])
+    novo = {"timestamp":datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+    dado = {**novo, **dado}
+    inserir_registro(json=dado)
+    # inserir_registro(timestamp=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    #                 executor=dado["executor"], id_teste=dado["id_teste"], observacao=dado["observacao"], versao_grbe=dado["versao_grbe"],
+    #                 resultado_teste=dado["resultado_teste"], resultado_versao=dado["resultado_versao"], programas=dado["programas"],
+    #                 tabelas=dado["tabelas"], procs=dado["procs"])
 
 

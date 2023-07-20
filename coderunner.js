@@ -172,6 +172,7 @@ app.get('/get_logs', (req, res) => {
 
     // Consulta para obter os registros da base de dados
     const query = 'SELECT * FROM logs';
+    // const query = 'SELECT * FROM logs WHERE (id_teste, timestamp) IN (SELECT id_teste, MAX(timestamp) FROM logs GROUP BY id_teste)';
 
     // Execução da consulta
     connection.query(query, (error, results) => {

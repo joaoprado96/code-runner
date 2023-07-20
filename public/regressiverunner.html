@@ -63,8 +63,6 @@
             border-radius: 4px;
         }
 
-
-
         /* Estilos do botão */
         .btn {
             background-color: #e64100;
@@ -103,17 +101,25 @@
             <tr>
                 <th>  </th>
                 <th>  </th>
-                <th><input type="text" id="filtro-id" class="filtro-input1" oninput="filtrarRegistros('id')" placeholder="ID"></th>
-                <th><input type="text" id="filtro-timestamp" class="filtro-input3" oninput="filtrarRegistros('timestamp')" placeholder="Hora de Inicio"></th>
-                <th><input type="text" id="filtro-executor" class="filtro-input2" oninput="filtrarRegistros('executor')" placeholder="Filtrar Executor"></th>
-                <th><input type="text" id="filtro-id_teste" class="filtro-input1" oninput="filtrarRegistros('id_teste')" placeholder="Filtrar ID Teste"></th>
-                <th><input type="text" id="filtro-observacao" class="filtro-input3" oninput="filtrarRegistros('observacao')" placeholder="Filtrar Observação"></th>
-                <th><input type="text" id="filtro-versao_grbe" class="filtro-input1" oninput="filtrarRegistros('versao_grbe')" placeholder="Filtrar Versão GRBE"></th>
-                <th><input type="text" id="filtro-resultado_teste" class="filtro-input2" oninput="filtrarRegistros('resultado_teste')" placeholder="Filtrar Resultado Teste"></th>
-                <th><input type="text" id="filtro-resultado_versao" class="filtro-input2" oninput="filtrarRegistros('resultado_versao')" placeholder="Filtrar Resultado Versão"></th>
-                <th><input type="text" id="filtro-programas" class="filtro-input2" oninput="filtrarRegistros('programas')" placeholder="Filtrar Programas"></th>
-                <th><input type="text" id="filtro-tabelas" class="filtro-input2" oninput="filtrarRegistros('tabelas')" placeholder="Filtrar Tabelas"></th>
-                <th><input type="text" id="filtro-procs" class="filtro-input2" oninput="filtrarRegistros('procs')" placeholder="Filtrar Procs"></th>
+                <th><input type="text" id="filtro-id" class="filtro-input1" oninput="filtrarRegistros()" placeholder="ID"></th>
+                <th><input type="text" id="filtro-timestamp" class="filtro-input3" oninput="filtrarRegistros()" placeholder="Hora de Inicio"></th>
+                <th><input type="text" id="filtro-executor" class="filtro-input2" oninput="filtrarRegistros()" placeholder="Filtrar Executor"></th>
+                <th><input type="text" id="filtro-id_teste" class="filtro-input1" oninput="filtrarRegistros()" placeholder="Filtrar ID Teste"></th>
+                <th><input type="text" id="filtro-observacao" class="filtro-input3" oninput="filtrarRegistros()" placeholder="Filtrar Observação"></th>
+                <th><input type="text" id="filtro-versao_grbe" class="filtro-input1" oninput="filtrarRegistros()" placeholder="Filtrar Versão GRBE"></th>
+                <th><input type="text" id="filtro-resultado_teste" class="filtro-input2" oninput="filtrarRegistros()" placeholder="Filtrar Resultado Teste"></th>
+                <th><input type="text" id="filtro-resultado_versao" class="filtro-input2" oninput="filtrarRegistros()" placeholder="Filtrar Resultado Versão"></th>
+                <th><input type="text" id="filtro-programas" class="filtro-input2" oninput="filtrarRegistros()" placeholder="Filtrar Programas"></th>
+                <th><input type="text" id="filtro-tabelas" class="filtro-input2" oninput="filtrarRegistros()" placeholder="Filtrar Tabelas"></th>
+                <th><input type="text" id="filtro-procs" class="filtro-input2" oninput="filtrarRegistros()" placeholder="Filtrar Procs"></th>
+            </tr>
+            <tr>
+                <th colspan="13" style="text-align: left;">
+                    <label for="checkbox-ultimas-execucoes">
+                        <input type="checkbox" id="checkbox-ultimas-execucoes" onclick="filtrarRegistros()">
+                        Exibir somente as últimas execuções
+                    </label>
+                </th>
             </tr>
         </thead>
         <tbody id="registros">
@@ -165,6 +171,7 @@
                 alert('Ocorreu um erro ao processar a solicitação. Por favor, tente novamente.');
             });
         }
+
         // Função para construir a tabela com os registros obtidos
         async function buildTable() {
             const registros = await getRegistros();
@@ -200,25 +207,41 @@
         }
 
         // Função para filtrar os registros por coluna
-        function filtrarRegistros(coluna) {
-            const filtro = document.getElementById(`filtro-${coluna}`).value.toLowerCase();
-            const registrosFiltrados = registrosOriginais.filter(registro => {
-                const valorColuna = registro[coluna];
+        function filtrarRegistros() {
+            const checkboxUltimasExecucoes = document.getElementById('checkbox-ultimas-execucoes');
+            const exibirSomenteUltimasExecucoes = checkboxUltimasExecucoes.checked;
 
-                // Verificar se a coluna é numérica
-                if (!isNaN(parseFloat(valorColuna))) {
-                    const filtroNum = parseFloat(filtro);
-                    const valorColunaNum = parseFloat(valorColuna);
-                    return valorColunaNum === filtroNum;
+            let registrosFiltrados = registrosOriginais;
+
+            if (exibirSomenteUltimasExecucoes) {
+                const idTestesUnicos = [...new Set(registrosOriginais.map(registro => registro.id_teste))];
+                registrosFiltrados = idTestesUnicos.map(idTeste => {
+                    const registrosDoId = registrosOriginais.filter(registro => registro.id_teste === idTeste);
+                    const ultimaExecucao = registrosDoId.reduce((max, registro) => {
+                        return new Date(registro.timestamp) > new Date(max.timestamp) ? registro : max;
+                    });
+                    return ultimaExecucao;
+                });
+            }
+
+            const filtroColunas = ['id', 'timestamp', 'executor', 'id_teste', 'observacao', 'versao_grbe', 'resultado_teste', 'resultado_versao', 'programas', 'tabelas', 'procs'];
+
+            filtroColunas.forEach(coluna => {
+                const filtroValor = document.getElementById(`filtro-${coluna}`).value.toLowerCase();
+                if (filtroValor) {
+                    registrosFiltrados = registrosFiltrados.filter(registro => {
+                        const valorColuna = registro[coluna];
+                        if (!isNaN(parseFloat(valorColuna))) {
+                            const filtroNum = parseFloat(filtroValor);
+                            const valorColunaNum = parseFloat(valorColuna);
+                            return valorColunaNum === filtroNum;
+                        }
+                        if (typeof valorColuna === 'string') {
+                            return valorColuna.toLowerCase().includes(filtroValor);
+                        }
+                        return false;
+                    });
                 }
-
-                // Verificar se o valor é uma string antes de aplicar toLowerCase
-                if (typeof valorColuna === 'string') {
-                    return valorColuna.toLowerCase().includes(filtro);
-                }
-
-                // Coluna não é numérica nem string, tratar como valor vazio
-                return false;
             });
 
             const registrosElement = document.getElementById('registros');
@@ -227,7 +250,7 @@
             registrosFiltrados.forEach(registro => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td><button class="btn" onclick="alert('Botão clicado!')">Submter</button></td>
+                    <td><button class="btn" onclick="enviarSolicitacao(${registro.id_teste})">Submeter</button></td>
                     <td><button class="btn" onclick="alert('Botão clicado!')">Aprovar</button></td>
                     <td>${registro.id}</td>
                     <td>${registro.timestamp}</td>
@@ -244,6 +267,7 @@
                 registrosElement.appendChild(row);
             });
         }
+
 
         // Chamada da função para construir a tabela ao carregar a página
         window.onload = buildTable;
