@@ -18,7 +18,7 @@ def criar_tabela():
     create_table_query = '''
         CREATE TABLE IF NOT EXISTS logs (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            timestamp TEXT,
+            timestamp DATETIME,
             executor TEXT,
             id_teste INT,
             observacao TEXT,
@@ -128,7 +128,7 @@ base_dados=[
 ]
 
 for i, dado in enumerate(base_dados):
-    inserir_registro(timestamp=datetime.datetime.now().strftime("%d/%m  %H:%M:%S"),
+    inserir_registro(timestamp=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                     executor=dado["executor"], id_teste=dado["id_teste"], observacao=dado["observacao"], versao_grbe=dado["versao_grbe"],
                     resultado_teste=dado["resultado_teste"], resultado_versao=dado["resultado_versao"], programas=dado["programas"],
                     tabelas=dado["tabelas"], procs=dado["proc"])
