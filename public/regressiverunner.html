@@ -9,32 +9,50 @@
             margin: 0;
             padding: 0;
         }
-
+    
         /* Estilos gerais */
         body {
             font-family: 'Roboto', Arial, sans-serif;
             line-height: 1.5;
-            background-color: #e64100;
+            background-color: #FFFFFF;
+            color: #333;
         }
-
+    
+        /* Estilos da barra superior */
+        #top-bar {
+            background-color: #ff5e00;
+            padding: 10px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+    
+        #top-bar input,
+        #top-bar select {
+            padding: 5px;
+            font-size: 16px;
+            border: 1px solid #dddddd;
+            border-radius: 4px;
+        }
+    
         h1 {
-            background-color: #e64100;
-            color: #ffffff;
+            background-color: #ff5e00;
+            color: #FFFFFF;
             text-align: center;
             font-size: 48px;
             font-weight: bold;
             margin-bottom: 5px;
         }
-
+    
         /* Estilos da tabela */
         table {
             width: 100%;
             border-collapse: collapse;
-            background-color: #ffffff;
+            background-color: #FFFFFF;
             border-radius: 4px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-
+    
         th,
         td {
             padding: 4px;
@@ -42,45 +60,116 @@
             border-bottom: 1px solid #ddd;
             word-break: break-word;
         }
-
+    
         /* Largura dos campos de filtro */
-        .filtro-input1 {
-            width: 45px;
-            padding: 6px;
-            border: 1px solid #dddddd;
-            border-radius: 4px;
-        }
-        .filtro-input2 {
+        .filtro-input1,
+        .filtro-input2,
+        .filtro-input3 {
             width: 90px;
             padding: 6px;
             border: 1px solid #dddddd;
             border-radius: 4px;
         }
-        .filtro-input3 {
-            width: 140px;
-            padding: 6px;
-            border: 1px solid #dddddd;
-            border-radius: 4px;
-        }
-
+    
         /* Estilos do botão */
         .btn {
-            background-color: #e64100;
+            background-color: #ff5e00;
             color: white;
             padding: 4px 2px;
             width: 80px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
-
+    
         .btn:hover {
-            background-color: #882a04;
+            background-color: #e67400;
+        }
+    
+        /* Estilos para o container de bolas */
+        #bolas-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: right; /* Espaçamento uniforme entre as bolas */
+            margin: 5px 0;
+        }
+    
+        .bola-container {
+            display: flex;
+            padding: 15px;
+            flex-direction: column;
+            align-items: center;
+        }
+    
+        .bola {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-block;
+            background-color: #FFA500;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+    
+        /* Estilos para parágrafos */
+        p {
+            color: #333;
+            font-weight: bold;
+            font-family: 'Roboto', sans-serif;
         }
     </style>
 </head>
 <body>
-    <h1>REGRESSIVE TEST RUNNER</h1>
+    <div id="top-bar">
+        <h1>REGRESSIVE RUNNER</h1>
+        <input type="text" id="usuario" placeholder="Usuário">
+        <input type="password" id="senha" placeholder="Senha">
+        <select id="versao" onchange="buildTable()">
+            <option value="TODAS">TODAS</option>
+            <option value="00A">00A</option>
+            <option value="00B">00B</option>
+            <option value="V86A">V86A</option>
+            <option value="V86B">V86B</option>
+            <option value="V86C">V86C</option>
+            <option value="V86D">V86D</option>
+            <option value="V86E">V86E</option>
+            <option value="V86G">V86F</option>
+            <option value="V86G">V86G</option>
+            <option value="V86G">V86H</option>
+        </select>
+        <p>
+            <label for="checkbox-ultimas-execucoes">
+                <input type="checkbox" id="checkbox-ultimas-execucoes" onclick="filtrarRegistros()">
+                Exibir somente as últimas execuções
+            </label>
+        </p>
+    </div>
+    <div id="bolas-container">
+        <div class="bola-container">
+            <div class="bola" id="AGENRT1"></div>
+            <p id="AGENRT1-status">RT1</p>
+        </div>
+        <div class="bola-container">
+            <div class="bola" id="AGENRT2"></div>
+            <p id="AGENRT2-status">RT2</p>
+        </div>
+        <div class="bola-container">
+            <div class="bola" id="AGENRT3"></div>
+            <p id="AGENRT3-status">RT3</p>
+        </div>
+        <div class="bola-container">
+            <div class="bola" id="AGENRT4"></div>
+            <p id="AGENRT4-status">RT4</p>
+        </div>
+        <div class="bola-container">
+            <div class="bola" id="AGENRT5"></div>
+            <p id="AGENRT5-status">RT5</p>
+        </div>
+        <div class="bola-container">
+            <div class="bola" id="AGENRT6"></div>
+            <p id="AGENRT6-status">RT6</p>
+        </div>
+    </div>
     <table>
         <thead>
             <tr>
@@ -113,14 +202,6 @@
                 <th><input type="text" id="filtro-tabelas" class="filtro-input2" oninput="filtrarRegistros()" placeholder="Filtrar Tabelas"></th>
                 <th><input type="text" id="filtro-procs" class="filtro-input2" oninput="filtrarRegistros()" placeholder="Filtrar Procs"></th>
             </tr>
-            <tr>
-                <th colspan="13" style="text-align: left;">
-                    <label for="checkbox-ultimas-execucoes">
-                        <input type="checkbox" id="checkbox-ultimas-execucoes" onclick="filtrarRegistros()">
-                        Exibir somente as últimas execuções
-                    </label>
-                </th>
-            </tr>
         </thead>
         <tbody id="registros">
         </tbody>
@@ -131,31 +212,76 @@
 
         // Função para fazer uma requisição assíncrona para obter os registros da tabela
         async function getRegistros() {
-            const response = await fetch('/get_logs'); // Endpoint que retorna os registros da tabela
-            const registros = await response.json();
-            return registros;
-        }
+            const versao = document.getElementById('versao').value;
+            let query = 'SELECT * FROM logs';
+            
+            if(versao !== 'TODAS') {
+                query = "SELECT * FROM logs WHERE versao_grbe = "+"'"+versao+"'";
+            } 
 
-        async function runPython1() {
-            const response2 = await fetch('/front/respjson', {
-                method: 'POST',
+            console.log(query)
+
+            const response = await fetch('/get_logs', {
                 headers: {
-                    'Content-Type': 'application/json',
+                'Content-Type': 'application/json',
+                'SQL-Query': query
                 }
             });
+            const registros = await response.json();
+            return registros;
+    }
+
+
+        function atualizarCores(registros2) {
+            for (let key in registros2) {
+                let ball = document.getElementById(key);
+                if (ball) {
+                    if (registros2[key] === "Ativo") {
+                        ball.style.backgroundColor = '#32CD32';
+                    } else if (registros2[key] === "Inativo") {
+                        ball.style.backgroundColor = 'Black';
+                    }
+                }
+            }
+        }
+
+        async function statusMonitores() {
+            const response2 = await fetch('/front/statusmon', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
             const registros2 = await response2.json();
-            console.log(registros2);
-            return registros2;
+            atualizarCores(registros2)
         }
 
         // Função para enviar a solicitação POST ao clicar no botão
         function enviarSolicitacao(idTeste) {
+            // Obtenha o valor do usuário e da senha dos elementos de entrada
+            const usuario = document.getElementById('usuario').value;
+            const senha = document.getElementById('senha').value;
+            const versao = document.getElementById('versao').value;
+
+            // Verifique se o usuário e a senha foram preenchidos
+            if (!usuario || !senha) {
+                alert('Por favor, preencha os campos de usuário e senha.');
+                return;  // Pare a execução da função
+            }
+
+            // Verifique se o usuário e a senha foram preenchidos
+            if (versao == 'TODAS') {
+                alert('Por favor, selecione a versão na qual você está executando o teste. Não deixar selecionado TODAS');
+                return;  // Pare a execução da função
+            }
+
             fetch(`/codes/regressivo/${idTeste}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ id_teste: idTeste })
+                // Inclua o usuário e a senha no corpo da solicitação
+                body: JSON.stringify({ id_teste: idTeste, racf: usuario, senha: senha, versao: versao })
             })
             .then(response => {
                 if (response.ok) {
@@ -163,7 +289,7 @@
                     alert('Solicitação enviada com sucesso!');
                 } else {
                     // A solicitação falhou
-                    alert('Falha ao enviar a solicitação. Por favor, tente novamente.');
+                    alert('Falha ao enviar a solicitação. Por favor, tente novamente. Verifique se este teste já está no novo portal no projeto do Git Hub (Code Runner)');
                 }
             })
             .catch(error => {
@@ -177,7 +303,7 @@
             const registros = await getRegistros();
             registrosOriginais = registros; // Armazena os registros originais
 
-            await runPython1();
+            await statusMonitores();
 
             const registrosElement = document.getElementById('registros');
 
@@ -188,7 +314,7 @@
             registros.forEach(registro => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td><button class="btn" onclick="enviarSolicitacao(${registro.id_teste})">Submeter</button></td>
+                    <td><button class="btn" onclick="enviarSolicitacao(${registro.id_teste},${registro.programas})">Submeter</button></td>
                     <td><button class="btn" onclick="alert('Botão clicado!')">Aprovar</button></td>
                     <td>${registro.id}</td>
                     <td>${registro.timestamp}</td>
@@ -270,7 +396,10 @@
 
 
         // Chamada da função para construir a tabela ao carregar a página
-        window.onload = buildTable;
+        window.onload = function() {
+            buildTable();
+        };
+
     </script>
 </body>
 </html>

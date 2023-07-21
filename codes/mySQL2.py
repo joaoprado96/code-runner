@@ -110,20 +110,20 @@ def inserir_registro(timestamp=None, executor=None, id_teste=None, observacao=No
 # criar_tabela()
 
 base_dados=[
-    {"executor":"SEURACF","id_teste":"001","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
-    {"executor":"SEURACF","id_teste":"002","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
-    {"executor":"SEURACF","id_teste":"003","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
-    {"executor":"SEURACF","id_teste":"004","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
-    {"executor":"SEURACF","id_teste":"005","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
-    {"executor":"SEURACF","id_teste":"006","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
-    {"executor":"SEURACF","id_teste":"007","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
-    {"executor":"SEURACF","id_teste":"008","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
-    {"executor":"SEURACF","id_teste":"009","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
-    {"executor":"SEURACF","id_teste":"010","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
-    {"executor":"SEURACF","id_teste":"011","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
-    {"executor":"SEURACF","id_teste":"012","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
-    {"executor":"SEURACF","id_teste":"013","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
-    {"executor":"SEURACF","id_teste":"014","observacao":"Caso de Teste Padrao","versao_grbe":"00A","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"}
+    {"executor":"SEURACF","id_teste":"001","observacao":"Caso de Teste Padrao","versao_grbe":"00B","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
+    {"executor":"SEURACF","id_teste":"002","observacao":"Caso de Teste Padrao","versao_grbe":"00B","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
+    {"executor":"SEURACF","id_teste":"003","observacao":"Caso de Teste Padrao","versao_grbe":"00B","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
+    {"executor":"SEURACF","id_teste":"004","observacao":"Caso de Teste Padrao","versao_grbe":"00B","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
+    {"executor":"SEURACF","id_teste":"005","observacao":"Caso de Teste Padrao","versao_grbe":"00B","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
+    {"executor":"SEURACF","id_teste":"006","observacao":"Caso de Teste Padrao","versao_grbe":"00B","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
+    {"executor":"SEURACF","id_teste":"007","observacao":"Caso de Teste Padrao","versao_grbe":"00B","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
+    {"executor":"SEURACF","id_teste":"008","observacao":"Caso de Teste Padrao","versao_grbe":"00B","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
+    {"executor":"SEURACF","id_teste":"009","observacao":"Caso de Teste Padrao","versao_grbe":"00B","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
+    {"executor":"SEURACF","id_teste":"010","observacao":"Caso de Teste Padrao","versao_grbe":"00B","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
+    {"executor":"SEURACF","id_teste":"011","observacao":"Caso de Teste Padrao","versao_grbe":"00B","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
+    {"executor":"SEURACF","id_teste":"012","observacao":"Caso de Teste Padrao","versao_grbe":"00B","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
+    {"executor":"SEURACF","id_teste":"013","observacao":"Caso de Teste Padrao","versao_grbe":"00B","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"},
+    {"executor":"SEURACF","id_teste":"014","observacao":"Caso de Teste Padrao","versao_grbe":"00B","resultado_teste":"Padrão","resultado_versao":"Padrão","programas":"Padrão","tabelas":"Padrão","procs":"Padrão"}
 ]
 
 for i, dado in enumerate(base_dados):
