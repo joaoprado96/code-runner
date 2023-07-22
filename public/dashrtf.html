@@ -1,89 +1,521 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Dashboard de Execução por Versão</title>
+    <title>Dashboards Regressive Runner</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
-
-        th, td {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            line-height: 1.5;
+            background-color: #FFFFFF;
+            color: #333;
+        }
+    
+        #top-bar {
+            background-color: #ff5e00;
+            padding: 10px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+    
+        #top-bar input,
+        #top-bar select {
+            padding: 5px;
+            font-size: 16px;
+            border: 1px solid #dddddd;
+            border-radius: 4px;
+        }
+    
+        h1 {
+            background-color: #ff5e00;
+            color: #FFFFFF;
+            text-align: center;
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .flex-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .flex-item {
+            width: 45%;
+            margin-bottom: 20px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            background-color: white;
+            padding: 20px;
+        }
+        p {
+            color: #333;
+            font-weight: bold;
+            font-family: 'Roboto', sans-serif;
+        }
+        .btn {
+            background-color: #ff5e00;
+            color: white;
+            padding: 4px 2px;
+            width: 80px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+    
+        .btn:hover {
+            background-color: #e67400;
         }
     </style>
 </head>
 <body>
-    <h1>Dashboard de Execução por Versão</h1>
+    <div id="top-bar">
+        <h1>DASHBOARDS REGRESSIVE RUNNER</h1>
+        <input type="text" id="usuario" placeholder="Usuário">
+        <input type="password" id="senha" placeholder="Senha">
+        <p>
+            <label for="checkbox-ultimas-execucoes">
+                <input type="checkbox" id="checkbox" onclick="alert('Botão clicado!')">
+                Opção CheckBox Disponível
+            </label>
+        </p>
+    </div>
+    <div>
+        <button class="btn" onclick="location.reload()">Atualizar</button>
+    </div>
+    <div class="flex-container">
+        <div class="flex-item">
+            <canvas id="quantidadeTestesNaVersao"></canvas>
+        </div>
+        <div class="flex-item">
+            <canvas id="tempoTotalExecucao"></canvas>
+        </div>
+        <div class="flex-item">
+            <canvas id="tempoMedioExecucao"></canvas>
+        </div>
+        <div class="flex-item">
+            <canvas id="quantidadeExecucoes"></canvas>
+        </div>
+        <div class="flex-item">
+            <canvas id="quantidadeExecutores"></canvas>
+        </div>
+        <div class="flex-item">
+            <canvas id="quantidadeFalhasTestes"></canvas>
+        </div>
+        <div class="flex-item">
+            <canvas id="quantidadeFalhasVersao"></canvas>
+        </div>
+        <div class="flex-item">
+            <canvas id="quantidadeAprovacoes"></canvas>
+        </div>
+    </div>
+    <script src="data.js"></script>
+    <script src="chart.js"></script>
+</body>
+<script src="data.js"></script>
+<script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+        analiseBase();
+    });
+let versoes = Object.keys(data);
+let labels = Object.keys(data).map(key => key.replace(/[^a-zA-Z0-9]/g, ''));
+let tempoMedioExecucaoData = versoes.map(versao => data[versao].tempo_medio_execucao);
+let tempoTotalExecucaoData = versoes.map(versao => data[versao].tempo_total_execucao);
+let quantidadeExecucoesData = versoes.map(versao => data[versao].quantidade_execucoes);
+let quantidadeExecutoresData = versoes.map(versao => data[versao].quantidade_executores);
+let quantidadeFalhasTestesData = versoes.map(versao => data[versao].quantidade_falhas_teste);
+let quantidadeFalhasVersaoData = versoes.map(versao => data[versao].quantidade_falhas_versao);
+let quantidadeAprovacoesData = versoes.map(versao => data[versao].quantidade_aprovacoes);
+let quantidadeTestesNaVersaoData = versoes.map(versao => data[versao].quantidade_id_teste_unicos);
 
-    <div id="dashboard"></div>
-
-    <script>
-        // Função para fazer uma requisição assíncrona para obter os dados da base de dados
-        async function getLogs() {
-            const response = await fetch('/get_logs'); // Endpoint que retorna os registros da base de dados
-            const logs = await response.json();
-            return logs;
-        }
-
-        // Função para construir o dashboard com os dados obtidos da base de dados
-        async function buildDashboard() {
-            const logs = await getLogs();
-
-            // Agrupar os registros por versão
-            const versions = {};
-            logs.forEach(log => {
-                if (log.versao_grbe in versions) {
-                    versions[log.versao_grbe].push(log);
-                } else {
-                    versions[log.versao_grbe] = [log];
-                }
+async function analiseBase() {
+            const response2 = await fetch('/front/analise', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
             });
-
-            const dashboardElement = document.getElementById('dashboard');
-
-            // Construir a tabela do dashboard
-            const table = document.createElement('table');
-            const thead = document.createElement('thead');
-            const tbody = document.createElement('tbody');
-
-            // Cabeçalho da tabela
-            const headerRow = document.createElement('tr');
-            headerRow.innerHTML = `
-                <th>Versão</th>
-                <th>Quantidade de Testes</th>
-                <th>Testes Bem-sucedidos</th>
-                <th>Testes com Falha</th>
-            `;
-            thead.appendChild(headerRow);
-
-            // Linhas da tabela
-            for (const version in versions) {
-                const logsForVersion = versions[version];
-
-                const successfulTests = logsForVersion.filter(log => log.resultado_teste === 'Sucesso').length;
-                const failedTests = logsForVersion.filter(log => log.resultado_teste === 'Falha').length;
-
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${version}</td>
-                    <td>${logsForVersion.length}</td>
-                    <td>${successfulTests}</td>
-                    <td>${failedTests}</td>
-                `;
-                tbody.appendChild(row);
+            // Aguarde 1 segundo antes de continuar a carregar a página
+        setTimeout(function() {
+            geraGraficos();
+        }, 2000);
             }
 
-            // Adicionar a tabela ao dashboard
-            table.appendChild(thead);
-            table.appendChild(tbody);
-            dashboardElement.appendChild(table);
+function geraGraficos(){
+    new Chart(document.getElementById('quantidadeTestesNaVersao'), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Quantidade de Testes Cadastrados na Versão',
+                data: quantidadeTestesNaVersaoData,
+                backgroundColor: 'rgba(255, 87, 34, 1.0)', // Laranja semi-transparente
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Tempo (s)', // Adicione o label para o eixo Y aqui
+                        font: {
+                            size: 16,
+                        }
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Versão', // Adicione o label para o eixo X aqui
+                        font: {
+                            size: 16,
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        // This more specific font property overrides the global property
+                        font: {
+                            size: 20,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
         }
+    });
 
-        // Chamada da função para construir o dashboard ao carregar a página
-        window.onload = buildDashboard;
-    </script>
-</body>
+    new Chart(document.getElementById('tempoMedioExecucao'), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Tempo Médio de Execução',
+                data: tempoMedioExecucaoData,
+                backgroundColor: 'rgba(255, 87, 34, 1.0)', // Laranja semi-transparente
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Tempo (s)', // Adicione o label para o eixo Y aqui
+                        font: {
+                            size: 16,
+                        }
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Versão', // Adicione o label para o eixo X aqui
+                        font: {
+                            size: 16,
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        // This more specific font property overrides the global property
+                        font: {
+                            size: 20,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    new Chart(document.getElementById('tempoTotalExecucao'), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Tempo Total de Execução',
+                data: tempoTotalExecucaoData,
+                backgroundColor: 'rgba(255, 87, 34, 1.0)', // Laranja semi-transparente
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Tempo Total (s)', // Adicione o label para o eixo Y aqui
+                        font: {
+                            size: 16,
+                        }
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Versão', // Adicione o label para o eixo X aqui
+                        font: {
+                            size: 16,
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        // This more specific font property overrides the global property
+                        font: {
+                            size: 20,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    new Chart(document.getElementById('quantidadeExecucoes'), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Quantidade de Execuções de Testes',
+                data: quantidadeExecucoesData,
+                backgroundColor: 'rgba(255, 87, 34, 1.0)', // Laranja semi-transparente
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Quantidade (n)', // Adicione o label para o eixo Y aqui
+                        font: {
+                            size: 16,
+                        }
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Versão', // Adicione o label para o eixo X aqui
+                        font: {
+                            size: 16,
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        // This more specific font property overrides the global property
+                        font: {
+                            size: 20,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    new Chart(document.getElementById('quantidadeExecutores'), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Quantidade de Executores',
+                data: quantidadeExecutoresData,
+                backgroundColor: 'rgba(255, 87, 34, 1.0)', // Laranja semi-transparente
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Número de pessoas', // Adicione o label para o eixo Y aqui
+                        font: {
+                            size: 16,
+                        }
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Versão', // Adicione o label para o eixo X aqui
+                        font: {
+                            size: 16,
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        // This more specific font property overrides the global property
+                        font: {
+                            size: 20,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    new Chart(document.getElementById('quantidadeFalhasTestes'), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Quantidade de Falhas em Testes',
+                data: quantidadeFalhasTestesData,
+                backgroundColor: 'rgba(255, 87, 34, 1.0)', // Laranja semi-transparente
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Número de Falhas', // Adicione o label para o eixo Y aqui
+                        font: {
+                            size: 16,
+                        }
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Versão', // Adicione o label para o eixo X aqui
+                        font: {
+                            size: 16,
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        // This more specific font property overrides the global property
+                        font: {
+                            size: 20,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    new Chart(document.getElementById('quantidadeFalhasVersao'), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Quantidade de Falhas na Versão',
+                data: quantidadeFalhasVersaoData,
+                backgroundColor: 'rgba(255, 87, 34, 1.0)', // Laranja semi-transparente
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Número de Falhas', // Adicione o label para o eixo Y aqui
+                        font: {
+                            size: 16,
+                        }
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Versão', // Adicione o label para o eixo X aqui
+                        font: {
+                            size: 16,
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        // This more specific font property overrides the global property
+                        font: {
+                            size: 20,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    new Chart(document.getElementById('quantidadeAprovacoes'), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Quantidade de Testes Aprovados com Falha no Teste',
+                data: quantidadeAprovacoesData,
+                backgroundColor: 'rgba(255, 87, 34, 1.0)', // Laranja semi-transparente
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Número de aprovações', // Adicione o label para o eixo Y aqui
+                        font: {
+                            size: 16,
+                        }
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Versão', // Adicione o label para o eixo X aqui
+                        font: {
+                            size: 16,
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        // This more specific font property overrides the global property
+                        font: {
+                            size: 20,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+</script>
 </html>

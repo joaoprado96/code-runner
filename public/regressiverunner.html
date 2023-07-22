@@ -126,8 +126,7 @@
         <input type="password" id="senha" placeholder="Senha">
         <select id="versao" onchange="buildTable()">
             <option value="TODAS">TODAS</option>
-            <option value="00A">00A</option>
-            <option value="00B">00B</option>
+            <option value="Base">Base</option>
             <option value="V86A">V86A</option>
             <option value="V86B">V86B</option>
             <option value="V86C">V86C</option>
@@ -173,34 +172,44 @@
     <table>
         <thead>
             <tr>
-                <th>Ação 1</th>
-                <th>Ação 2</th>
+                <th> </th>
+                <th> </th>
                 <th>ID</th>
-                <th>Timestamp</th>
-                <th>Executor</th>
                 <th>ID Teste</th>
+                <th>Executor</th>
+                <th>Monitores</th>
+                <th>Return Code</th>
+                <th>Status Teste</th>
+                <th>Status Versao</th>
                 <th>Observação</th>
+                <th>Jobs</th>
+                <th>Hora Inicio</th>
+                <th>Hora Fim</th>
                 <th>Versão GRBE</th>
-                <th>Resultado Teste</th>
-                <th>Resultado Versão</th>
-                <th>Programas</th>
-                <th>Tabelas</th>
-                <th>Procs</th>
+                <th>Tipo</th>
+                <th>Pilar</th>
+                <th>Resumo</th>
+                <th>Criador</th>
             </tr>
             <tr>
                 <th>  </th>
                 <th>  </th>
-                <th><input type="text" id="filtro-id" class="filtro-input1" oninput="filtrarRegistros()" placeholder="ID"></th>
-                <th><input type="text" id="filtro-timestamp" class="filtro-input3" oninput="filtrarRegistros()" placeholder="Hora de Inicio"></th>
-                <th><input type="text" id="filtro-executor" class="filtro-input2" oninput="filtrarRegistros()" placeholder="Filtrar Executor"></th>
-                <th><input type="text" id="filtro-id_teste" class="filtro-input1" oninput="filtrarRegistros()" placeholder="Filtrar ID Teste"></th>
-                <th><input type="text" id="filtro-observacao" class="filtro-input3" oninput="filtrarRegistros()" placeholder="Filtrar Observação"></th>
-                <th><input type="text" id="filtro-versao_grbe" class="filtro-input1" oninput="filtrarRegistros()" placeholder="Filtrar Versão GRBE"></th>
-                <th><input type="text" id="filtro-resultado_teste" class="filtro-input2" oninput="filtrarRegistros()" placeholder="Filtrar Resultado Teste"></th>
-                <th><input type="text" id="filtro-resultado_versao" class="filtro-input2" oninput="filtrarRegistros()" placeholder="Filtrar Resultado Versão"></th>
-                <th><input type="text" id="filtro-programas" class="filtro-input2" oninput="filtrarRegistros()" placeholder="Filtrar Programas"></th>
-                <th><input type="text" id="filtro-tabelas" class="filtro-input2" oninput="filtrarRegistros()" placeholder="Filtrar Tabelas"></th>
-                <th><input type="text" id="filtro-procs" class="filtro-input2" oninput="filtrarRegistros()" placeholder="Filtrar Procs"></th>
+                <th><input type="text" id="filtro-id"               class="filtro-input1" oninput="filtrarRegistros()" placeholder="ID"></th>
+                <th><input type="text" id="filtro-id_teste"         class="filtro-input1" oninput="filtrarRegistros()" placeholder="ID Teste"></th>
+                <th><input type="text" id="filtro-executor"         class="filtro-input2" oninput="filtrarRegistros()" placeholder="Executor"></th>
+                <th><input type="text" id="filtro-monitores"        class="filtro-input2" oninput="filtrarRegistros()" placeholder="Monitores"></th>
+                <th><input type="text" id="filtro-return_code"      class="filtro-input2" oninput="filtrarRegistros()" placeholder="Return Code"></th>
+                <th><input type="text" id="filtro-status_teste"     class="filtro-input2" oninput="filtrarRegistros()" placeholder="status_teste"></th>
+                <th><input type="text" id="filtro-status_versao"    class="filtro-input2" oninput="filtrarRegistros()" placeholder="status_versao"></th>
+                <th><input type="text" id="filtro-observacao"       class="filtro-input2" oninput="filtrarRegistros()" placeholder="observacao"></th>
+                <th><input type="text" id="filtro-jobs"             class="filtro-input2" oninput="filtrarRegistros()" placeholder="jobs"></th>
+                <th><input type="text" id="filtro-tempo_inicio"     class="filtro-input2" oninput="filtrarRegistros()" placeholder="tempo_inicio"></th>
+                <th><input type="text" id="filtro-tempo_fim"        class="filtro-input2" oninput="filtrarRegistros()" placeholder="tempo_fim"></th>
+                <th><input type="text" id="filtro-versao_grbe"      class="filtro-input2" oninput="filtrarRegistros()" placeholder="versao_grbe"></th>
+                <th><input type="text" id="filtro-tipo"             class="filtro-input2" oninput="filtrarRegistros()" placeholder="tipo"></th>
+                <th><input type="text" id="filtro-pilar"            class="filtro-input2" oninput="filtrarRegistros()" placeholder="pilar"></th>
+                <th><input type="text" id="filtro-resumo"           class="filtro-input2" oninput="filtrarRegistros()" placeholder="resumo"></th>
+                <th><input type="text" id="filtro-criador"          class="filtro-input2" oninput="filtrarRegistros()" placeholder="criador"></th>
             </tr>
         </thead>
         <tbody id="registros">
@@ -314,20 +323,25 @@
             registros.forEach(registro => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td><button class="btn" onclick="enviarSolicitacao(${registro.id_teste},${registro.programas})">Submeter</button></td>
+                    <td><button class="btn" onclick="enviarSolicitacao(${registro.id_teste},${registro.pilar})">Submeter</button></td>
                     <td><button class="btn" onclick="alert('Botão clicado!')">Aprovar</button></td>
                     <td>${registro.id}</td>
-                    <td>${registro.timestamp}</td>
-                    <td>${registro.executor}</td>
                     <td>${registro.id_teste}</td>
+                    <td>${registro.executor}</td>
+                    <td>${registro.monitores}</td>
+                    <td>${registro.return_code}</td>
+                    <td>${registro.status_teste}</td>
+                    <td>${registro.status_versao}</td>
                     <td>${registro.observacao}</td>
+                    <td>${registro.jobs}</td>
+                    <td>${registro.tempo_inicio}</td>
+                    <td>${registro.tempo_fim}</td>
                     <td>${registro.versao_grbe}</td>
-                    <td>${registro.resultado_teste}</td>
-                    <td>${registro.resultado_versao}</td>
-                    <td>${registro.programas}</td>
-                    <td>${registro.tabelas}</td>
-                    <td>${registro.procs}</td>
-                `;
+                    <td>${registro.tipo}</td>
+                    <td>${registro.pilar}</td>
+                    <td>${registro.resumo}</td>
+                    <td>${registro.criador}</td>
+            `;
                 registrosElement.appendChild(row);
             });
         }
@@ -350,7 +364,7 @@
                 });
             }
 
-            const filtroColunas = ['id', 'timestamp', 'executor', 'id_teste', 'observacao', 'versao_grbe', 'resultado_teste', 'resultado_versao', 'programas', 'tabelas', 'procs'];
+            const filtroColunas = ['id','id_teste', 'executor', 'monitores', 'return_code', 'status_teste', 'status_versao', 'observacao', 'jobs', 'tempo_inicio', 'tempo_fim', 'versao_grbe', 'tipo', 'pilar', 'resumo', 'criador'];
 
             filtroColunas.forEach(coluna => {
                 const filtroValor = document.getElementById(`filtro-${coluna}`).value.toLowerCase();
@@ -379,16 +393,21 @@
                     <td><button class="btn" onclick="enviarSolicitacao(${registro.id_teste})">Submeter</button></td>
                     <td><button class="btn" onclick="alert('Botão clicado!')">Aprovar</button></td>
                     <td>${registro.id}</td>
-                    <td>${registro.timestamp}</td>
-                    <td>${registro.executor}</td>
                     <td>${registro.id_teste}</td>
+                    <td>${registro.executor}</td>
+                    <td>${registro.monitores}</td>
+                    <td>${registro.return_code}</td>
+                    <td>${registro.status_teste}</td>
+                    <td>${registro.status_versao}</td>
                     <td>${registro.observacao}</td>
+                    <td>${registro.jobs}</td>
+                    <td>${registro.tempo_inicio}</td>
+                    <td>${registro.tempo_fim}</td>
                     <td>${registro.versao_grbe}</td>
-                    <td>${registro.resultado_teste}</td>
-                    <td>${registro.resultado_versao}</td>
-                    <td>${registro.programas}</td>
-                    <td>${registro.tabelas}</td>
-                    <td>${registro.procs}</td>
+                    <td>${registro.tipo}</td>
+                    <td>${registro.pilar}</td>
+                    <td>${registro.resumo}</td>
+                    <td>${registro.criador}</td>
                 `;
                 registrosElement.appendChild(row);
             });
