@@ -1,0 +1,56 @@
+npm install express
+npm install axios
+npm install body-parser 
+npm install python-shell
+
+
+Abrir container como bash
+sudo docker run -it code_img bash
+
+docker run -p 3000:3000 -d nome_da_imagem
+
+sudo docker inspect
+
+
+Atividades (LUIS):
+1) Criar págian HTML para cadastrar novo teste base
+2) Criar página HTML para remover teste base
+3) Criar uma pagina HTML para alterar um teste base cadastrado
+4) Criar botão para remover uma execução de um teste da planilha de controle.
+
+
+5) Criar o botão para visualização da LOG de um teste.
+6) Criar botões no front-ends para subir os monitores e para encerrar os monitores.
+7) Olhar a função de visualizar uma versão, nessa um id não possui correspondentena versão atual ele deve trazer o representante da base.
+
+
+
+Ideias para pagina de HTML:
+Testes unitários na versão:
+1) tempo médio de execução
+2) Quantidade de execuções
+3) Quantidade de executores
+4) Quantidade de falhas nos testes
+
+Versao:
+1) Quantidade de testes na versao
+2) Tempo médio de execução dos testes 
+3) Tempo total de execução de testes
+4) Quantidade de execução de testes
+5) Quantidade de executores diferentes
+6) Quantidade de falhas 
+7) Média de falhas por teste
+8) Quantidade de testes por pilar
+9) Porcentagem de testes já executados
+10) Porcentagem de testes executados com falha
+11) Porcentagem de testes executados com sucesso
+12) Porcentagem de testes executados
+13) Criar visões comparativas entre as versões
+
+Gráfico do tempo médio de execuções de testes por versão 
+
+gráfico do tempo médio de execução de um teste em cada umas das versões
+
+
+Ajustes para fazer no Banco:
+1) filtroColunas adicionar o id na HTML
