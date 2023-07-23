@@ -117,10 +117,15 @@
             font-weight: bold;
             font-family: 'Roboto', sans-serif;
         }
+        img.logo {
+            height: 80px;
+            display: block;
+    }
     </style>
 </head>
 <body>
     <div id="top-bar">
+        <img src="img/versionrunner.PNG" alt="Logo" class="logo">
         <h1>REGRESSIVE RUNNER</h1>
         <input type="text" id="usuario" placeholder="Usuário">
         <input type="password" id="senha" placeholder="Senha">
@@ -237,9 +242,34 @@
                 }
             });
             const registros = await response.json();
+
+            // Se a versão não for "TODAS", verificar os registros faltantes na versão "Base"
+            if (versao !== 'TODAS') {
+                // Obter todos os id_teste na versão selecionada
+                const idTestesVersao = new Set(registros.map(registro => registro.id_teste));
+
+                // Fazer outra requisição para obter os registros da versão_grbe = "Base"
+                const queryBase = "SELECT * FROM logs WHERE versao_grbe = 'Base'";
+                const responseBase = await fetch('/get_logs', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'SQL-Query': queryBase
+                    }
+                });
+                const registrosBase = await responseBase.json();
+
+                // Filtrar os registros da versão "Base" para encontrar os registros faltantes na versão selecionada
+                const registrosFaltantes = registrosBase.filter(registro => !idTestesVersao.has(registro.id_teste));
+
+                // Adicionar os registros faltantes à lista de registros
+                registros.push(...registrosFaltantes.map(registro => ({
+                    ...registro,
+                    versao_grbe: versao // Modificar a versao_grbe para a versão selecionada
+                })));
+            }
+
             return registros;
     }
-
 
         function atualizarCores(registros2) {
             for (let key in registros2) {
