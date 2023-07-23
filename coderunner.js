@@ -251,6 +251,19 @@ app.get('/', (req, res) => {
     res.redirect('/page/home.html');
 });
 
+app.get('/regressive/:arquivo', (req, res) => {
+    const caminhoArquivo = path.resolve(__dirname, 'public/regressive', req.params.arquivo);
+
+    fs.readFile(caminhoArquivo, 'utf8', (err, data) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Erro ao ler o arquivo');
+        } else {
+            res.send(data);
+        }
+    });
+});
+
 app.get('/get_logs', (req, res) => {
     // Criação da conexão com o banco de dados
     const connection = mysql.createConnection(dbConfig);
