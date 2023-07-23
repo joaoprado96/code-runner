@@ -21,17 +21,15 @@ Atividades (LUIS):
 
 5) Criar o botão para visualização da LOG de um teste.
 6) Criar botões no front-ends para subir os monitores e para encerrar os monitores.
-7) Olhar a função de visualizar uma versão, nessa um id não possui correspondente na versão atual ele deve trazer o representante da base.
 
 
 
-Ideias para pagina de HTML:
+Atividades Feitas (JOÃO):
 Testes unitários na versão:
 1) Tempo médio de execução
 2) Quantidade de execuções
 3) Quantidade de executores
 4) Quantidade de falhas nos testes
-
 Versao:
 1) Quantidade de testes na versao
 2) Tempo médio de execução dos testes 
@@ -47,7 +45,16 @@ Versao:
 12) Porcentagem de testes executados
 13) Criar visões comparativas entre as versões
 14) Gráfico do tempo médio de execução de um teste em cada umas das versões
+Ajustes:
+7) Olhar a função de visualizar uma versão, nessa um id não possui correspondente na versão atual ele deve trazer o representante da base
 
 
 Ajustes para fazer no Banco:
 1) filtroColunas adicionar o id na HTML
+2) Inserir a questão para tratamento de testes que não existem na versão,e buscamos na base getRegistros()
+3) Criar pasta js_files na pasta publics
+4) Criar pagina version na pagina publics
+5) Colocar script analise na pasta front
+6) Colocar pagina viewregressive na pasta public
+7) Ajustar alguns detalhes na página regressiverunner
+8) Colocar o logo na pagina do regressive Runner
