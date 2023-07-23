@@ -247,6 +247,10 @@ app.post('/front/:scriptName', (req, res) => {
     });
 });
 
+app.get('/', (req, res) => {
+    res.redirect('/page/home.html');
+});
+
 app.get('/get_logs', (req, res) => {
     // Criação da conexão com o banco de dados
     const connection = mysql.createConnection(dbConfig);
@@ -267,7 +271,6 @@ app.get('/get_logs', (req, res) => {
         connection.end();
     });
 });
-
 
 app.get('/codes/:scriptName', (req, res) => {
     const scriptName = req.params.scriptName;
