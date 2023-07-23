@@ -47,7 +47,6 @@ Versao:
 12) Porcentagem de testes executados
 13) Criar visões comparativas entre as versões
 
-Gráfico do tempo médio de execuções de testes por versão 
 
 gráfico do tempo médio de execução de um teste em cada umas das versões
 

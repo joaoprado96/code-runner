@@ -88,6 +88,7 @@
         </p>
     </div>
     <div>
+        <h1>Comparação entre versões</h1>
         <button class="btn" onclick="location.reload()">Atualizar</button>
     </div>
     <div class="flex-container">
@@ -95,16 +96,13 @@
             <canvas id="quantidadeTestesNaVersao"></canvas>
         </div>
         <div class="flex-item">
+            <canvas id="quantidadeExecucoes"></canvas>
+        </div>
+        <div class="flex-item">
             <canvas id="tempoTotalExecucao"></canvas>
         </div>
         <div class="flex-item">
             <canvas id="tempoMedioExecucao"></canvas>
-        </div>
-        <div class="flex-item">
-            <canvas id="quantidadeExecucoes"></canvas>
-        </div>
-        <div class="flex-item">
-            <canvas id="quantidadeExecutores"></canvas>
         </div>
         <div class="flex-item">
             <canvas id="quantidadeFalhasTestes"></canvas>
@@ -115,11 +113,25 @@
         <div class="flex-item">
             <canvas id="quantidadeAprovacoes"></canvas>
         </div>
+        <div class="flex-item">
+            <canvas id="quantidadeExecutores"></canvas>
+        </div>
     </div>
-    <script src="data.js"></script>
+    <div>
+        <h1>Tempo Médio de Execução por ID de Teste</h1>
+        <select id="testSelect">
+            <option value="" disabled selected>Selecione um ID de teste</option>
+        </select>
+    </div>
+    <div class="flex-container">
+        <div class="flex-item">
+            <canvas id="chart"></canvas>
+        </div>
+    </div>
+    <script src="version.js"></script>
+    <script src="id.js"></script>
     <script src="chart.js"></script>
 </body>
-<script src="data.js"></script>
 <script>
         document.addEventListener('DOMContentLoaded', (event) => {
         analiseBase();
@@ -135,6 +147,93 @@ let quantidadeFalhasVersaoData = versoes.map(versao => data[versao].quantidade_f
 let quantidadeAprovacoesData = versoes.map(versao => data[versao].quantidade_aprovacoes);
 let quantidadeTestesNaVersaoData = versoes.map(versao => data[versao].quantidade_id_teste_unicos);
 
+var selectElement = document.getElementById('testSelect');
+    var ctx = document.getElementById('chart').getContext('2d');
+
+    var chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Quantidade de Testes Cadastrados na Versão',
+                fill: false,
+                data: [],
+                backgroundColor: 'rgba(255, 87, 34, 1.0)', // Laranja semi-transparente
+                borderColor: 'rgba(255, 87, 34, 1.0)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Tempo Médio (s)', // Adicione o label para o eixo Y aqui
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Versão', // Adicione o label para o eixo X aqui
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        // This more specific font property overrides the global property
+                        font: {
+                            size: 20,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    var testIDs = new Set();  // Para evitar duplicatas
+    for (var key in analise) {
+        var testID = key.split(",")[0].slice(1);  // Extraindo o ID do teste
+        testIDs.add(testID);
+    }
+
+    testIDs.forEach(function(testID) {
+        var option = document.createElement('option');
+        option.value = testID;
+        option.text = testID;
+        selectElement.add(option);
+    });
+
+    selectElement.addEventListener('change', function() {
+        var selectedTestID = this.value;
+        var labels = [];
+        var data = [];
+
+        for (var key in analise) {
+            var testID = key.split(",")[0].slice(1);
+            if (testID === selectedTestID) {
+                labels.push(key);
+                data.push(analise[key]['tempo_medio_execucao']);
+            }
+        }
+        
+        chart.data.labels = labels;
+        chart.data.datasets.forEach((dataset) => {
+            dataset.data = data;
+        });
+        chart.update();
+    });
+
 async function analiseBase() {
             const response2 = await fetch('/front/analise', {
                 method: 'POST',
@@ -145,7 +244,7 @@ async function analiseBase() {
             // Aguarde 1 segundo antes de continuar a carregar a página
         setTimeout(function() {
             geraGraficos();
-        }, 2000);
+        }, 1000);
             }
 
 function geraGraficos(){
@@ -168,6 +267,7 @@ function geraGraficos(){
                         text: 'Tempo (s)', // Adicione o label para o eixo Y aqui
                         font: {
                             size: 16,
+                            weight: 'bold'
                         }
                     }
                 },
@@ -177,6 +277,7 @@ function geraGraficos(){
                         text: 'Versão', // Adicione o label para o eixo X aqui
                         font: {
                             size: 16,
+                            weight: 'bold'
                         }
                     }
                 }
@@ -214,6 +315,7 @@ function geraGraficos(){
                         text: 'Tempo (s)', // Adicione o label para o eixo Y aqui
                         font: {
                             size: 16,
+                            weight: 'bold'
                         }
                     }
                 },
@@ -223,6 +325,7 @@ function geraGraficos(){
                         text: 'Versão', // Adicione o label para o eixo X aqui
                         font: {
                             size: 16,
+                            weight: 'bold'
                         }
                     }
                 }
@@ -260,6 +363,7 @@ function geraGraficos(){
                         text: 'Tempo Total (s)', // Adicione o label para o eixo Y aqui
                         font: {
                             size: 16,
+                            weight: 'bold'
                         }
                     }
                 },
@@ -269,6 +373,7 @@ function geraGraficos(){
                         text: 'Versão', // Adicione o label para o eixo X aqui
                         font: {
                             size: 16,
+                            weight: 'bold'
                         }
                     }
                 }
@@ -306,6 +411,7 @@ function geraGraficos(){
                         text: 'Quantidade (n)', // Adicione o label para o eixo Y aqui
                         font: {
                             size: 16,
+                            weight: 'bold'
                         }
                     }
                 },
@@ -315,6 +421,7 @@ function geraGraficos(){
                         text: 'Versão', // Adicione o label para o eixo X aqui
                         font: {
                             size: 16,
+                            weight: 'bold'
                         }
                     }
                 }
@@ -352,6 +459,7 @@ function geraGraficos(){
                         text: 'Número de pessoas', // Adicione o label para o eixo Y aqui
                         font: {
                             size: 16,
+                            weight: 'bold'
                         }
                     }
                 },
@@ -361,6 +469,7 @@ function geraGraficos(){
                         text: 'Versão', // Adicione o label para o eixo X aqui
                         font: {
                             size: 16,
+                            weight: 'bold'
                         }
                     }
                 }
@@ -398,6 +507,7 @@ function geraGraficos(){
                         text: 'Número de Falhas', // Adicione o label para o eixo Y aqui
                         font: {
                             size: 16,
+                            weight: 'bold'
                         }
                     }
                 },
@@ -407,6 +517,7 @@ function geraGraficos(){
                         text: 'Versão', // Adicione o label para o eixo X aqui
                         font: {
                             size: 16,
+                            weight: 'bold'
                         }
                     }
                 }
@@ -444,6 +555,7 @@ function geraGraficos(){
                         text: 'Número de Falhas', // Adicione o label para o eixo Y aqui
                         font: {
                             size: 16,
+                            weight: 'bold'
                         }
                     }
                 },
@@ -453,6 +565,7 @@ function geraGraficos(){
                         text: 'Versão', // Adicione o label para o eixo X aqui
                         font: {
                             size: 16,
+                            weight: 'bold'
                         }
                     }
                 }
@@ -490,6 +603,7 @@ function geraGraficos(){
                         text: 'Número de aprovações', // Adicione o label para o eixo Y aqui
                         font: {
                             size: 16,
+                            weight: 'bold'
                         }
                     }
                 },
@@ -499,6 +613,7 @@ function geraGraficos(){
                         text: 'Versão', // Adicione o label para o eixo X aqui
                         font: {
                             size: 16,
+                            weight: 'bold'
                         }
                     }
                 }
