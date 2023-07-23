@@ -21,13 +21,13 @@ Atividades (LUIS):
 
 5) Criar o botão para visualização da LOG de um teste.
 6) Criar botões no front-ends para subir os monitores e para encerrar os monitores.
-7) Olhar a função de visualizar uma versão, nessa um id não possui correspondentena versão atual ele deve trazer o representante da base.
+7) Olhar a função de visualizar uma versão, nessa um id não possui correspondente na versão atual ele deve trazer o representante da base.
 
 
 
 Ideias para pagina de HTML:
 Testes unitários na versão:
-1) tempo médio de execução
+1) Tempo médio de execução
 2) Quantidade de execuções
 3) Quantidade de executores
 4) Quantidade de falhas nos testes
@@ -46,9 +46,7 @@ Versao:
 11) Porcentagem de testes executados com sucesso
 12) Porcentagem de testes executados
 13) Criar visões comparativas entre as versões
-
-
-gráfico do tempo médio de execução de um teste em cada umas das versões
+14) Gráfico do tempo médio de execução de um teste em cada umas das versões
 
 
 Ajustes para fazer no Banco:

@@ -5,74 +5,98 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            font-family: 'Roboto', Arial, sans-serif;
-            line-height: 1.5;
-            background-color: #FFFFFF;
-            color: #333;
-        }
-    
-        #top-bar {
-            background-color: #ff5e00;
-            padding: 10px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-        }
-    
-        #top-bar input,
-        #top-bar select {
-            padding: 5px;
-            font-size: 16px;
-            border: 1px solid #dddddd;
-            border-radius: 4px;
-        }
-    
-        h1 {
-            background-color: #ff5e00;
-            color: #FFFFFF;
-            text-align: center;
-            font-size: 48px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        .flex-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-        }
-        .flex-item {
-            width: 45%;
-            margin-bottom: 20px;
-            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            background-color: white;
-            padding: 20px;
-        }
-        p {
-            color: #333;
-            font-weight: bold;
-            font-family: 'Roboto', sans-serif;
-        }
-        .btn {
-            background-color: #ff5e00;
-            color: white;
-            padding: 4px 2px;
-            width: 80px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-    
-        .btn:hover {
-            background-color: #e67400;
-        }
+    /* Apply a CSS reset to ensure consistent styles across different browsers */
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Standardize font and color for the whole page */
+    body {
+        font-family: 'Roboto', Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+        background-color: #FFFFFF;
+        color: #333;
+    }
+
+    /* Top bar styles */
+    #top-bar {
+        background-color: #ff5e00;
+        padding: 10px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    /* Input and combobox styles */
+    #top-bar input,
+    #top-bar select {
+        padding: 5px;
+        font-size: 16px;
+        border: 1px solid #dddddd;
+        border-radius: 4px;
+    }
+
+    /* Title styles */
+    h1 {
+        background-color: #ff5e00;
+        color: #FFFFFF;
+        text-align: center;
+        font-size: 48px;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    /* Flex container styles */
+    .flex-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    /* Flex item styles */
+    .flex-item {
+        width: 45%;
+        margin-bottom: 20px;
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        background-color: white;
+        padding: 20px;
+    }
+
+    /* Paragraph styles */
+    p {
+        color: #333;
+        font-weight: bold;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    /* Button styles */
+    .btn {
+        background-color: #ff5e00;
+        color: white;
+        padding: 4px 2px;
+        width: 80px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+        background-color: #e67400;
+    }
+
+    /* Style for the combobox (select) */
+    select {
+        font-family: 'Roboto', Arial, sans-serif;
+        font-size: 16px;
+        padding: 5px;
+        border: 1px solid #dddddd;
+        border-radius: 4px;
+    }
     </style>
 </head>
 <body>
@@ -88,8 +112,8 @@
         </p>
     </div>
     <div>
-        <h1>Comparação entre versões</h1>
-        <button class="btn" onclick="location.reload()">Atualizar</button>
+        <h1>HISTÓRICO DE VERSÕES</h1>
+        <br>
     </div>
     <div class="flex-container">
         <div class="flex-item">
@@ -118,44 +142,58 @@
         </div>
     </div>
     <div>
-        <h1>Tempo Médio de Execução por ID de Teste</h1>
+        <h1>  VISÃO DETALHADA DE UM TESTE  </h1>
+        <br>
         <select id="testSelect">
             <option value="" disabled selected>Selecione um ID de teste</option>
         </select>
     </div>
+    <br>
     <div class="flex-container">
         <div class="flex-item">
-            <canvas id="chart"></canvas>
+            <canvas id="tempoChart"></canvas>
+        </div>
+        <div class="flex-item">
+            <canvas id="execucoesChart"></canvas>
+        </div>
+        <div class="flex-item">
+            <canvas id="executoresChart"></canvas>
+        </div>
+        <div class="flex-item">
+            <canvas id="falhasChart"></canvas>
         </div>
     </div>
-    <script src="version.js"></script>
-    <script src="id.js"></script>
+    <script src="js_files/version.js"></script>
+    <script src="js_files/id.js"></script>
     <script src="chart.js"></script>
 </body>
 <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-        analiseBase();
-    });
-let versoes = Object.keys(data);
-let labels = Object.keys(data).map(key => key.replace(/[^a-zA-Z0-9]/g, ''));
-let tempoMedioExecucaoData = versoes.map(versao => data[versao].tempo_medio_execucao);
-let tempoTotalExecucaoData = versoes.map(versao => data[versao].tempo_total_execucao);
-let quantidadeExecucoesData = versoes.map(versao => data[versao].quantidade_execucoes);
-let quantidadeExecutoresData = versoes.map(versao => data[versao].quantidade_executores);
-let quantidadeFalhasTestesData = versoes.map(versao => data[versao].quantidade_falhas_teste);
-let quantidadeFalhasVersaoData = versoes.map(versao => data[versao].quantidade_falhas_versao);
-let quantidadeAprovacoesData = versoes.map(versao => data[versao].quantidade_aprovacoes);
-let quantidadeTestesNaVersaoData = versoes.map(versao => data[versao].quantidade_id_teste_unicos);
+    document.addEventListener('DOMContentLoaded', (event) => {
+    analiseBase();
+});
+    let versoes = Object.keys(data);
+    let labels = Object.keys(data).map(key => key.replace(/[^a-zA-Z0-9]/g, ''));
+    let tempoMedioExecucaoData      = versoes.map(versao => data[versao].tempo_medio_execucao);
+    let tempoTotalExecucaoData      = versoes.map(versao => data[versao].tempo_total_execucao);
+    let quantidadeExecucoesData     = versoes.map(versao => data[versao].quantidade_execucoes);
+    let quantidadeExecutoresData    = versoes.map(versao => data[versao].quantidade_executores);
+    let quantidadeFalhasTestesData  = versoes.map(versao => data[versao].quantidade_falhas_teste);
+    let quantidadeFalhasVersaoData  = versoes.map(versao => data[versao].quantidade_falhas_versao);
+    let quantidadeAprovacoesData    = versoes.map(versao => data[versao].quantidade_aprovacoes);
+    let quantidadeTestesNaVersaoData = versoes.map(versao => data[versao].quantidade_id_teste_unicos);
 
-var selectElement = document.getElementById('testSelect');
-    var ctx = document.getElementById('chart').getContext('2d');
+    var selectElement = document.getElementById('testSelect');
+    var ctx = document.getElementById('tempoChart').getContext('2d');
+    var ctx2 = document.getElementById('execucoesChart').getContext('2d');
+    var ctx3 = document.getElementById('executoresChart').getContext('2d');
+    var ctx4 = document.getElementById('falhasChart').getContext('2d');
 
-    var chart = new Chart(ctx, {
+    var tempoChart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: [],
             datasets: [{
-                label: 'Quantidade de Testes Cadastrados na Versão',
+                label: 'Tempo médio de execução',
                 fill: false,
                 data: [],
                 backgroundColor: 'rgba(255, 87, 34, 1.0)', // Laranja semi-transparente
@@ -170,6 +208,159 @@ var selectElement = document.getElementById('testSelect');
                     title: {
                         display: true,
                         text: 'Tempo Médio (s)', // Adicione o label para o eixo Y aqui
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Versão', // Adicione o label para o eixo X aqui
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        // This more specific font property overrides the global property
+                        font: {
+                            size: 20,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    var execucoesChart = new Chart(ctx2, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Quantidade de execuções',
+                fill: false,
+                data: [],
+                backgroundColor: 'rgba(255, 87, 34, 1.0)', // Laranja semi-transparente
+                borderColor: 'rgba(255, 87, 34, 1.0)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Execuções (n)', // Adicione o label para o eixo Y aqui
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Versão', // Adicione o label para o eixo X aqui
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        // This more specific font property overrides the global property
+                        font: {
+                            size: 20,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    var executoresChart = new Chart(ctx3, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Quantidade de executores',
+                fill: false,
+                data: [],
+                backgroundColor: 'rgba(255, 87, 34, 1.0)', // Laranja semi-transparente
+                borderColor: 'rgba(255, 87, 34, 1.0)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Executores diferentes (n)', // Adicione o label para o eixo Y aqui
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Versão', // Adicione o label para o eixo X aqui
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        // This more specific font property overrides the global property
+                        font: {
+                            size: 20,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    var falhasChart = new Chart(ctx4, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Quantidade de falhas no teste',
+                fill: false,
+                data: [],
+                backgroundColor: 'rgba(255, 87, 34, 1.0)', // Laranja semi-transparente
+                borderColor: 'rgba(255, 87, 34, 1.0)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Falhas no teste (n)', // Adicione o label para o eixo Y aqui
                         font: {
                             size: 16,
                             weight: 'bold'
@@ -218,20 +409,41 @@ var selectElement = document.getElementById('testSelect');
         var selectedTestID = this.value;
         var labels = [];
         var data = [];
+        var data2 = [];
+        var data3 = [];
+        var data4 = [];
 
         for (var key in analise) {
             var testID = key.split(",")[0].slice(1);
             if (testID === selectedTestID) {
-                labels.push(key);
+                labels.push(key.split(",")[1].trim().slice(1, -2));
                 data.push(analise[key]['tempo_medio_execucao']);
+                data2.push(analise[key]['quantidade_execucoes']);
+                data3.push(analise[key]['quantidade_executores']);
+                data4.push(analise[key]['quantidade_falhas_teste']);
             }
         }
         
-        chart.data.labels = labels;
-        chart.data.datasets.forEach((dataset) => {
+        tempoChart.data.labels = labels;
+        tempoChart.data.datasets.forEach((dataset) => {
             dataset.data = data;
         });
-        chart.update();
+        execucoesChart.data.labels = labels;
+        execucoesChart.data.datasets.forEach((dataset) => {
+            dataset.data = data2;
+        });
+        executoresChart.data.labels = labels;
+        executoresChart.data.datasets.forEach((dataset) => {
+            dataset.data = data3;
+        });
+        falhasChart.data.labels = labels;
+        falhasChart.data.datasets.forEach((dataset) => {
+            dataset.data = data4;
+        });
+        tempoChart.update();
+        execucoesChart.update();
+        executoresChart.update();
+        falhasChart.update();
     });
 
 async function analiseBase() {
@@ -456,7 +668,7 @@ function geraGraficos(){
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: 'Número de pessoas', // Adicione o label para o eixo Y aqui
+                        text: 'Número de pessoas (n)', // Adicione o label para o eixo Y aqui
                         font: {
                             size: 16,
                             weight: 'bold'
@@ -504,7 +716,7 @@ function geraGraficos(){
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: 'Número de Falhas', // Adicione o label para o eixo Y aqui
+                        text: 'Número de Falhas (n)', // Adicione o label para o eixo Y aqui
                         font: {
                             size: 16,
                             weight: 'bold'
@@ -552,7 +764,7 @@ function geraGraficos(){
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: 'Número de Falhas', // Adicione o label para o eixo Y aqui
+                        text: 'Número de Falhas (n)', // Adicione o label para o eixo Y aqui
                         font: {
                             size: 16,
                             weight: 'bold'
@@ -600,7 +812,7 @@ function geraGraficos(){
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: 'Número de aprovações', // Adicione o label para o eixo Y aqui
+                        text: 'Número de aprovações (n)', // Adicione o label para o eixo Y aqui
                         font: {
                             size: 16,
                             weight: 'bold'

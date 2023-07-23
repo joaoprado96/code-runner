@@ -16,8 +16,8 @@ mydb = mysql.connector.connect(
 directory = "C:/Users/joaop/OneDrive/Documents/GitHub/code-runner/public/"
 
 # Nome do arquivo
-filename = "version.js"
-filename2 = "id.js"
+filename = "js_files/version.js"
+filename2 = "js_files/id.js"
 
 mycursor = mydb.cursor()
 
