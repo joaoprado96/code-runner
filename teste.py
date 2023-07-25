@@ -1,46 +1,90 @@
-import requests
-import time
+import re
 
-url2  = "http://localhost:3000/codes/cria" 
-url3  = "http://localhost:3000/codes/smtester"
-header = {'num-scripts': '1'}
+def substituir_racf(linha, racf, sufixo):
+    padrao_job = r"//(\w+)\s+JOB(.*)"
+    match = re.match(padrao_job, linha)
+    if match:
+        prefixo = match.group(1)
+        resto_linha = match.group(2)
+        return f"//{racf}{sufixo} JOB{resto_linha}"
+    else:
+        return linha
 
-# O body da sua requisição
-data = {
-    "racf": "JVSPPNX",
-    "senha": "12121212",
-    "versao": "26Y",
-    "versao_origem": "86E",
-    "particionado": "MI.GRBEDES.RTFREXX",
-    "job": "GCOMANDA",
-    "jobid": "JOBIDTE",
-    "tempo" : 10,
-    "tempo_consulta": 1000
-}
+def substituir_racf_no_job(jcl, racf, sufixo):
+    # Dividir o JCL em linhas
+    linhas = jcl.splitlines()
 
-data2 = {
-    "monitor": "monitor",
-    "porta": "12345",
-    "endIP": "127.0.0.1",
-    "nome_conexao": "SMTESTE0",
-    "timeout": 10,
-    "latencia": 1,
-    "numero_serie": "65789",
-    "quantidade": 1,
-    "protocolo": "2000A",
-    "agencia": "0260",
-    "transacao": "OTH",
-    "servico":"Input",
-    "entrada":"00000000002OTH@@@@@@@@@GET /DELAY=200"
-}
+    # Iterar pelas linhas e substituir a linha que contém o padrão JOB
+    for i, linha in enumerate(linhas):
+        linhas[i] = substituir_racf(linha, racf, sufixo)
 
+    # Juntar as linhas novamente em um JCL completo
+    novo_jcl = "\n".join(linhas)
 
-response = requests.post(url2, headers=header ,json=data)
-print(response.text)
-response = requests.post(url3, headers=header ,json=data2)
-print(response.text)
+    return novo_jcl
 
-response = requests.get(url2)
-print(response.text)
-response = requests.get(url3)
-print(response.text)
+def verifica_quebra_linhas(texto):
+    # Verificar se a variável texto já está dividida em linhas
+    if '\n' in texto:
+        # A variável texto já está dividida em linhas
+        linhas = texto.splitlines()
+    else:
+        linhas = texto
+
+    return linhas
+
+def remover_caracteres_especiais(texto):
+    texto_limpo = texto.replace('\x00', '').replace('\b00', '')
+    return texto_limpo
+
+jcl1='''
+//XYZ12343   JOB  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+//       USER=NOTIFY
+//STEP01 EXEC=MISB01
+//SYSOUT DD *
+//SYSOUT DD *
+'''
+
+jcl2='''
+//* VINIGIM SEURACF
+//XYZ12343   JOB 2    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+//       USER=NOTIFY
+//STEP01 EXEC=MISB01
+//SYSOUT DD *
+//SYSOUT DD *
+'''
+
+jcl3='''
+//* VINIGIM SEURACF
+//* JOB PARA TESTE
+//XYZ12343   JOB 2  XX  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+//STEP01 EXEC=MISB01
+//SYSOUT DD *
+//SYSOUT DD *
+'''
+
+jcl4='''
+//* VINIGIM SEURACF
+//XYZ12343   JOB 2  XX  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+/* TESTE DA SOLUÇÃO DO OUTBOUND
+//STEP01 EXEC=MISB01
+//SYSOUT DD *
+//SYSOUT DD *
+'''
+
+racf = "JVSPPNX"
+sufixo = "J"
+
+# Exemplos de uso:
+jcl1_novo = substituir_racf_no_job(jcl1, racf, sufixo)
+jcl2_novo = substituir_racf_no_job(jcl2, racf, sufixo)
+jcl3_novo = substituir_racf_no_job(jcl3, racf, sufixo)
+jcl4_novo = substituir_racf_no_job(jcl4, racf, sufixo)
+
+print(jcl1_novo)
+print("-------")
+print(jcl2_novo)
+print("-------")
+print(jcl3_novo)
+print("-------")
+print(jcl4_novo)
