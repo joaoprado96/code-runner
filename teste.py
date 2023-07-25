@@ -14,7 +14,7 @@ def substituir_racf_no_job(jcl, racf, sufixo):
     # Dividir o JCL em linhas
     linhas = jcl.splitlines()
 
-    # Iterar pelas linhas e substituir a linha que contém o padrão JOB
+    # Iterar pelas linhas e substituir a linha que contém o padrão soajda
     for i, linha in enumerate(linhas):
         linhas[i] = substituir_racf(linha, racf, sufixo)
 
