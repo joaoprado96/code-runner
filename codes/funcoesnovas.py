@@ -156,6 +156,27 @@ print(verifica_padrao_job("//ABC123  JOB"))     # False
 print(verifica_padrao_job("//XYZ1234 JOB"))     # True
 
 
+import re
+
+def substituir_racf_sufixo(linha, racf, sufixo):
+    padrao_job = r"//\w{8}\s+JOB"
+    if re.match(padrao_job, linha):
+        return f"//{racf}{sufixo} JOB"
+    else:
+        return linha
+
+# Exemplos de uso:
+linha1 = "//EXAMPLE1 JOB"
+linha2 = "//ABC12341 JOB"
+linha3 = "//XYZ12341 JOB"
+racf = "JVSPPNX"
+sufixo = "J"
+
+print(substituir_racf_sufixo(linha1, racf, sufixo))  # "//EXAMPLE JOB"
+print(substituir_racf_sufixo(linha2, racf, sufixo))  # "//ABC1234 JOB"
+print(substituir_racf_sufixo(linha3, racf, sufixo))  # "//MYRACFX JOB"
+
+
 
 
 
