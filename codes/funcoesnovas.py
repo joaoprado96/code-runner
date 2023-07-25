@@ -137,6 +137,24 @@ def criar_json_log(nome_executador, id_teste, observacao, versao_teste, resultad
     
     json_log = json.dumps(log, indent=4)
     return json_log
+    
+    
+import re
+
+
+def verifica_padrao_job(linha):
+    padrao_job = r"//\w{7}\s+JOB"
+    if re.match(padrao_job, linha):
+        return True
+    else:
+        return False
+
+# Exemplos de uso:
+print(verifica_padrao_job("//EXAMPLE JOB"))     # False
+print(verifica_padrao_job("//EXAMPLE123 JOB"))  # True
+print(verifica_padrao_job("//ABC123  JOB"))     # False
+print(verifica_padrao_job("//XYZ1234 JOB"))     # True
+
 
 
 
