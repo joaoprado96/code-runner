@@ -128,3 +128,59 @@ function closePopup() {
 </body>
 </html>
 
+
+import mysql.connector
+
+# Função para conectar ao banco de dados
+def conectar_bd():
+    return mysql.connector.connect(
+        host="localhost",
+        user="seu_usuario",
+        password="sua_senha",
+        database="sua_base_de_dados"
+    )
+
+def deletar_registro_por_id(registro_id):
+    try:
+        connection = conectar_bd()
+        cursor = connection.cursor()
+
+        # Deleta o registro com o ID informado
+        delete_query = "DELETE FROM logs WHERE id = %s"
+        cursor.execute(delete_query, (registro_id,))
+
+        connection.commit()
+        print("Registro deletado com sucesso.")
+    except mysql.connector.Error as error:
+        print(f"Erro ao deletar registro: {error}")
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
+
+def alterar_registro_por_id(registro_id, novos_dados):
+    try:
+        connection = conectar_bd()
+        cursor = connection.cursor()
+
+        # Atualiza os campos com os novos dados para o registro com o ID informado
+        update_query = "UPDATE logs SET "
+        update_values = ", ".join([f"{campo} = %s" for campo in novos_dados.keys()])
+        update_query += update_values + " WHERE id = %s"
+
+        # Concatenando os valores novos com o ID do registro
+        valores = list(novos_dados.values())
+        valores.append(registro_id)
+
+        cursor.execute(update_query, valores)
+
+        connection.commit()
+        print("Registro alterado com sucesso.")
+    except mysql.connector.Error as error:
+        print(f"Erro ao alterar registro: {error}")
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
+
+
