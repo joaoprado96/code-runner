@@ -119,6 +119,51 @@ def inserir_registro(id_teste=None, executor=None, monitores=None, return_code=N
     cursor.close()
     conn.close()
 
+def deletar_registro_por_id(registro_id):
+    try:
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor()
+
+        # Deleta o registro com o ID informado
+        delete_query = "DELETE FROM logs WHERE id = %s"
+        cursor.execute(delete_query, (registro_id,))
+
+        connection.commit()
+        print("Registro deletado com sucesso.")
+    except mysql.connector.Error as error:
+        print(f"Erro ao deletar registro: {error}")
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
+    return
+
+def alterar_registro_por_id(registro_id, novos_dados):
+    try:
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor()
+
+        # Atualiza os campos com os novos dados para o registro com o ID informado
+        update_query = "UPDATE logs SET "
+        update_values = ", ".join([f"{campo} = %s" for campo in novos_dados.keys()])
+        update_query += update_values + " WHERE id = %s"
+
+        # Concatenando os valores novos com o ID do registro
+        valores = list(novos_dados.values())
+        valores.append(registro_id)
+
+        cursor.execute(update_query, valores)
+
+        connection.commit()
+        print("Registro alterado com sucesso.")
+    except mysql.connector.Error as error:
+        print(f"Erro ao alterar registro: {error}")
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
+    return
+
 def t_futuro(seg):
     # Obtendo o timestamp atual em segundos
     timestamp_atual = time.time()

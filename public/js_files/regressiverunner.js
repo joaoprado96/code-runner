@@ -60,6 +60,46 @@ function atualizarCores(registros2) {
     }
 }
 
+function openPopupDel() {
+    var popup = document.getElementById("popupDel");
+    popup.style.display = "block";
+    console.log(popup)
+}
+
+function closePopupClose() {
+    var popup = document.getElementById("popupDel");
+    const racf = document.getElementById('executor').value;
+    const justificativa = document.getElementById('observacao').value;
+    popup.style.display = "none";
+    fetch(`/codes/teste`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'num-scripts': 1
+        },
+        // Inclua o usuário e a senha no corpo da solicitação
+        body: JSON.stringify({ id: id, racf: usuario, justificativa: justificativa })
+    });
+
+    // Confirmação de envio (remova esta linha se não quiser a confirmação)
+    alert('Esse registro será removido!');
+}
+
+function deletaLog(id) {
+    fetch(`/codes/teste`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'num-scripts': 1
+        },
+        // Inclua o usuário e a senha no corpo da solicitação
+        body: JSON.stringify({ id: id })
+    });
+
+    // Confirmação de envio (remova esta linha se não quiser a confirmação)
+    alert('Esse registro será removido!');
+}
+
 async function statusMonitores() {
     const response2 = await fetch('/front/statusmon', {
         method: 'POST',
@@ -97,21 +137,12 @@ function enviarSolicitacao(idTeste) {
         },
         // Inclua o usuário e a senha no corpo da solicitação
         body: JSON.stringify({ id_teste: idTeste, racf: usuario, senha: senha, versao: versao })
-    })
-    .then(response => {
-        if (response.ok) {
-            // A solicitação foi bem-sucedida
-            alert('Solicitação enviada com sucesso!');
-        } else {
-            // A solicitação falhou
-            alert('Falha ao enviar a solicitação. Por favor, tente novamente. Verifique se este teste já está no novo portal no projeto do Git Hub (Code Runner)');
-        }
-    })
-    .catch(error => {
-        console.error('Ocorreu um erro:', error);
-        alert('Ocorreu um erro ao processar a solicitação. Por favor, tente novamente.');
     });
+
+    // Confirmação de envio (remova esta linha se não quiser a confirmação)
+    alert('Solicitação enviada com sucesso!');
 }
+
 
 // Função para construir a tabela com os registros obtidos
 async function buildTable() {
@@ -130,7 +161,7 @@ async function buildTable() {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td><button class="btn" onclick="enviarSolicitacao(${registro.id_teste},${registro.pilar})">Submeter</button></td>
-            <td><button class="btn" onclick="alert('Botão clicado!')">Aprovar</button></td>
+            <td><button class="btn" onclick="deletaLog(${registro.id})">Aprovar</button></td>
             <td>${registro.id}</td>
             <td>${registro.id_teste}</td>
             <td>${registro.executor}</td>
@@ -197,7 +228,7 @@ function filtrarRegistros() {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td><button class="btn" onclick="enviarSolicitacao(${registro.id_teste})">Submeter</button></td>
-            <td><button class="btn" onclick="alert('Botão clicado!')">Aprovar</button></td>
+            <td><button class="btn" onclick="deletaLog(${registro.id})">Aprovar</button></td>
             <td>${registro.id}</td>
             <td>${registro.id_teste}</td>
             <td>${registro.executor}</td>

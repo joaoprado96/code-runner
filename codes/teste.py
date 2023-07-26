@@ -1,63 +1,24 @@
 from funcoesnovas import *
+from mySQL2 import *
+import sys
 
-# Exemplo de uso
-sysout = '''
-17.10.23 STC00202812 +=MNTO.001I INCIALIZANDO AS AREAS DO MONIOR
-17.10.23 STC00202812 +=MNTO.001I INCIALIZANDO AS AREAS DO MONIOR
-17.10.23 STC00202812 +=MNTO.001I INCIALIZANDO AS AREAS DO MONIOR
-17.10.23 STC00202812 +=MNTO.001I INCIALIZANDO AS AREAS DO MONIOR
-17.10.23 STC00202812 +=MNTO.001I INCIALIZANDO AS AREAS DO MONIOR
-17.10.23 STC00202812 +=THPS.035I TESTE DE MENSAGEM DA CONEXAO
-17.10.23 STC00202812 +=THPS.038E ERRO NA CONEXAO
-17.10.23 STC00202812 +=OPER.035I CONEXAO COM MQZC EFETUADA
-17.10.23 STC00202812 +=MNTO.001I INCIALIZANDO AS AREAS DO MONIOR
-17.10.23 STC00202812 +=MNTO.001I INCIALIZANDO AS AREAS DO MONIOR
-17.10.23 STC00202812 +=MNTO.001I INCIALIZANDO AS AREAS DO MONIOR
-17.10.23 STC00202812 +=MNTO.001I INCIALIZANDO AS AREAS DO MONIOR
-17.10.23 STC00202812 +=MNTO.001I INCIALIZANDO AS AREAS DO MONIOR
-17.10.23 STC00202812 +=MNTO.001I INCIALIZANDO AS AREAS DO MONIOR
-17.10.23 STC00202812 +=OPER.035I CONEXAO COM MQZC EFETUADA
-17.10.23 STC00202812 +=THPS.035I TESTE DE MENSAGEM DA CONEXAO
-'''
+#Importação de módulos internos
+from globais import *
+from funcoes import *
 
-mensagens_procuradas = ["ERRO NA CONEXAO", "CONEXAO COM MQZC", "MNTO.088"]
-encontrado = verificar_mensagem(sysout, mensagens_procuradas)
+def main():
+    # Verifica se algum argumento foi passado
+    if not (len(sys.argv) > 1):
+        return (NOBODY)
+    
+    # O primeiro argumento é o nome do script, então ignoramos ele e pegamos o segundo
+    body = sys.argv[1]
 
-if encontrado:
-    print("Todas as mensagens foram encontradas na sysout.")
-else:
-    print("Algumas mensagens não foram encontradas na sysout.")
+    # Transforma a string JSON em um objeto Python
+    data = json.loads(body)
 
-print("*******************************************************************")
+    id           = data["id"]
+    print('porra')
+    deletar_registro_por_id(id)
 
-prefixos_procurados = ["MNTO.001I", "THPS.038E"]
-coluna_procurada = 24
-mensagens_encontradas = buscar_mensagens(sysout, prefixos_procurados, coluna_procurada)
-
-if mensagens_encontradas:
-    print("Mensagens encontradas:")
-    for mensagem in mensagens_encontradas:
-        print(mensagem)
-else:
-    print("Nenhuma mensagem encontrada com os prefixos na coluna", coluna_procurada)
-
-
-
-print("*******************************************************************")
-
-mensagem1 = "INCIALIZANDO AS AREAS DO MONIOR"
-mensagem2 = "ERRO NA CONEXAO"
-
-ocorrencia_apos = verificar_ocorrencia_apos(sysout, mensagem1, mensagem2)
-if ocorrencia_apos:
-    print(f"A mensagem '{mensagem2}' ocorre após a mensagem '{mensagem1}' na sysout.")
-else:
-    print(f"A mensagem '{mensagem2}' não ocorre após a mensagem '{mensagem1}' na sysout.")
-
-print("*******************************************************************")
-prefixos = ["MNTO", "THPS", "OPER"]
-coluna = 24
-quantidades = contar_prefixos_coluna(sysout, prefixos, coluna)
-
-for prefixo, quantidade in quantidades.items():
-    print(f"Prefixo '{prefixo}': {quantidade} ocorrência(s) na coluna {coluna}")
+main()

@@ -55,6 +55,17 @@
             <p id="AGENRT6-status">RT6</p>
         </div>
     </div>
+    <div id="popupDel" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #f9f9f9; padding: 20px; border: 1px solid #ccc;">
+        <h2>Deleção de Log de execução:</h2>
+        <form>
+            <label for="executor">RACF:</label>
+            <input type="text" id="executor" required><br>
+            <label for="observacao">Justificativa:</label>
+            <input type="text" id="email" required><br>
+            <input type="submit" value="Enviar">
+        </form>
+        <button onclick="closePopupDel()">Fechar</button>
+    </div>
     <table>
         <thead>
             <tr>
