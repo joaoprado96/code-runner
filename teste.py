@@ -184,3 +184,73 @@ def alterar_registro_por_id(registro_id, novos_dados):
             connection.close()
 
 
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Alterar Label com Botão</title>
+</head>
+<body>
+
+<!-- Label que será alterada -->
+<label id="conteudo-label">Conteúdo Inicial</label>
+
+<!-- Botão que irá alterar o conteúdo do label -->
+<button onclick="alterarConteudoLabel()">Clique para Alterar</button>
+
+<script>
+function alterarConteudoLabel() {
+    // Obtém o elemento do label pelo seu ID
+    var label = document.getElementById("conteudo-label");
+
+    // Altera o conteúdo do label
+    label.innerHTML = "Novo Conteúdo do Label";
+}
+</script>
+
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ícone como Botão</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+<!-- Conteúdo da página aqui -->
+
+</body>
+</html>
+
+
+<!-- Exemplo de botão com ícone usando a classe 'fas' da Font Awesome -->
+<button><i class="fas fa-heart"></i> Curtir</button>
+
+
+Submit (Enviar):
+
+Ícone: <i class="fas fa-paper-plane"></i>
+Significado: O ícone do avião de papel é frequentemente usado para representar a ação de envio ou submissão.
+Aprovar:
+
+Ícone: <i class="fas fa-check-circle"></i>
+Significado: O ícone do círculo de seleção com um sinal de "check" é comumente usado para representar aprovação ou confirmação.
+Logs:
+
+Ícone: <i class="fas fa-clipboard-list"></i>
+Significado: O ícone da lista de clipboard representa logs ou registros, frequentemente usado em sistemas para mostrar atividades ou eventos registrados.
+Alterar:
+
+Ícone: <i class="fas fa-edit"></i>
+Significado: O ícone do lápis é geralmente usado para representar a ação de edição ou alteração.
+Visualizar:
+
+Ícone: <i class="fas fa-eye"></i>
+Significado: O ícone do olho é comumente usado para representar a ação de visualização ou exibição de informações.
+Deletar:
+
+Ícone: <i class="fas fa-trash-alt"></i>
+Significado: O ícone da lixeira é amplamente utilizado para representar a ação de exclusão ou remoção de elementos.
