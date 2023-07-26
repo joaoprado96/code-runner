@@ -88,3 +88,43 @@ print("-------")
 print(jcl3_novo)
 print("-------")
 print(jcl4_novo)
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pop-up com formulário</title>
+</head>
+<body>
+
+<!-- Botão que abre o pop-up -->
+<button onclick="openPopup()">Clique aqui para digitar informações</button>
+
+<!-- Pop-up -->
+<div id="popup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #f9f9f9; padding: 20px; border: 1px solid #ccc;">
+    <h2>Informe suas informações:</h2>
+    <form>
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" required><br>
+        <label for="email">E-mail:</label>
+        <input type="email" id="email" required><br>
+        <input type="submit" value="Enviar">
+    </form>
+    <button onclick="closePopup()">Fechar</button>
+</div>
+
+<script>
+function openPopup() {
+    var popup = document.getElementById("popup");
+    popup.style.display = "block";
+}
+
+function closePopup() {
+    var popup = document.getElementById("popup");
+    popup.style.display = "none";
+}
+</script>
+
+</body>
+</html>
+
