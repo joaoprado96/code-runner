@@ -79,12 +79,16 @@ for (id_teste, versao), group in grouped_data:
     group_dict = {}
     # Calcula o tempo médio de execução
     group_dict['tempo_medio_execucao'] = group['tempo_execucao'].mean()
+    # Calcula o tempo médio de execução
+    group_dict['tempo_total_execucao'] = group['tempo_execucao'].sum()
     # Calcula a quantidade de execuções
     group_dict['quantidade_execucoes'] = int(group['id_teste'].count())
     # Calcula a quantidade de executores
     group_dict['quantidade_executores'] = int(group['executor'].nunique())
     # Calcula a quantidade de falhas nos testes
     group_dict['quantidade_falhas_teste'] = int(group[group['status_teste'] == 'Falha']['id_teste'].count())
+    # Calcula a quantidade de sucessos nos testes
+    group_dict['quantidade_sucessos_teste'] = int(group[group['status_teste'] == 'Sucesso']['id_teste'].count())
 
     # Adiciona o grupo ao JSON
     json_data[str((id_teste, versao))] = group_dict
@@ -94,3 +98,8 @@ full_path = os.path.join(directory, filename2)
 
 with open(full_path, 'w') as file:
     file.write('let analise = ' + json.dumps(json_data, indent=4) + ';')
+
+resultado = {
+    "Status": "Sucesso"
+}
+print(json.dumps(resultado))

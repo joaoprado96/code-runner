@@ -10,14 +10,14 @@ let data = {
         "quantidade_id_teste_unicos": 20
     },
     "('V86A',)": {
-        "tempo_medio_execucao": 187.17391304347825,
-        "tempo_total_execucao": 4305.0,
-        "quantidade_execucoes": 23,
+        "tempo_medio_execucao": 204.52380952380952,
+        "tempo_total_execucao": 4295.0,
+        "quantidade_execucoes": 21,
         "quantidade_executores": 1,
-        "quantidade_falhas_teste": 4,
+        "quantidade_falhas_teste": 3,
         "quantidade_falhas_versao": 0,
-        "quantidade_aprovacoes": 1,
-        "quantidade_id_teste_unicos": 20
+        "quantidade_aprovacoes": 0,
+        "quantidade_id_teste_unicos": 19
     },
     "('V86B',)": {
         "tempo_medio_execucao": 12.45,
