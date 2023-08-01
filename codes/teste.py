@@ -32,4 +32,7 @@ def adicionar_elemento(lista, elemento):
     return lista
 
 
+def lista_para_string(lista):
+    return ' '.join(str(elemento) for elemento in lista)
+
 
