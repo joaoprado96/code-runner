@@ -22,3 +22,14 @@ def main():
     deletar_registro_por_id(id)
 
 main()
+
+
+def adicionar_elemento(lista, elemento):
+    if not lista:
+        lista.append(elemento)
+    elif elemento not in lista:
+        lista.append(elemento)
+    return lista
+
+
+
