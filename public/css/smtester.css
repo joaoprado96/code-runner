@@ -2,7 +2,7 @@ body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    display: flex;
+    display: row;
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -13,10 +13,11 @@ img {
     overflow: clip;
 }
 header {
-    background-color: #F0F0F0;
-    height: 300px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 64px;
+    height: 20px;
     display: flex;
-    justify-content: space-between;
+    justify-content: left;
     align-items: center;
     padding: 0 10px;
     color: white;
@@ -39,7 +40,7 @@ header {
     border-radius: 4px;
 }
 form {
-    width: 35%;
+    width: 100%;
     background-color: white;
     padding: 10px;
     border-radius: 10px;
@@ -60,7 +61,7 @@ form {
     flex: 1;
     margin: 0 10px;
     padding: 7px;
-    border-radius: 8px;
+    border-radius: 10px;
     border: 1px solid #ddd;
 }
 
@@ -83,7 +84,7 @@ input {
     flex: 1;
     margin: 0 10px;
     padding: 7px;
-    border-radius: 8px;
+    border-radius: 10px;
     border: 1px solid #ddd;
 }
 .button-container {
@@ -97,10 +98,63 @@ button {
     margin: 5px 8px;
     border: none;
     align-items: right;
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
     width: 100px;
+    transition: background-color 0.5s;
 }
+
 button:hover {
-    background-color: #F94904;
+    background-color: #834303;
+}
+
+#bolas-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around; /* Espaçamento uniforme entre as bolas */
+    margin: 5px 0;
+}
+
+.bola-container {
+    display: flex;
+    width: 600px;
+    padding: 15px;
+    flex-direction: column;
+    align-items: left;
+}
+img.logo {
+    height: 120px;
+    display: block;
+}
+#logContainer {
+    height: 580px;
+    margin: 15px 10px;
+    width: 1000px;
+    overflow-y: auto;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    padding: 20px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.1);
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+    line-height: 1.5;
+    color: #333;
+}
+
+textarea {
+    width: 75%;
+    height: 100px; /* Altura ajustável conforme necessário */
+    resize: vertical; /* Permite redimensionamento vertical */
+    margin-bottom: 10px;
+    margin-left: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 7px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
 }

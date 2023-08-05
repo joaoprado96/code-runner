@@ -5,66 +5,77 @@
         <title>SMTester - GRBE</title>
         <link rel="icon" href="img/smtester.png" type="image/png">
         <link rel="stylesheet" type="text/css" href="css/smtester.css">
-        <img src="img/smtester.png" alt="Logo" class="logo">
+        
     </head>
+    <div id="top-bar">
+        <img src="img/smtester.png" alt="Logo" class="logo">
+        <header> SMTESTER - GRBE </header>
+    </div>
+    <div id="bolas-container">
+        <div class="bola-container">
+        <form id="myForm">
+            <div class="input-group">
+                <label for="monitor">Monitor:</label>
+                <select id="monitor" class="input-field">
+                    <!-- Opções geradas dinamicamente -->
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="porta">Porta:</label>
+                <select id="porta" class="input-field">
+                    <!-- Opções geradas dinamicamente -->
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="timeout">Timeout (s):</label>
+                <input type="number" id="timeout" placeholder="Timeout (em segundos)" value="10">
+            </div>
+            <div class="input-group">
+                <label for="quantidade">Terminais:</label>
+                <input type="number" id="terminais" placeholder="Terminais" value="1">
+            </div>
+            <div class="input-group">
+                <label for="quantidade">Quantidade:</label>
+                <input type="number" id="quantidade" placeholder="Quantidade" value="100">
+            </div>
+            <div class="input-group">
+                <label for="protocolo">Protocolo:</label>
+                <select id="protocolo" class="input-field">
+                    <!-- Opções geradas dinamicamente -->
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="agencia">Agência:</label>
+                <input type="text" id="agencia" placeholder="Agência" value="3100">
+            </div>
+            <div class="input-group">
+                <label for="transacao">Transação:</label>
+                <input type="text" id="transacao" placeholder="Transação" value="OTH">
+            </div>
+            <div class="input-group">
+                <label for="servico">Serviço:</label>
+                <input type="text" id="servico" placeholder="Serviço" value="Input">
+            </div>
+            <div class="input-group">
+                <label for="logs">Gerar logs:</label>
+                <select id="logs" class="input-field">
+                    <!-- Opções geradas dinamicamente -->
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="entrada">Entrada:</label>
+                <textarea type="text" id="entrada" placeholder="Entrada" value="00000000002OTH@@@@@@@@@GET /DELAY=200"></textarea>
+            </div>
+            <div class="button-container">
+                <button type="button" id="sendButton">Enviar</button>
+                <button type="button" id="cancelButton">Cancelar</button>
+            </div>
+        </form>
+    </div>
 
-    <form id="myForm">
-        <div class="input-group">
-            <label for="monitor">Monitor:</label>
-            <select id="monitor" class="input-field">
-                <!-- Opções geradas dinamicamente -->
-            </select>
-        </div>
-        <div class="input-group">
-            <label for="porta">Porta:</label>
-            <select id="porta" class="input-field">
-                <!-- Opções geradas dinamicamente -->
-            </select>
-        </div>
-        <div class="input-group">
-            <label for="timeout">Timeout (s):</label>
-            <input type="number" id="timeout" placeholder="Timeout (em segundos)" value="10">
-        </div>
-        <div class="input-group">
-            <label for="latencia">Latência (ms):</label>
-            <input type="number" id="latencia" placeholder="Latência (em milisegundos)" value="100">
-        </div>
-        <div class="input-group">
-            <label for="quantidade">Terminais:</label>
-            <input type="number" id="terminais" placeholder="Terminais" value="1">
-        </div>
-        <div class="input-group">
-            <label for="quantidade">Quantidade:</label>
-            <input type="number" id="quantidade" placeholder="Quantidade" value="100">
-        </div>
-        <div class="input-group">
-            <label for="protocolo">Protocolo:</label>
-            <select id="protocolo" class="input-field">
-                <!-- Opções geradas dinamicamente -->
-            </select>
-        </div>
-        <div class="input-group">
-            <label for="agencia">Agência:</label>
-            <input type="text" id="agencia" placeholder="Agência" value="3100">
-        </div>
-        <div class="input-group">
-            <label for="transacao">Transação:</label>
-            <input type="text" id="transacao" placeholder="Transação" value="OTH">
-        </div>
-        <div class="input-group">
-            <label for="servico">Serviço:</label>
-            <input type="text" id="servico" placeholder="Serviço" value="Input">
-        </div>
-        <div class="input-group">
-            <label for="entrada">Entrada:</label>
-            <input type="text" id="entrada" placeholder="Entrada" value="00000000002OTH@@@@@@@@@GET /DELAY=200">
-        </div>
-        <div class="button-container">
-            <button type="button" id="sendButton">Enviar</button>
-            <button type="button" id="cancelButton">Cancelar</button>
-        </div>
-    </form>
-    <div id="logContainer" style="height: 430px; width: 900px ; overflow-y: auto; overflow-x: auto; white-space: pre-wrap; padding: 20px 20px;"></div>
+    <div id="logContainer"></div>
+    </div> 
     <script src="js_files/smtester.js"></script>
+    
 </body>
 </html>

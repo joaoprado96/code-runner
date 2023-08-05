@@ -1,300 +1,53 @@
-***************************************************
-Enviando: 2000A00000043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4608 recebida.
-***************************************************
-Enviando: 2000A00010043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4609 recebida.
-***************************************************
-Enviando: 2000A00020043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4610 recebida.
-***************************************************
-Enviando: 2000A00030043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4611 recebida.
-***************************************************
-Enviando: 2000A00040043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4612 recebida.
-***************************************************
-Enviando: 2000A00050043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4613 recebida.
-***************************************************
-Enviando: 2000A00060043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4614 recebida.
-***************************************************
-Enviando: 2000A00070043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4615 recebida.
-***************************************************
-Enviando: 2000A00080043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4616 recebida.
-***************************************************
-Enviando: 2000A00090043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4617 recebida.
-***************************************************
-Enviando: 2000A000a0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4618 recebida.
-***************************************************
-Enviando: 2000A000b0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4619 recebida.
-***************************************************
-Enviando: 2000A000c0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4620 recebida.
-***************************************************
-Enviando: 2000A000d0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4621 recebida.
-***************************************************
-Enviando: 2000A000e0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4622 recebida.
-***************************************************
-Enviando: 2000A000f0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4623 recebida.
-***************************************************
-Enviando: 2000A000g0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4624 recebida.
-***************************************************
-Enviando: 2000A000h0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4625 recebida.
-***************************************************
-Enviando: 2000A000i0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4626 recebida.
-***************************************************
-Enviando: 2000A000j0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4627 recebida.
-***************************************************
-Enviando: 2000A000k0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4628 recebida.
-***************************************************
-Enviando: 2000A000l0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4629 recebida.
-***************************************************
-Enviando: 2000A000m0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4630 recebida.
-***************************************************
-Enviando: 2000A000n0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4631 recebida.
-***************************************************
-Enviando: 2000A000o0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4632 recebida.
-***************************************************
-Enviando: 2000A000p0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4633 recebida.
-***************************************************
-Enviando: 2000A000q0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4634 recebida.
-***************************************************
-Enviando: 2000A000r0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4635 recebida.
-***************************************************
-Enviando: 2000A000s0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4636 recebida.
-***************************************************
-Enviando: 2000A000t0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4637 recebida.
-***************************************************
-Enviando: 2000A000u0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4638 recebida.
-***************************************************
-Enviando: 2000A000v0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4639 recebida.
-***************************************************
-Enviando: 2000A000w0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4640 recebida.
-***************************************************
-Enviando: 2000A000x0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4641 recebida.
-***************************************************
-Enviando: 2000A000y0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4642 recebida.
-***************************************************
-Enviando: 2000A000z0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4643 recebida.
-***************************************************
-Enviando: 2000A00100043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4644 recebida.
-***************************************************
-Enviando: 2000A00110043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4645 recebida.
-***************************************************
-Enviando: 2000A00120043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4646 recebida.
-***************************************************
-Enviando: 2000A00130043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4647 recebida.
-***************************************************
-Enviando: 2000A00140043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4648 recebida.
-***************************************************
-Enviando: 2000A00150043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4649 recebida.
-***************************************************
-Enviando: 2000A00160043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4650 recebida.
-***************************************************
-Enviando: 2000A00170043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4651 recebida.
-***************************************************
-Enviando: 2000A00180043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4652 recebida.
-***************************************************
-Enviando: 2000A00190043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4653 recebida.
-***************************************************
-Enviando: 2000A001a0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4654 recebida.
-***************************************************
-Enviando: 2000A001b0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4655 recebida.
-***************************************************
-Enviando: 2000A001c0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4656 recebida.
-***************************************************
-Enviando: 2000A001d0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4657 recebida.
-***************************************************
-Enviando: 2000A001e0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4658 recebida.
-***************************************************
-Enviando: 2000A001f0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4659 recebida.
-***************************************************
-Enviando: 2000A001g0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4660 recebida.
-***************************************************
-Enviando: 2000A001h0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4661 recebida.
-***************************************************
-Enviando: 2000A001i0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4662 recebida.
-***************************************************
-Enviando: 2000A001j0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4663 recebida.
-***************************************************
-Enviando: 2000A001k0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4664 recebida.
-***************************************************
-Enviando: 2000A001l0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4665 recebida.
-***************************************************
-Enviando: 2000A001m0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4666 recebida.
-***************************************************
-Enviando: 2000A001n0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4667 recebida.
-***************************************************
-Enviando: 2000A001o0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4668 recebida.
-***************************************************
-Enviando: 2000A001p0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4669 recebida.
-***************************************************
-Enviando: 2000A001q0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4670 recebida.
-***************************************************
-Enviando: 2000A001r0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4671 recebida.
-***************************************************
-Enviando: 2000A001s0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4672 recebida.
-***************************************************
-Enviando: 2000A001t0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4673 recebida.
-***************************************************
-Enviando: 2000A001u0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4674 recebida.
-***************************************************
-Enviando: 2000A001v0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4675 recebida.
-***************************************************
-Enviando: 2000A001w0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4676 recebida.
-***************************************************
-Enviando: 2000A001x0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4677 recebida.
-***************************************************
-Enviando: 2000A001y0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4678 recebida.
-***************************************************
-Enviando: 2000A001z0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4679 recebida.
-***************************************************
-Enviando: 2000A00200043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4680 recebida.
-***************************************************
-Enviando: 2000A00210043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4681 recebida.
-***************************************************
-Enviando: 2000A00220043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4682 recebida.
-***************************************************
-Enviando: 2000A00230043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4683 recebida.
-***************************************************
-Enviando: 2000A00240043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4684 recebida.
-***************************************************
-Enviando: 2000A00250043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4685 recebida.
-***************************************************
-Enviando: 2000A00260043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4686 recebida.
-***************************************************
-Enviando: 2000A00270043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4687 recebida.
-***************************************************
-Enviando: 2000A00280043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4688 recebida.
-***************************************************
-Enviando: 2000A00290043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4689 recebida.
-***************************************************
-Enviando: 2000A002a0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4690 recebida.
-***************************************************
-Enviando: 2000A002b0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4691 recebida.
-***************************************************
-Enviando: 2000A002c0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4692 recebida.
-***************************************************
-Enviando: 2000A002d0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4693 recebida.
-***************************************************
-Enviando: 2000A002e0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4694 recebida.
-***************************************************
-Enviando: 2000A002f0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4695 recebida.
-***************************************************
-Enviando: 2000A002g0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4696 recebida.
-***************************************************
-Enviando: 2000A002h0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4697 recebida.
-***************************************************
-Enviando: 2000A002i0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4698 recebida.
-***************************************************
-Enviando: 2000A002j0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4699 recebida.
-***************************************************
-Enviando: 2000A002k0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4700 recebida.
-***************************************************
-Enviando: 2000A002l0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4701 recebida.
-***************************************************
-Enviando: 2000A002m0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4702 recebida.
-***************************************************
-Enviando: 2000A002n0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4703 recebida.
-***************************************************
-Enviando: 2000A002o0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4704 recebida.
-***************************************************
-Enviando: 2000A002p0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4705 recebida.
-***************************************************
-Enviando: 2000A002q0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4706 recebida.
-***************************************************
-Enviando: 2000A002r0043413100QT 710HHHHH01QTIF1OTH00000000002OTH@@@@@@@@@GET /DELAY=2004607XXXXXXXXXXXXXXXXXXXXXXXXXXX
-Recebendo:    Mensagem 4707 recebida.
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0000
+      Enviando: 2000A00000043413100QT 710HHHHH01QTIF1OTH19007XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19008 recebida. 
+      Performance: O processo demorou 5.13 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0001
+      Enviando: 2000A00010043413100QT 710HHHHH01QTIF1OTH19007XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19009 recebida. 
+      Performance: O processo demorou 5.04 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0002
+      Enviando: 2000A00020043413100QT 710HHHHH01QTIF1OTH19007XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19010 recebida. 
+      Performance: O processo demorou 9.31 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0003
+      Enviando: 2000A00030043413100QT 710HHHHH01QTIF1OTH19007XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19011 recebida. 
+      Performance: O processo demorou 5.83 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0004
+      Enviando: 2000A00040043413100QT 710HHHHH01QTIF1OTH19007XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19012 recebida. 
+      Performance: O processo demorou 3.59 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0005
+      Enviando: 2000A00050043413100QT 710HHHHH01QTIF1OTH19007XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19013 recebida. 
+      Performance: O processo demorou 1.67 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0006
+      Enviando: 2000A00060043413100QT 710HHHHH01QTIF1OTH19007XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19014 recebida. 
+      Performance: O processo demorou 1.82 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0007
+      Enviando: 2000A00070043413100QT 710HHHHH01QTIF1OTH19007XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19015 recebida. 
+      Performance: O processo demorou 1.45 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0008
+      Enviando: 2000A00080043413100QT 710HHHHH01QTIF1OTH19007XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19016 recebida. 
+      Performance: O processo demorou 1.41 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0009
+      Enviando: 2000A00090043413100QT 710HHHHH01QTIF1OTH19007XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19017 recebida. 
+      Performance: O processo demorou 2.54 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+      Resultado Final: O tempo medio de execucao foi de 3.78 milisegundos. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------

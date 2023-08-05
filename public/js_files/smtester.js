@@ -40,14 +40,28 @@ for (var i = 0; i < protocoloOptions.length; i++) {
     protocoloSelect.appendChild(option);
 }
 
+// Opções disponíveis para o protocolo
+var logsOptions = ['Não','Sim'];
+
+// Obtém a referência ao elemento select
+var logsSelect = document.getElementById("logs");
+
+// Itera sobre as opções disponíveis e cria elementos option
+for (var i = 0; i < logsOptions.length; i++) {
+    var option = document.createElement("option");
+    option.value = logsOptions[i];
+    option.text = logsOptions[i];
+    logsSelect.appendChild(option);
+}
+
 document.getElementById("sendButton").addEventListener("click", function() {
     var monitor = document.getElementById("monitor").value;
     var porta = document.getElementById("porta").value;
     var timeout = Number(document.getElementById("timeout").value);
-    var latencia = Number(document.getElementById("latencia").value);
     var terminais = Number(document.getElementById("terminais").value);
     var quantidade = Number(document.getElementById("quantidade").value);
     var protocolo = document.getElementById("protocolo").value;
+    var logs = document.getElementById("logs").value;
     var agencia = document.getElementById("agencia").value;
     var transacao = document.getElementById("transacao").value;
     var servico = document.getElementById("servico").value;
@@ -57,9 +71,9 @@ document.getElementById("sendButton").addEventListener("click", function() {
         monitor: monitor,
         porta: porta,
         timeout: timeout,
-        latencia: latencia,
         quantidade: quantidade,
         protocolo: protocolo,
+        logs: logs,
         agencia: agencia,
         transacao: transacao,
         servico: servico,

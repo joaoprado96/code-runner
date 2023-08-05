@@ -6,6 +6,7 @@ from json import loads
 from random import randint
 import objgraph
 import gc
+import time
 
 
 # Importa módulos personalizados
@@ -184,7 +185,7 @@ def int_to_base36(num):
     return base36.zfill(4)
 
 
-async def transacionar(monitor, porta, timeout, latencia, quantidade, agencia, protocolo, transacao, servico, entrada):
+async def transacionar(monitor, porta, timeout, quantidade, agencia, protocolo, transacao, servico, entrada):
     """
     Função para realizar transações.
     
@@ -223,10 +224,8 @@ async def transacionar(monitor, porta, timeout, latencia, quantidade, agencia, p
     await sleep(0.3) #Tempo ente mensagens
     token = resposta[9:59]
 
-    caminho = r"C:\Users\joaop\OneDrive\Documents\GitHub\code-runner\public\smtester\sysout.txt"
-    with open(caminho, 'w') as arquivo:
-        pass  # Nada será escrito no arquivo, resultando em sua limpeza
-
+    limpar_log()
+    tempo_total_qtd = 0
     for j in range(quantidade):
         
         sequencial = int_to_base36(j) # Valor maximo 4 bytes: 1.679.615 
@@ -240,22 +239,46 @@ async def transacionar(monitor, porta, timeout, latencia, quantidade, agencia, p
             xml = busca_servico(servico)
             msg = transacao_4000a(agencia, "HHHHH", xml, token)
         
-        # Envia mensagem ao monitor   
-        # (NEW)
-        with open(caminho, 'a') as arquivo:
-            arquivo.write("***************************************************\n")
-            arquivo.write("Enviando: " + msg + '\n')
+        # Início da contagem do tempo
+        inicio = time.perf_counter()
+        gravar_log("Enviando",msg,sequencial)
         await envia_mensagem(writer_main,msg,monitor)
         msg2 = await recebe_resposta(reader_main, monitor, ENDIPS[monitor], porta,timeout)
-        with open(caminho, 'a') as arquivo:
-            arquivo.write("Recebendo: " + msg2 + '\n')
+        gravar_log("Recebendo",msg2,sequencial)
+        # Fim da contagem do tempo
+        fim = time.perf_counter()
+        # Cálculo do tempo de execução
+        tempo_total = (fim - inicio)*10*10*10
+        tempo_total_qtd = tempo_total_qtd +tempo_total
+        gravar_log("Performance", f"O processo demorou {tempo_total:.2f} milisegundos para ser executado.",sequencial)
         # await sleep(latencia/1000) #Tempo ente mensagens
     
+    tempo_medio = tempo_total_qtd/quantidade
+
+    gravar_log("Resultado Final", f"O tempo medio de execucao foi de {tempo_medio:.2f} milisegundos.",sequencial)
     # (NEW)
     await encerra_conexao(monitor, ENDIPS[monitor], porta, writer_main)
     json_teste = {'message':'Todas as transações foram enviadas'}
     print(json_teste)
     return
+
+def limpar_log():
+        caminho = r"C:\Users\joaop\OneDrive\Documents\GitHub\code-runner\public\smtester\sysout.txt"
+        with open(caminho, 'w') as arquivo:
+            pass  # Nada será escrito no arquivo, resultando em sua limpeza
+
+def gravar_log(identificador,mensagem,hexa):
+        caminho = r"C:\Users\joaop\OneDrive\Documents\GitHub\code-runner\public\smtester\sysout.txt"
+        with open(caminho, 'a') as arquivo:
+            if(identificador == "Resultado Final"):
+                arquivo.write(f"------------------------------------------------------------------------------------------------------------------------------------------------------------\n")
+            if(identificador == "Enviando"):
+                arquivo.write(f"------------------------------------------------------------------------------------------------------------------------------------------------------------\n")
+                arquivo.write(f"Enviando transacao com codigo de rastreio (HEXA): {hexa}\n")
+            arquivo.write(f"      {identificador}: {mensagem} \n")
+            if(identificador == "Resultado Final"):
+                arquivo.write(f"------------------------------------------------------------------------------------------------------------------------------------------------------------\n")
+
 
 
 def add_service(service_name, xml_data):
@@ -300,7 +323,7 @@ async def main():
     data = loads(body)
 
     # Define as keys obrigatórias
-    keys = ["monitor", "porta", "timeout", "latencia", "quantidade", "agencia","protocolo", "transacao", "servico", "entrada"]
+    keys = ["monitor", "porta", "timeout", "quantidade", "agencia","protocolo", "transacao", "servico", "entrada"]
     if not validate_json_keys(data, keys):  # Verifica se está faltando alguma 'key'
         print(BODYNODATA)
         return
@@ -310,7 +333,6 @@ async def main():
         "monitor": 'N',
         "porta": 'N',
         "timeout": 'N',
-        "latencia": 'N',
         "quantidade": 'N',
         "agencia": 4,
         "protocolo": 5,
@@ -330,7 +352,6 @@ async def main():
     monitor       = data["monitor"]
     porta         = data["porta"]
     timeout       = data["timeout"]
-    latencia      = data["latencia"]
     quantidade    = data["quantidade"]
     agencia       = data["agencia"]
     protocolo     = data["protocolo"]
@@ -347,7 +368,7 @@ async def main():
         print(MAXQTD)
         return
     
-    await transacionar(monitor, porta, timeout, latencia, quantidade, agencia, protocolo,transacao, servico, entrada)
+    await transacionar(monitor, porta, timeout, quantidade, agencia, protocolo,transacao, servico, entrada)
 
 # Inicia a execução da função principal
 if __name__ == "__main__":
