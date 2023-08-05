@@ -223,8 +223,12 @@ async def transacionar(monitor, porta, timeout, latencia, quantidade, agencia, p
     await sleep(0.3) #Tempo ente mensagens
     token = resposta[9:59]
 
+    caminho = r"C:\Users\joaop\OneDrive\Documents\GitHub\code-runner\public\smtester\sysout.txt"
+    with open(caminho, 'w') as arquivo:
+        pass  # Nada será escrito no arquivo, resultando em sua limpeza
 
     for j in range(quantidade):
+        
         sequencial = int_to_base36(j) # Valor maximo 4 bytes: 1.679.615 
         if servico == "Input":
             if protocolo == "2000A":
@@ -238,8 +242,13 @@ async def transacionar(monitor, porta, timeout, latencia, quantidade, agencia, p
         
         # Envia mensagem ao monitor   
         # (NEW)
+        with open(caminho, 'a') as arquivo:
+            arquivo.write("***************************************************\n")
+            arquivo.write("Enviando: " + msg + '\n')
         await envia_mensagem(writer_main,msg,monitor)
-        await recebe_resposta(reader_main, monitor, ENDIPS[monitor], porta,timeout)
+        msg2 = await recebe_resposta(reader_main, monitor, ENDIPS[monitor], porta,timeout)
+        with open(caminho, 'a') as arquivo:
+            arquivo.write("Recebendo: " + msg2 + '\n')
         # await sleep(latencia/1000) #Tempo ente mensagens
     
     # (NEW)
