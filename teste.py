@@ -1,5 +1,52 @@
 import re
 
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sua Página</title>
+</head>
+<body>
+  <script>
+    // Função para gerar um ID único
+    function generateUniqueID() {
+      return 'id_' + Math.random().toString(36).substr(2, 9);
+    }
+
+    // Verifica se o ID já foi gerado anteriormente e obtém ou gera o ID
+    var uniqueID = sessionStorage.getItem('uniqueID');
+    if (!uniqueID) {
+      uniqueID = generateUniqueID();
+      sessionStorage.setItem('uniqueID', uniqueID);
+    }
+
+    // Cria um objeto JSON com o ID
+    var jsonData = {
+      id: uniqueID
+    };
+
+    // Exemplo: exibindo o JSON no console
+    console.log(jsonData);
+
+    // Você pode usar esse JSON como quiser, por exemplo, enviá-lo para o servidor ou armazená-lo localmente no navegador
+
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def substituir_racf(linha, racf, sufixo):
     padrao_job = r"//(\w+)\s+JOB(.*)"
     match = re.match(padrao_job, linha)
