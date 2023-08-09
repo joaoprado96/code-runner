@@ -1,53 +1,503 @@
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 Enviando transacao com codigo de rastreio (HEXA): 0000
-      Enviando: 2000A00000043413100QT 710HHHHH01QTIF1OTH19007XXXXXXXXXXXXXXXXXXXXXXXXXXX 
-      Recebendo:    Mensagem 19008 recebida. 
-      Performance: O processo demorou 5.13 milisegundos para ser executado. 
+      Enviando: 2000A00000043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19224 recebida. 
+      Performance: O processo demorou 2.26 milisegundos para ser executado. 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 Enviando transacao com codigo de rastreio (HEXA): 0001
-      Enviando: 2000A00010043413100QT 710HHHHH01QTIF1OTH19007XXXXXXXXXXXXXXXXXXXXXXXXXXX 
-      Recebendo:    Mensagem 19009 recebida. 
-      Performance: O processo demorou 5.04 milisegundos para ser executado. 
+      Enviando: 2000A00010043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19225 recebida. 
+      Performance: O processo demorou 2.25 milisegundos para ser executado. 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 Enviando transacao com codigo de rastreio (HEXA): 0002
-      Enviando: 2000A00020043413100QT 710HHHHH01QTIF1OTH19007XXXXXXXXXXXXXXXXXXXXXXXXXXX 
-      Recebendo:    Mensagem 19010 recebida. 
-      Performance: O processo demorou 9.31 milisegundos para ser executado. 
+      Enviando: 2000A00020043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19226 recebida. 
+      Performance: O processo demorou 2.56 milisegundos para ser executado. 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 Enviando transacao com codigo de rastreio (HEXA): 0003
-      Enviando: 2000A00030043413100QT 710HHHHH01QTIF1OTH19007XXXXXXXXXXXXXXXXXXXXXXXXXXX 
-      Recebendo:    Mensagem 19011 recebida. 
-      Performance: O processo demorou 5.83 milisegundos para ser executado. 
+      Enviando: 2000A00030043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19227 recebida. 
+      Performance: O processo demorou 1.96 milisegundos para ser executado. 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 Enviando transacao com codigo de rastreio (HEXA): 0004
-      Enviando: 2000A00040043413100QT 710HHHHH01QTIF1OTH19007XXXXXXXXXXXXXXXXXXXXXXXXXXX 
-      Recebendo:    Mensagem 19012 recebida. 
-      Performance: O processo demorou 3.59 milisegundos para ser executado. 
+      Enviando: 2000A00040043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19228 recebida. 
+      Performance: O processo demorou 1.56 milisegundos para ser executado. 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 Enviando transacao com codigo de rastreio (HEXA): 0005
-      Enviando: 2000A00050043413100QT 710HHHHH01QTIF1OTH19007XXXXXXXXXXXXXXXXXXXXXXXXXXX 
-      Recebendo:    Mensagem 19013 recebida. 
-      Performance: O processo demorou 1.67 milisegundos para ser executado. 
+      Enviando: 2000A00050043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19229 recebida. 
+      Performance: O processo demorou 1.68 milisegundos para ser executado. 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 Enviando transacao com codigo de rastreio (HEXA): 0006
-      Enviando: 2000A00060043413100QT 710HHHHH01QTIF1OTH19007XXXXXXXXXXXXXXXXXXXXXXXXXXX 
-      Recebendo:    Mensagem 19014 recebida. 
-      Performance: O processo demorou 1.82 milisegundos para ser executado. 
+      Enviando: 2000A00060043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19230 recebida. 
+      Performance: O processo demorou 3.99 milisegundos para ser executado. 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 Enviando transacao com codigo de rastreio (HEXA): 0007
-      Enviando: 2000A00070043413100QT 710HHHHH01QTIF1OTH19007XXXXXXXXXXXXXXXXXXXXXXXXXXX 
-      Recebendo:    Mensagem 19015 recebida. 
-      Performance: O processo demorou 1.45 milisegundos para ser executado. 
+      Enviando: 2000A00070043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19231 recebida. 
+      Performance: O processo demorou 1.61 milisegundos para ser executado. 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 Enviando transacao com codigo de rastreio (HEXA): 0008
-      Enviando: 2000A00080043413100QT 710HHHHH01QTIF1OTH19007XXXXXXXXXXXXXXXXXXXXXXXXXXX 
-      Recebendo:    Mensagem 19016 recebida. 
-      Performance: O processo demorou 1.41 milisegundos para ser executado. 
+      Enviando: 2000A00080043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19232 recebida. 
+      Performance: O processo demorou 1.91 milisegundos para ser executado. 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 Enviando transacao com codigo de rastreio (HEXA): 0009
-      Enviando: 2000A00090043413100QT 710HHHHH01QTIF1OTH19007XXXXXXXXXXXXXXXXXXXXXXXXXXX 
-      Recebendo:    Mensagem 19017 recebida. 
-      Performance: O processo demorou 2.54 milisegundos para ser executado. 
+      Enviando: 2000A00090043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19233 recebida. 
+      Performance: O processo demorou 2.03 milisegundos para ser executado. 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
-      Resultado Final: O tempo medio de execucao foi de 3.78 milisegundos. 
+Enviando transacao com codigo de rastreio (HEXA): 000a
+      Enviando: 2000A000a0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19234 recebida. 
+      Performance: O processo demorou 1.59 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 000b
+      Enviando: 2000A000b0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19235 recebida. 
+      Performance: O processo demorou 1.76 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 000c
+      Enviando: 2000A000c0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19236 recebida. 
+      Performance: O processo demorou 4.42 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 000d
+      Enviando: 2000A000d0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19237 recebida. 
+      Performance: O processo demorou 1.76 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 000e
+      Enviando: 2000A000e0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19238 recebida. 
+      Performance: O processo demorou 1.63 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 000f
+      Enviando: 2000A000f0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19239 recebida. 
+      Performance: O processo demorou 1.56 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 000g
+      Enviando: 2000A000g0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19240 recebida. 
+      Performance: O processo demorou 1.90 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 000h
+      Enviando: 2000A000h0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19241 recebida. 
+      Performance: O processo demorou 1.87 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 000i
+      Enviando: 2000A000i0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19242 recebida. 
+      Performance: O processo demorou 2.85 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 000j
+      Enviando: 2000A000j0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19243 recebida. 
+      Performance: O processo demorou 1.73 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 000k
+      Enviando: 2000A000k0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19244 recebida. 
+      Performance: O processo demorou 1.58 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 000l
+      Enviando: 2000A000l0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19245 recebida. 
+      Performance: O processo demorou 1.46 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 000m
+      Enviando: 2000A000m0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19246 recebida. 
+      Performance: O processo demorou 1.54 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 000n
+      Enviando: 2000A000n0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19247 recebida. 
+      Performance: O processo demorou 1.74 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 000o
+      Enviando: 2000A000o0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19248 recebida. 
+      Performance: O processo demorou 4.19 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 000p
+      Enviando: 2000A000p0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19249 recebida. 
+      Performance: O processo demorou 1.88 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 000q
+      Enviando: 2000A000q0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19250 recebida. 
+      Performance: O processo demorou 1.70 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 000r
+      Enviando: 2000A000r0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19251 recebida. 
+      Performance: O processo demorou 1.67 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 000s
+      Enviando: 2000A000s0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19252 recebida. 
+      Performance: O processo demorou 1.75 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 000t
+      Enviando: 2000A000t0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19253 recebida. 
+      Performance: O processo demorou 1.72 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 000u
+      Enviando: 2000A000u0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19254 recebida. 
+      Performance: O processo demorou 3.15 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 000v
+      Enviando: 2000A000v0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19255 recebida. 
+      Performance: O processo demorou 3.46 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 000w
+      Enviando: 2000A000w0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19256 recebida. 
+      Performance: O processo demorou 1.77 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 000x
+      Enviando: 2000A000x0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19257 recebida. 
+      Performance: O processo demorou 1.72 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 000y
+      Enviando: 2000A000y0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19258 recebida. 
+      Performance: O processo demorou 1.68 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 000z
+      Enviando: 2000A000z0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19259 recebida. 
+      Performance: O processo demorou 1.76 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0010
+      Enviando: 2000A00100043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19260 recebida. 
+      Performance: O processo demorou 3.04 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0011
+      Enviando: 2000A00110043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19261 recebida. 
+      Performance: O processo demorou 2.41 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0012
+      Enviando: 2000A00120043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19262 recebida. 
+      Performance: O processo demorou 1.99 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0013
+      Enviando: 2000A00130043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19263 recebida. 
+      Performance: O processo demorou 1.79 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0014
+      Enviando: 2000A00140043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19264 recebida. 
+      Performance: O processo demorou 2.01 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0015
+      Enviando: 2000A00150043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19265 recebida. 
+      Performance: O processo demorou 3.90 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0016
+      Enviando: 2000A00160043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19266 recebida. 
+      Performance: O processo demorou 2.68 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0017
+      Enviando: 2000A00170043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19267 recebida. 
+      Performance: O processo demorou 2.78 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0018
+      Enviando: 2000A00180043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19268 recebida. 
+      Performance: O processo demorou 1.84 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0019
+      Enviando: 2000A00190043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19269 recebida. 
+      Performance: O processo demorou 1.80 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 001a
+      Enviando: 2000A001a0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19270 recebida. 
+      Performance: O processo demorou 3.30 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 001b
+      Enviando: 2000A001b0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19271 recebida. 
+      Performance: O processo demorou 2.02 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 001c
+      Enviando: 2000A001c0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19272 recebida. 
+      Performance: O processo demorou 1.50 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 001d
+      Enviando: 2000A001d0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19273 recebida. 
+      Performance: O processo demorou 2.04 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 001e
+      Enviando: 2000A001e0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19274 recebida. 
+      Performance: O processo demorou 1.73 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 001f
+      Enviando: 2000A001f0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19275 recebida. 
+      Performance: O processo demorou 1.71 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 001g
+      Enviando: 2000A001g0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19276 recebida. 
+      Performance: O processo demorou 1.69 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 001h
+      Enviando: 2000A001h0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19277 recebida. 
+      Performance: O processo demorou 1.75 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 001i
+      Enviando: 2000A001i0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19278 recebida. 
+      Performance: O processo demorou 1.62 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 001j
+      Enviando: 2000A001j0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19279 recebida. 
+      Performance: O processo demorou 1.48 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 001k
+      Enviando: 2000A001k0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19280 recebida. 
+      Performance: O processo demorou 1.81 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 001l
+      Enviando: 2000A001l0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19281 recebida. 
+      Performance: O processo demorou 2.31 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 001m
+      Enviando: 2000A001m0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19282 recebida. 
+      Performance: O processo demorou 1.61 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 001n
+      Enviando: 2000A001n0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19283 recebida. 
+      Performance: O processo demorou 2.91 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 001o
+      Enviando: 2000A001o0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19284 recebida. 
+      Performance: O processo demorou 1.75 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 001p
+      Enviando: 2000A001p0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19285 recebida. 
+      Performance: O processo demorou 1.79 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 001q
+      Enviando: 2000A001q0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19286 recebida. 
+      Performance: O processo demorou 1.71 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 001r
+      Enviando: 2000A001r0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19287 recebida. 
+      Performance: O processo demorou 1.93 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 001s
+      Enviando: 2000A001s0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19288 recebida. 
+      Performance: O processo demorou 1.90 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 001t
+      Enviando: 2000A001t0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19289 recebida. 
+      Performance: O processo demorou 1.81 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 001u
+      Enviando: 2000A001u0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19290 recebida. 
+      Performance: O processo demorou 2.15 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 001v
+      Enviando: 2000A001v0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19291 recebida. 
+      Performance: O processo demorou 1.65 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 001w
+      Enviando: 2000A001w0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19292 recebida. 
+      Performance: O processo demorou 1.59 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 001x
+      Enviando: 2000A001x0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19293 recebida. 
+      Performance: O processo demorou 1.64 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 001y
+      Enviando: 2000A001y0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19294 recebida. 
+      Performance: O processo demorou 1.44 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 001z
+      Enviando: 2000A001z0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19295 recebida. 
+      Performance: O processo demorou 2.12 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0020
+      Enviando: 2000A00200043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19296 recebida. 
+      Performance: O processo demorou 1.90 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0021
+      Enviando: 2000A00210043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19297 recebida. 
+      Performance: O processo demorou 1.84 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0022
+      Enviando: 2000A00220043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19298 recebida. 
+      Performance: O processo demorou 1.70 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0023
+      Enviando: 2000A00230043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19299 recebida. 
+      Performance: O processo demorou 1.60 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0024
+      Enviando: 2000A00240043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19300 recebida. 
+      Performance: O processo demorou 1.58 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0025
+      Enviando: 2000A00250043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19301 recebida. 
+      Performance: O processo demorou 1.55 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0026
+      Enviando: 2000A00260043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19302 recebida. 
+      Performance: O processo demorou 1.91 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0027
+      Enviando: 2000A00270043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19303 recebida. 
+      Performance: O processo demorou 1.93 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0028
+      Enviando: 2000A00280043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19304 recebida. 
+      Performance: O processo demorou 1.84 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 0029
+      Enviando: 2000A00290043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19305 recebida. 
+      Performance: O processo demorou 1.72 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 002a
+      Enviando: 2000A002a0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19306 recebida. 
+      Performance: O processo demorou 1.69 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 002b
+      Enviando: 2000A002b0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19307 recebida. 
+      Performance: O processo demorou 1.78 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 002c
+      Enviando: 2000A002c0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19308 recebida. 
+      Performance: O processo demorou 1.70 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 002d
+      Enviando: 2000A002d0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19309 recebida. 
+      Performance: O processo demorou 2.09 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 002e
+      Enviando: 2000A002e0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19310 recebida. 
+      Performance: O processo demorou 3.46 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 002f
+      Enviando: 2000A002f0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19311 recebida. 
+      Performance: O processo demorou 1.52 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 002g
+      Enviando: 2000A002g0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19312 recebida. 
+      Performance: O processo demorou 1.49 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 002h
+      Enviando: 2000A002h0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19313 recebida. 
+      Performance: O processo demorou 1.68 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 002i
+      Enviando: 2000A002i0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19314 recebida. 
+      Performance: O processo demorou 1.52 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 002j
+      Enviando: 2000A002j0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19315 recebida. 
+      Performance: O processo demorou 1.41 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 002k
+      Enviando: 2000A002k0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19316 recebida. 
+      Performance: O processo demorou 1.43 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 002l
+      Enviando: 2000A002l0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19317 recebida. 
+      Performance: O processo demorou 3.60 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 002m
+      Enviando: 2000A002m0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19318 recebida. 
+      Performance: O processo demorou 1.78 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 002n
+      Enviando: 2000A002n0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19319 recebida. 
+      Performance: O processo demorou 1.56 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 002o
+      Enviando: 2000A002o0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19320 recebida. 
+      Performance: O processo demorou 1.54 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 002p
+      Enviando: 2000A002p0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19321 recebida. 
+      Performance: O processo demorou 1.74 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 002q
+      Enviando: 2000A002q0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19322 recebida. 
+      Performance: O processo demorou 1.46 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Enviando transacao com codigo de rastreio (HEXA): 002r
+      Enviando: 2000A002r0043413100QT 710HHHHH01QTIF1OTH19223XXXXXXXXXXXXXXXXXXXXXXXXXXX 
+      Recebendo:    Mensagem 19323 recebida. 
+      Performance: O processo demorou 1.42 milisegundos para ser executado. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+      Resultado Final: O tempo medio de execucao foi de 1.99 milisegundos. 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
