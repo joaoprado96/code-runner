@@ -1,4 +1,65 @@
 <!DOCTYPE html>
+<html>
+<head>
+<style>
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+  }
+
+  tr.success {
+    background-color: green;
+  }
+</style>
+</head>
+<body>
+
+<table>
+  <tr>
+    <th>Coluna 1</th>
+    <th>Coluna 2</th>
+    <th>Coluna 3</th>
+    <th>Coluna 4</th>
+  </tr>
+  <tr>
+    <td>Dado 1</td>
+    <td>Dado 2</td>
+    <td>Dado 3</td>
+    <td>Sucesso</td>
+  </tr>
+  <tr class="success">
+    <td>Dado 4</td>
+    <td>Dado 5</td>
+    <td>Dado 6</td>
+    <td>Sucesso</td>
+  </tr>
+  <tr>
+    <td>Dado 7</td>
+    <td>Dado 8</td>
+    <td>Dado 9</td>
+    <td>Outro Valor</td>
+  </tr>
+</table>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
