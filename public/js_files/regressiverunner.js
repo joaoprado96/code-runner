@@ -265,6 +265,16 @@ async function buildTable(ordens = []) {
     definirCoresPorStatusVersao();
 }
 
+// (CODIGO NOVO)
+function exportarParaExcel() {
+    const tabela = document.getElementById('registros');
+    const nomeArquivo = 'regressivo.xlsx';
+    
+    const planilha = XLSX.utils.table_to_book(tabela, { sheet: "Regressivo" });
+    
+    XLSX.writeFile(planilha, nomeArquivo);
+}
+
 // Função para filtrar os registros por coluna
 function filtrarRegistros() {
     const checkboxUltimasExecucoes = document.getElementById('checkbox-ultimas-execucoes');
@@ -356,6 +366,7 @@ function abrirPopupExecucoes(idTeste) {
             <td>${execucao.id}</td>
             <td>${execucao.id_teste}</td>
             <td>${execucao.executor}</td>
+            <td>${execucao.versao_grbe}</td>
             <td>${execucao.return_code}</td>
             <td>${execucao.status_teste}</td>
             <td>${execucao.status_versao}</td>

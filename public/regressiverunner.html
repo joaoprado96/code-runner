@@ -31,6 +31,9 @@
     </div>
     <div id="bolas-container">
         <div class="bola-container">
+            <button onclick="exportarParaExcel()">Exportar para Excel</button>
+        </div>
+        <div class="bola-container">
             <div class="bola" id="AGENRT1"></div>
             <p id="AGENRT1-status">RT1</p>
         </div>
@@ -76,6 +79,7 @@
                         <th>ID</th>
                         <th>ID Teste</th>
                         <th>Executor</th>
+                        <th>Versão</th>
                         <th>Return Code</th>
                         <th>Status do Teste</th>
                         <th>Status da Versão</th>
@@ -136,5 +140,6 @@
     </table>
 
     <script src="js_files/regressiverunner.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
 </body>
 </html>
