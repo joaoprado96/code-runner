@@ -106,6 +106,13 @@ td {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
+/*Codigo novo*/
+.label-bola {
+    font-size: 12px; /* Tamanho de fonte menor */
+    margin-top: 1px; /* Espaço entre a bola e o label */
+    color: #000000; /* Cor do texto do label */
+}
+
 /* Estilos para parágrafos */
 p {
     color: #333;

@@ -47,14 +47,21 @@ async function getRegistros() {
     return registros;
 }
 
+// (CODIGO NOVO)
 function atualizarCores(registros2) {
     for (let key in registros2) {
         let ball = document.getElementById(key);
+        let labelBola = document.getElementById('label-' + key);
+
+        console.log(labelBola)
         if (ball) {
-            if (registros2[key] === "Ativo") {
+            if (registros2[key][0] === "Ativo") {
                 ball.style.backgroundColor = '#32CD32';
-            } else if (registros2[key] === "Inativo") {
+                console.log(labelBola[key])
+                labelBola.textContent = registros2[key][1];
+            } else if (registros2[key][0] === "Inativo") {
                 ball.style.backgroundColor = 'Black';
+                labelBola.textContent = registros2[key][1];
             }
         }
     }

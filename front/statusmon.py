@@ -2,12 +2,12 @@ import json
 
 def main():
     monitores = {
-        "AGENRT1": "Ativo",
-        "AGENRT2": "Ativo",
-        "AGENRT3": "Inativo",
-        "AGENRT4": "Ativo",
-        "AGENRT5": "Inativo",
-        "AGENRT6": "Ativo"
+        "AGENRT1": ["Ativo","JVSPPNX"],
+        "AGENRT2": ["Ativo","JVSPPNX"],
+        "AGENRT3": ["Inativo","JVSPPNX"],
+        "AGENRT4": ["Ativo","JVSPPNX"],
+        "AGENRT5": ["Inativo","JVSPPNX"],
+        "AGENRT6": ["Ativo","JVSPPNX"]
     }
     print(json.dumps(monitores))
     return monitores
