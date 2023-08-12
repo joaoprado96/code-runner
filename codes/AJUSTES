@@ -1,0 +1,140 @@
+1) Ajustar buildTable:
+
+async function buildTable(ordens = []) {
+
+// Ordenar registros se as ordens estiverem definidas
+if (ordens.length > 0) {
+    registros.sort((a, b) => {
+        for (const ordem of ordens) {
+            const coluna = ordem.coluna;
+            const modo = ordem.modo;
+            
+            if (a[coluna] < b[coluna]) {
+                return modo === 'asc' ? -1 : 1;
+            }
+            if (a[coluna] > b[coluna]) {
+                return modo === 'asc' ? 1 : -1;
+            }
+        }
+        return 0;
+    });
+}
+
+buildTable([
+    { coluna: 'id_teste', modo: 'asc' },
+    { coluna: 'tempo_inicio', modo: 'desc' }
+]);
+
+
+2) Função para definir cores:
+function definirCoresPorStatusVersao() {
+    const registrosElement = document.getElementById('registros');
+    const linhas = registrosElement.getElementsByTagName('tr');
+
+    for (let i = 0; i < linhas.length; i++) {
+        const registro = registrosOriginais[i];
+        const statusVersao = registro.status_versao;
+        const linha = linhas[i];
+
+        if (statusVersao === 'Sucesso') {
+            linha.style.backgroundColor = '#d9fadc'; // Verde
+        } else if (statusVersao === 'Falha') {
+            linha.style.backgroundColor = '#ffd8d6'; // Vermelho
+        } else if (statusVersao === 'Base') {
+            linha.style.backgroundColor = '#f0f0f0'; // Cinza claro
+        }
+        linha.addEventListener('mouseover', realcarLinha);
+        linha.addEventListener('mouseout', restaurarLinha);
+    }
+}
+
+function realcarLinha(event) {
+    event.target.style.backgroundColor = 'lightgray'; // Cor de realce
+}
+
+function restaurarLinha(event) {
+    event.target.style.backgroundColor = ''; // Remove o realce
+}
+
+3) Funcao para exibir popUp de vizualização:
+<td><button class="btn" onclick="abrirPopupExecucoes(${registro.id_teste})">Ver Execuções</button></td>
+function abrirPopupExecucoes(idTeste) {
+    const popup = document.getElementById('popupExecucoes');
+    const tabelaExecucoes = document.getElementById('tabelaExecucoes');
+
+    // Limpa o conteúdo anterior da tabela
+    tabelaExecucoes.querySelector('tbody').innerHTML = '';
+
+    // Filtra as execuções pelo id_teste específico
+    const execucoes = registrosOriginais.filter(registro => registro.id_teste === idTeste);
+
+    // Preenche a tabela com as execuções
+    execucoes.forEach(execucao => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${execucao.id}</td>
+            <td>${execucao.id_teste}</td>
+            <td>${execucao.executor}</td>
+            <td>${execucao.return_code}</td>
+            <td>${execucao.status_teste}</td>
+            <td>${execucao.status_versao}</td>
+            <td>${execucao.observacao}</td>
+        `;
+        tabelaExecucoes.querySelector('tbody').appendChild(row);
+    });
+    popup.style.display = 'block';
+}
+
+function fecharPopupExecucoes() {
+    const popup = document.getElementById('popupExecucoes');
+    popup.style.display = 'none';
+}
+
+<div id="popupExecucoes" class="popup">
+<span class="fechar" onclick="fecharPopupExecucoes()">&times;</span>
+<div id="conteudoPopupExecucoes">
+    <h2>EXECUÇÕES DO TESTE</h2>
+    <table id="tabelaExecucoes">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>ID Teste</th>
+                <th>Executor</th>
+                <th>Return Code</th>
+                <th>Status do Teste</th>
+                <th>Status da Versão</th>
+                <th>Observação</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+</div>
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    width: 80%; /* Ajuste o valor conforme necessário */
+    max-height: 80vh; /* Ajuste o valor conforme necessário */
+    overflow-y: auto;
+}
+
+.fechar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    cursor: pointer;
+}
+#tabelaExecucoes th,
+#tabelaExecucoes td {
+    padding: 20px; /* Ajuste o valor conforme necessário */
+}

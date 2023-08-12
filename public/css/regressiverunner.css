@@ -150,4 +150,32 @@ img.logo {
     text-decoration: none;
     cursor: pointer;
   }
+
+  .popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    width: 80%; /* Ajuste o valor conforme necessário */
+    max-height: 80vh; /* Ajuste o valor conforme necessário */
+    overflow-y: auto;
+}
+
+.fechar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    cursor: pointer;
+}
+#tabelaExecucoes th,
+#tabelaExecucoes td {
+    padding: 20px; /* Ajuste o valor conforme necessário */
+}
   

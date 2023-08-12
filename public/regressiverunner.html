@@ -66,6 +66,26 @@
         </form>
         <button onclick="closePopupDel()">Fechar</button>
     </div>
+    <div id="popupExecucoes" class="popup">
+        <span class="fechar" onclick="fecharPopupExecucoes()">&times;</span>
+        <div id="conteudoPopupExecucoes">
+            <table id="tabelaExecucoes">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>ID Teste</th>
+                        <th>Executor</th>
+                        <th>Return Code</th>
+                        <th>Status do Teste</th>
+                        <th>Status da Versão</th>
+                        <th>Tempo de Execução</th>
+                        <th>Observação</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
     <table>
         <thead>
             <tr>

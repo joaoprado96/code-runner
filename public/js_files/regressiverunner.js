@@ -144,14 +144,61 @@ function enviarSolicitacao(idTeste) {
 }
 
 
+function definirCoresPorStatusVersao() {
+    const registrosElement = document.getElementById('registros');
+    const linhas = registrosElement.getElementsByTagName('tr');
+
+    for (let i = 0; i < linhas.length; i++) {
+        const registro = registrosOriginais[i];
+        const statusVersao = registro.status_versao;
+        const linha = linhas[i];
+
+        if (statusVersao === 'Sucesso') {
+            linha.style.backgroundColor = '#d9fadc'; // Verde
+        } else if (statusVersao === 'Falha') {
+            linha.style.backgroundColor = '#ffd8d6'; // Vermelho
+        } else if (statusVersao === 'Base') {
+            linha.style.backgroundColor = '#f0f0f0'; // Cinza claro
+        }
+        linha.addEventListener('mouseover', realcarLinha);
+        linha.addEventListener('mouseout', restaurarLinha);
+    }
+}
+
+function realcarLinha(event) {
+    event.target.style.backgroundColor = 'lightgray'; // Cor de realce
+}
+
+function restaurarLinha(event) {
+    event.target.style.backgroundColor = ''; // Remove o realce
+}
+
 // Função para construir a tabela com os registros obtidos
-async function buildTable() {
+async function buildTable(ordens = []) {
     const registros = await getRegistros();
     registrosOriginais = registros; // Armazena os registros originais
 
     await statusMonitores();
 
     const registrosElement = document.getElementById('registros');
+
+    // Ordenar registros se as ordens estiverem definidas
+    if (ordens.length > 0) {
+        registros.sort((a, b) => {
+            for (const ordem of ordens) {
+                const coluna = ordem.coluna;
+                const modo = ordem.modo;
+                
+                if (a[coluna] < b[coluna]) {
+                    return modo === 'asc' ? -1 : 1;
+                }
+                if (a[coluna] > b[coluna]) {
+                    return modo === 'asc' ? 1 : -1;
+                }
+            }
+            return 0;
+        });
+    }
 
     // Limpar a tabela antes de construir
     registrosElement.innerHTML = '';
@@ -161,7 +208,7 @@ async function buildTable() {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td><button class="btn" onclick="enviarSolicitacao(${registro.id_teste},${registro.pilar})">Submeter</button></td>
-            <td><button class="btn" onclick="deletaLog(${registro.id})">Aprovar</button></td>
+            <td><button class="btn" onclick="abrirPopupExecucoes(${registro.id_teste})">Ver Execuções</button></td>
             <td>${registro.id}</td>
             <td>${registro.id_teste}</td>
             <td>${registro.executor}</td>
@@ -181,6 +228,7 @@ async function buildTable() {
     `;
         registrosElement.appendChild(row);
     });
+    definirCoresPorStatusVersao();
 }
 
 // Função para filtrar os registros por coluna
@@ -228,7 +276,7 @@ function filtrarRegistros() {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td><button class="btn" onclick="enviarSolicitacao(${registro.id_teste})">Submeter</button></td>
-            <td><button class="btn" onclick="deletaLog(${registro.id})">Aprovar</button></td>
+            <td><button class="btn" onclick="abrirPopupExecucoes(${registro.id_teste})">Ver Execuções</button></td>
             <td>${registro.id}</td>
             <td>${registro.id_teste}</td>
             <td>${registro.executor}</td>
@@ -248,10 +296,51 @@ function filtrarRegistros() {
         `;
         registrosElement.appendChild(row);
     });
+    definirCoresPorStatusVersao();
+}
+
+function abrirPopupExecucoes(idTeste) {
+    const popup = document.getElementById('popupExecucoes');
+    const tabelaExecucoes = document.getElementById('tabelaExecucoes');
+
+    // Limpa o conteúdo anterior da tabela
+    tabelaExecucoes.querySelector('tbody').innerHTML = '';
+
+    // Filtra as execuções pelo id_teste específico
+    const execucoes = registrosOriginais.filter(registro => registro.id_teste === idTeste);
+
+    // Preenche a tabela com as execuções
+    execucoes.forEach(execucao => {
+        const tempoInicio = new Date(execucao.tempo_inicio).getTime();
+        const tempoFim = new Date(execucao.tempo_fim).getTime();
+        const tempoExecucao = (tempoFim - tempoInicio) / 1000; // Tempo em segundos
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${execucao.id}</td>
+            <td>${execucao.id_teste}</td>
+            <td>${execucao.executor}</td>
+            <td>${execucao.return_code}</td>
+            <td>${execucao.status_teste}</td>
+            <td>${execucao.status_versao}</td>
+            <td>${tempoExecucao} segundos</td>
+            <td>${execucao.observacao}</td>
+        `;
+        tabelaExecucoes.querySelector('tbody').appendChild(row);
+    });
+    popup.style.display = 'block';
+}
+
+function fecharPopupExecucoes() {
+    const popup = document.getElementById('popupExecucoes');
+    popup.style.display = 'none';
 }
 
 
 // Chamada da função para construir a tabela ao carregar a página
 window.onload = function() {
-    buildTable();
+    buildTable([
+        { coluna: 'id_teste', modo: 'asc' },
+        { coluna: 'tempo_inicio', modo: 'desc' }
+    ]);
 };
