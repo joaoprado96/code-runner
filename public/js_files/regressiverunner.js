@@ -143,7 +143,7 @@ function enviarSolicitacao(idTeste) {
     alert('Solicitação enviada com sucesso!');
 }
 
-
+// (CODIGO NOVO)
 function definirCoresPorStatusVersao() {
     const registrosElement = document.getElementById('registros');
     const linhas = registrosElement.getElementsByTagName('tr');
@@ -151,12 +151,15 @@ function definirCoresPorStatusVersao() {
     for (let i = 0; i < linhas.length; i++) {
         const registro = registrosOriginais[i];
         const statusVersao = registro.status_versao;
+        const statusTeste = registro.status_teste;
         const linha = linhas[i];
 
-        if (statusVersao === 'Sucesso') {
-            linha.style.backgroundColor = '#d9fadc'; // Verde
+        if (statusVersao === 'Sucesso' && statusTeste === 'Sucesso' ) {
+            linha.style.backgroundColor = '#d9fadc'; // Verde claro
+        } else if (statusVersao === 'Sucesso' && statusTeste === 'Falha') {
+            linha.style.backgroundColor = '#ffffcc'; // Amarelo claro
         } else if (statusVersao === 'Falha') {
-            linha.style.backgroundColor = '#ffd8d6'; // Vermelho
+            linha.style.backgroundColor = '#ffd8d6'; // Vermelho claro
         } else if (statusVersao === 'Base') {
             linha.style.backgroundColor = '#f0f0f0'; // Cinza claro
         }
@@ -165,13 +168,41 @@ function definirCoresPorStatusVersao() {
     }
 }
 
+// (CODIGO NOVO)
+function definirCoresPorStatusVersaoPopup() {
+    const registrosElement = document.getElementById('tabelaExecucoes');
+    const linhas = registrosElement.getElementsByTagName('tr');
+
+    for (let i = 1; i < linhas.length; i++) {
+        const registro = registrosOriginais[i-1];
+        const statusVersao = registro.status_versao;
+        const statusTeste = registro.status_teste;
+        const linha = linhas[i];
+
+        if (statusVersao === 'Sucesso' && statusTeste === 'Sucesso' ) {
+            linha.style.backgroundColor = '#d9fadc'; // Verde claro
+        } else if (statusVersao === 'Sucesso' && statusTeste === 'Falha') {
+            linha.style.backgroundColor = '#ffffcc'; // Amarelo claro
+        } else if (statusVersao === 'Falha') {
+            linha.style.backgroundColor = '#ffd8d6'; // Vermelho claro
+        } else if (statusVersao === 'Base') {
+            linha.style.backgroundColor = '#f0f0f0'; // Cinza claro
+        }
+        linha.addEventListener('mouseover', realcarLinha);
+        linha.addEventListener('mouseout', restaurarLinha);
+    }
+}
+
+// (CODIGO NOVO)
 function realcarLinha(event) {
     event.target.style.backgroundColor = 'lightgray'; // Cor de realce
 }
 
+// (CODIGO NOVO)
 function restaurarLinha(event) {
     event.target.style.backgroundColor = ''; // Remove o realce
 }
+
 
 // Função para construir a tabela com os registros obtidos
 async function buildTable(ordens = []) {
@@ -182,6 +213,7 @@ async function buildTable(ordens = []) {
 
     const registrosElement = document.getElementById('registros');
 
+    // (CODIGO NOVO)
     // Ordenar registros se as ordens estiverem definidas
     if (ordens.length > 0) {
         registros.sort((a, b) => {
@@ -228,6 +260,7 @@ async function buildTable(ordens = []) {
     `;
         registrosElement.appendChild(row);
     });
+    // (CODIGO NOVO)
     definirCoresPorStatusVersao();
 }
 
@@ -296,9 +329,11 @@ function filtrarRegistros() {
         `;
         registrosElement.appendChild(row);
     });
+    // (CODIGO NOVO)
     definirCoresPorStatusVersao();
 }
 
+// (CODIGO NOVO)
 function abrirPopupExecucoes(idTeste) {
     const popup = document.getElementById('popupExecucoes');
     const tabelaExecucoes = document.getElementById('tabelaExecucoes');
@@ -328,6 +363,7 @@ function abrirPopupExecucoes(idTeste) {
         `;
         tabelaExecucoes.querySelector('tbody').appendChild(row);
     });
+    definirCoresPorStatusVersaoPopup()
     popup.style.display = 'block';
 }
 
@@ -339,6 +375,7 @@ function fecharPopupExecucoes() {
 
 // Chamada da função para construir a tabela ao carregar a página
 window.onload = function() {
+    // (CODIGO NOVO)
     buildTable([
         { coluna: 'id_teste', modo: 'asc' },
         { coluna: 'tempo_inicio', modo: 'desc' }
