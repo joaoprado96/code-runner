@@ -151,6 +151,7 @@ img.logo {
     cursor: pointer;
   }
 
+/* CÓDIGO NOVO */
   .popup {
     display: none;
     position: fixed;
@@ -166,7 +167,7 @@ img.logo {
     max-height: 80vh; /* Ajuste o valor conforme necessário */
     overflow-y: auto;
 }
-
+/* CÓDIGO NOVO */
 .fechar {
     position: absolute;
     top: 0;
@@ -174,6 +175,7 @@ img.logo {
     padding: 10px;
     cursor: pointer;
 }
+/* CÓDIGO NOVO */
 #tabelaExecucoes th,
 #tabelaExecucoes td {
     padding: 20px; /* Ajuste o valor conforme necessário */

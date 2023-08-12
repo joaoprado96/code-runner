@@ -205,6 +205,7 @@ function restaurarLinha(event) {
 
 
 // Função para construir a tabela com os registros obtidos
+// (CODIGO NOVO)
 async function buildTable(ordens = []) {
     const registros = await getRegistros();
     registrosOriginais = registros; // Armazena os registros originais
