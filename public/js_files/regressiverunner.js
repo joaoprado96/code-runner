@@ -9,8 +9,6 @@ async function getRegistros() {
         query = "SELECT * FROM logs WHERE versao_grbe = "+"'"+versao+"'";
     } 
 
-    console.log(query)
-
     const response = await fetch('/get_logs', {
         headers: {
         'Content-Type': 'application/json',
@@ -53,11 +51,9 @@ function atualizarCores(registros2) {
         let ball = document.getElementById(key);
         let labelBola = document.getElementById('label-' + key);
 
-        console.log(labelBola)
         if (ball) {
             if (registros2[key][0] === "Ativo") {
                 ball.style.backgroundColor = '#32CD32';
-                console.log(labelBola[key])
                 labelBola.textContent = registros2[key][1];
             } else if (registros2[key][0] === "Inativo") {
                 ball.style.backgroundColor = 'Black';
@@ -152,11 +148,9 @@ function calcularResumoGeral() {
 }
 
 
-
 function openPopupDel() {
     var popup = document.getElementById("popupDel");
     popup.style.display = "block";
-    console.log(popup)
 }
 
 function closePopupClose() {
