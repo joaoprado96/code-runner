@@ -168,7 +168,7 @@ img.logo {
     z-index: 1000;
     background-color: white;
     border: 1px solid #ccc;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 24px 28px 0 rgba(0, 0, 0, 0.2);
     padding: 20px;
     width: 80%; /* Ajuste o valor conforme necessário */
     max-height: 80vh; /* Ajuste o valor conforme necessário */
