@@ -67,6 +67,92 @@ function atualizarCores(registros2) {
     }
 }
 
+// (CODIGO NOVO)
+function openPopupResumoGeral() {
+    var popup = document.getElementById("popupResumoGeral");
+    popup.style.display = "block";
+
+    // Chamar a função que calcula o resumo geral
+    calcularResumoGeral();
+}
+
+// (CODIGO NOVO)
+function closePopupResumoGeral() {
+    var popup = document.getElementById("popupResumoGeral");
+    popup.style.display = "none";
+}
+
+// (CODIGO NOVO)
+function calcularResumoGeral() {
+    const versaoSelecionada = document.getElementById('versao').value;
+    const registros = registrosOriginais.filter(registro => registro.versao_grbe === versaoSelecionada);
+
+    const idTestesUnicos = [...new Set(registros.map(registro => registro.id_teste))];
+
+    let totalExecutados = 0;
+    let totalSucesso = 0;
+    let totalFalha = 0;
+    let totalBase = 0;
+
+    let testesComFalha = [];
+    let testesMaisDemorados = [];
+    let testesMaisExecutados = [];
+
+    idTestesUnicos.forEach(id_teste => {
+        const execucoes = registros.filter(registro => registro.id_teste === id_teste);
+        const execucaoSucesso = execucoes.find(execucao => execucao.status_teste === 'Sucesso');
+
+        const numExecucoes = registros.filter(registro => registro.id_teste === id_teste).length;
+        testesMaisExecutados.push({ id_teste, numExecucoes });
+
+        totalExecutados += 1;
+
+        if (execucaoSucesso) {
+            totalSucesso += 1;
+        } else {
+            totalFalha += 1;
+            testesComFalha.push(id_teste); // Adicionar ao array de testes com falha
+        }
+
+        if (execucoes.some(execucao => execucao.versao_grbe === 'Base')) {
+            totalBase += 1;
+        }
+
+        // Calcular tempo de execução e adicionar aos testes mais demorados
+        const tempoExecucao = (new Date(execucoes[0].tempo_fim) - new Date(execucoes[0].tempo_inicio))/1000;
+        testesMaisDemorados.push({ id_teste, tempoExecucao });
+    });
+
+    // Ordenar os testes mais demorados pela duração em ordem decrescente
+    testesMaisDemorados.sort((a, b) => b.tempoExecucao - a.tempoExecucao);
+    const top10TestesMaisDemorados = testesMaisDemorados.slice(0, 10);
+    const porcentagemExecutados = (totalExecutados / totalBase) * 100;
+
+    testesMaisExecutados.sort((a, b) => b.numExecucoes - a.numExecucoes);
+    const top10TestesMaisExecutados = testesMaisExecutados.slice(0, 10);
+
+    const resumoContainer = document.getElementById('resumo-container');
+    resumoContainer.innerHTML = `
+        <p>O Regressive Runner informa que na versão ${versaoSelecionada} estamos com um andamento de execução de ${porcentagemExecutados}%. Abaixo segue uma visão mais detalhada de execuções, sucesso e erros: </p>
+        <p>Testes Executados:  ${totalExecutados}</p>
+        <p>Testes com Sucesso: ${totalSucesso}</p>
+        <p>Testes com Falha:   ${totalFalha}</p>
+        <p>Testes na "Base":   ${totalBase}</p>
+        <p>ID's dos testes com falha:     ${testesComFalha.join(', ')}</p>
+        <p><strong>Top 10 Testes Mais Demorados:</strong></p>
+        <ul style="list-style-position: outside; padding-left: 40px;">
+            ${top10TestesMaisDemorados.map(teste => `<li>ID Teste: ${teste.id_teste}, Tempo de Execução: ${teste.tempoExecucao}s</li>`).join('')}
+        </ul>
+        <p><strong>Top 10 Testes Mais Executados:</strong></p>
+        <ul style="list-style-position: outside; padding-left: 40px;">
+            ${top10TestesMaisExecutados.map(teste => `<li>ID Teste: ${teste.id_teste}, Número de Execuções: ${teste.numExecucoes}</li>`).join('')}
+        </ul>
+        <p>Esse é um resumo geral da versão solicitada! Para maiores informações consulte os dashboards do Regressive Runner.</p>
+    `;
+}
+
+
+
 function openPopupDel() {
     var popup = document.getElementById("popupDel");
     popup.style.display = "block";
