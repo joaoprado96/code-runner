@@ -55,3 +55,11 @@ Contrariamente às expectativas, a Digibee, mesmo estando na AWS assim como as A
 
 Dessa forma, apesar de seu potencial disruptivo, optou por priorizar a confiabilidade e eficiência comprovada da infraestrutura mainframe, pelo menos por enquanto. Continuaremos monitorando soluções como a Digibee, pois a tecnologia e as necessidades de negócios evoluem constantemente.
 
+SCRIPT para TESTES:
+1) Colocar o programa MIOH na MTTR e MTMO dos monitores de desenvolvimento
+2) Colocar a Digibee como um entrada na MITBH1 de DES.
+3) Realizar chamadas utilizando Digibee
+4) Realizar chamadas utilizando o QT
+5) Comparar os tempos de resposta.
+6) Pegar os tempos de resposta da visão Digibee
+
