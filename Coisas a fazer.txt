@@ -1,3 +1,0 @@
-1) Após subtemer o JOB, esperar 2 segundos e olhar para a Sysout dos monitores do teste, e verificar se eles estão na versão correta, caso contrário já salvar mensagem na LOG. Não cancelar JOBs, deixar para o usuário.
-
-2) Na função de subida do monitor , antes de subtmeter uma PROC colocar uma função para validar essa PROC. Se ela não possui nenhuma versão em Overhide, seja de versão ou módulo
