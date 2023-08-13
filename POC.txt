@@ -1,0 +1,57 @@
+Título: Implementação e Avaliação da Plataforma Digibee para Orquestração e Conversão de Chamadas API.
+
+Objetivo da POC:
+Investigar a potencialidade da plataforma Digibee para otimizar a orquestração de chamadas de APIs e a conversão de dados posicionais para JSON, contrastando com uma solução tradicionalmente desenvolvida no mainframe.
+
+1. Contexto:
+
+Diante da digitalização acelerada dos negócios e da busca incessante por maior eficiência nos processos, a Digibee emerge como uma solução contemporânea para orquestrar chamadas de APIs e realizar a conversão de dados. Sua proposta de ser uma plataforma "low code" promete agilidade e menos complexidade no desenvolvimento.
+
+2. Metodologia de Implementação e Testes:
+
+Para validar a hiótese foram desenvolvidas duas soluções, orquestração pela Digibee e orquestração pelo MF (QT).
+
+2.1 Solução Digibee:
+Desenvolvemos uma API robusta na Digibee para:
+1) Processar um JSON contendo mensagens em formato posicional. De fomra a promover a menor alteração possível no formato do serviço atual.
+2) Realizar a conversão deste conteúdo para um formato JSON adequado, contendo os contratos esperados para cada API.
+3) Coordenar chamadas sequenciais para três APIs essenciais:
+3.1) API do CC: Captura o id_conta do cliente e o número_unico_cliente.
+3.2) API do EQ3: Acessa o tipo_pessoa e CPF.
+3.3) API T3: É responsável pela emissão de um comprovante modernizado na AWS.
+
+Ao concluir esse fluxo, a API da Digibee retorna ao solicitante o código do comprovante gerado.
+
+2.2 Solução Mainframe:
+De forma paralela, elaboramos um conjunto de programas no ambiente mainframe, com o estabelecimento de 3 serviços simples e um serviço primário que aglutina as três chamadas. Esta solução nativa foi projetada para realizar as três chamadas de APIs e compilar os dados de forma integrada.
+
+3. Resultados Analíticos:
+
+Desempenho de Resposta: A implementação no mainframe teve uma margem de rapidez sutilmente superior à solução Digibee. No entanto, os tempos gerais de resposta foram surpreendentemente comparáveis.
+
+Eficiência de Desenvolvimento: A Digibee demonstrou uma capacidade notável de acelerar o desenvolvimento, reduzindo o tempo gasto em comparação ao ciclo tradicional do mainframe.
+
+Análise de Custos: Ao pesar os investimentos, identificamos que a plataforma Digibee apresenta custos iniciais um pouco mais altos. Entretanto, é fundamental considerar os custos intangíveis, como a curva de aprendizado reduzida e a agilidade em implementações futuras.
+
+4. Considerações Profundas:
+
+A Digibee, com sua infraestrutura low code, se destaca na promoção de um desenvolvimento ágil, um benefício inegável, especialmente em ambientes que exigem adaptações rápidas. Embora o mainframe tenha apresentado desempenho ligeiramente superior, é essencial observar o potencial de economia em processamento a longo prazo que a Digibee pode oferecer.
+
+5. Recomendações:
+
+Análise Holística: Além dos custos diretos, é crucial considerar aspectos como manutenibilidade, escalabilidade e flexibilidade nas futuras integrações.
+
+Visão Futura: Com a tendência crescente de digitalização, soluções como a Digibee podem ser fundamentais para garantir uma rápida adaptação às mudanças de mercado.
+
+Estratégia: Avaliar a possibilidade de estabelecer uma parceria com a Digibee, garantindo condições mais favoráveis e suporte dedicado. De forma a tornar esta uma solução viável.
+
+6. Conclusão:
+
+Nossa análise demonstra que a Digibee, como solução emergente, detém um potencial considerável para inovar na forma como gerenciamos e orquestramos chamadas de APIs. No entanto, após avaliação criteriosa, decidimos não seguir com a Digibee neste momento. Vários fatores influenciaram essa decisão:
+
+A plataforma Digibee, hoje, não pode atender os requisitos para ser associada a Serviços de Negócio Tier 1 e 2.
+Os custos associados à Digibee mostraram-se mais elevados em comparação à solução mainframe.
+Contrariamente às expectativas, a Digibee, mesmo estando na AWS assim como as APIs, não apresentou uma melhora substancial no tempo de resposta em relação à solução mainframe.
+
+Dessa forma, apesar de seu potencial disruptivo, optou por priorizar a confiabilidade e eficiência comprovada da infraestrutura mainframe, pelo menos por enquanto. Continuaremos monitorando soluções como a Digibee, pois a tecnologia e as necessidades de negócios evoluem constantemente.
+
