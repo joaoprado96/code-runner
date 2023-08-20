@@ -82,3 +82,29 @@ print("Conteúdo das linhas incluídas:", resultado['linhas_incluidas_conteudo']
 print("Quantidade de linhas deletadas:", resultado['quantidade_linhas_deletadas'])
 print("Linhas deletadas:", resultado['linhas_deletadas'])
 print("Conteúdo das linhas deletadas:", resultado['linhas_deletadas_conteudo'])
+
+
+function extrairValoresDaLinha(linha, configuracoes) {
+    const valoresExtraidos = {};
+
+    let indiceInicial = 0;
+    for (const [nomeVariavel, tamanhoColuna] of Object.entries(configuracoes)) {
+        const valor = linha.slice(indiceInicial, indiceInicial + tamanhoColuna).trim();
+        valoresExtraidos[nomeVariavel] = valor;
+        indiceInicial += tamanhoColuna;
+    }
+
+    return valoresExtraidos;
+}
+
+// Exemplo de uso
+const linha = "João     25   Masculino";
+const configuracoes = {
+    nome: 10,
+    idade: 6,
+    genero: 10
+};
+
+const valores = extrairValoresDaLinha(linha, configuracoes);
+console.log(valores); // Saída esperada: { nome: 'João', idade: '25', genero: 'Masculino' }
+
