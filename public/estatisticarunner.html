@@ -11,22 +11,9 @@
         <h1>ESTATISTICA RUNNER</h1>
         <input type="text" id="usuario" placeholder="Usuário">
         <input type="password" id="senha" placeholder="Senha">
-        <select id="versao" onchange="buildTable()">
-            <option value="TODAS">TODAS</option>
-            <option value="Base">Base</option>
-            <option value="V86A">V86A</option>
-            <option value="V86B">V86B</option>
-            <option value="V86C">V86C</option>
-            <option value="V86D">V86D</option>
-            <option value="V86E">V86E</option>
-            <option value="V86G">V86F</option>
-            <option value="V86G">V86G</option>
-            <option value="V86G">V86H</option>
-        </select>
-        <p>
     </div>
     <div class="input-container">
-        <input type="text" id="datasets" placeholder="Ex: dataset1,dataset2,dataset3">
+        <input type="text" id="datasets" placeholder="Ex: dataset1,dataset2,dataset3" oninput="toUpperCase(this)">
         <button onclick="processarInput()" class="btn2">Processar</button>
     </div>
     <table>

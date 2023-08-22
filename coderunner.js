@@ -303,6 +303,15 @@ app.post('/estatistica', async (req, res) => {
         return res.status(400).send({ message: 'Campos "usuario", "senha", e "datasets" são obrigatórios e "datasets" deve ser uma lista.' });
     }
 
+    var text = `
+1bcdefgHhhhhijjjjpptttf8888888899999999333333334444444466666666yyyyyyyyqxxppioooooooobbbbbbbb!!!!!!@@##$$$$$$$$&NNNNNNNNBBBB00GGGGGGÇÇÇÇTTQZMMMMMMMMSSWWRRCCmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+2acdefgHhhhhijjjjpptttf8888888899999999333333334444444466666666yyyyyyyyqxxppioooooooobbbbbbbb!!!!!!@@##$$$$$$$$&NNNNNNNNBBBB00GGGGGGÇÇÇÇTTQZMMMMMMMMSSWWRRCCmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+3dcdefgHhhhhijjjjpptttf8888888899999999333333334444444466666666yyyyyyyyqxxppioooooooobbbbbbbb!!!!!!@@##$$$$$$$$&NNNNNNNNBBBB00GGGGGGÇÇÇÇTTQZMMMMMMMMSSWWRRCCmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+4ecdefgHhhhhijjjjpptttf8888888899999999333333334444444466666666yyyyyyyyqxxppioooooooobbbbbbbb!!!!!!@@##$$$$$$$$&NNNNNNNNBBBB00GGGGGGÇÇÇÇTTQZMMMMMMMMSSWWRRCCmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+`;  
+        res.json(text);
+
+    return
     // Codificar nome de usuário e senha em base64
     const credentials = Buffer.from(`${req.body.usuario}:${req.body.senha}`).toString('base64');
 

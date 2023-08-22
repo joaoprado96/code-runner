@@ -81,6 +81,73 @@ async function getRegistros() {
     return registros2;
 }
 
+
+// Função para fazer uma requisição assíncrona para obter os registros da tabela
+async function getRegistros2(usuario,senha,datasetlist) {
+    const response2 = await fetch('/estatistica', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ usuario: usuario, senha: senha, datasets: datasetlist })
+    });
+    const registros = await response2.json();
+
+    const configuracoes = {
+        filler: 1,
+        protocolo: 1,
+        registro: 1, 
+        processamento: 1, 
+        transmissao: 1,
+        task: 1,
+        cpu_term: 1,
+        cpu_origem:1,
+        cd_local_origem: 4,
+        cpu_destino: 1,
+        cd_local_destino: 4,
+        num_transacoes: 2,
+        transacao: 3,
+        filler2: 1,
+        tempo_cpu: 8,
+        hi_processamento: 8, 
+        hi_send_dados: 8,
+        hi_proc_comando: 8,
+        hi_gravacao_estatistica: 8,
+        filler3: 8,
+        vr_registro: 1,
+        qtd_erros: 2,
+        tempo_gasto_segundos: 2, 
+        tempo_gasto_dseg: 1,
+        applid_grbe: 8,
+        nome_logico: 8,
+        numero_entrada: 6,
+        tipo_terminal: 2,
+        versao_hardware: 2,
+        terminal_logico: 8,
+        tipo_terminal_con: 1,
+        numero_serie: 8,
+        numero_sequencial: 4,
+        numero_task_zonada:2,
+        numero_socket: 6,
+        endereco_ip: 4, 
+        num_transacoes_cadeia: 2,
+        codigo_desconexao: 1,
+        num_tentativas_transmitir: 1,
+        tempo_total_gasto_io: 8,
+        qtd_arquivos_lidos: 2,
+        qtd_arquivos_gravados: 2,
+        tamanho_input: 2,
+        tamanho_output: 2,
+        msg_entrada: 150,
+        msg_saida: 100,
+    };
+    const registros2 = linhasParaRegistros(registros, configuracoes)
+
+    return registros2;
+}
+
+
+
 function extrairValoresDaLinha(linha, configuracoes) {
     const valoresExtraidos = {};
 
@@ -89,6 +156,11 @@ function extrairValoresDaLinha(linha, configuracoes) {
         const valor = linha.slice(indiceInicial, indiceInicial + tamanhoColuna).trim();
         if (nomeVariavel === 'processamento' || nomeVariavel === 'numero_sequencial' || nomeVariavel === 'task'){
             valoresExtraidos[nomeVariavel] = toHexString(valor)
+        }
+        else if(nomeVariavel === 'hi_processamento' || nomeVariavel === 'hi_send_dados' ||nomeVariavel === 'hi_proc_comando' || nomeVariavel === 'hi_gravacao_estatistica'){
+            const todHex = todToTimestamp(valor);
+            const timestamp = todToTimestamp(todHex);
+            valoresExtraidos[nomeVariavel] = formatDate(timestamp);
         }
         else{
             valoresExtraidos[nomeVariavel] = valor;
@@ -122,16 +194,36 @@ function processarInput() {
         let datasetsList = datasetsStr.split(',').map(ds => ds.trim());
 
         // Processa a lista de datasets
-        console.log(datasetsList);  // Aqui, você pode fazer o que quiser com a lista
+        buildTable([
+            { coluna: 'hi_processamento', modo: 'asc' },
+        ],datasetsList);
     } else {
         alert('Por favor, insira ao menos um dataset.');
     }
 }
 
-async function buildTable(ordens = []) {
-    const registros = await getRegistros();
+function validarCampos() {
+    let usuario = document.getElementById("usuario").value;
+    let senha = document.getElementById("senha").value;
+    let datasets = document.getElementById("datasets").value;
+
+    // Verifica se os campos estão vazios
+    if (!usuario.trim() || !senha.trim() || !datasets.trim()) {
+        alert("Por favor, preencha todos os campos: Usuário, Senha e Datasets.");
+        return false; // Campos não são válidos
+    }
+
+    return true; // Campos são válidos
+}
+
+async function buildTable(ordens = [],datasetlist) {
+    let usuario = document.getElementById("usuario").value;
+    let senha = document.getElementById("senha").value;
+    if (!validarCampos()) {
+        return false
+    }
+    const registros = await getRegistros2(usuario,senha,datasetlist);
     registrosOriginais = registros; // Armazena os registros originais
-    registrosGlobal = registros;
 
     const registrosElement = document.getElementById('registros');
 
@@ -295,6 +387,38 @@ function toHexString(input) {
 
     // Convertendo o array UTF-8 para uma string hexadecimal
     return Array.from(utf8Array).map(byte => byte.toString(16).padStart(2, '0')).join('').toUpperCase();
+}
+
+function toUpperCase(inputElement) {
+    inputElement.value = inputElement.value.toUpperCase();
+}
+
+function todToTimestamp(todHex) {
+    // Constante: milissegundos desde 1900-01-01 até 1970-01-01
+    const EPOCH_DIFF = 2208988800000n;
+
+    // Conversão: 1 TOD unit é aproximadamente 143.1818 nanossegundos
+    const TOD_UNIT_IN_NS = 1431818n;
+
+    // Converta o valor hexadecimal para BigInt
+    const todValue = BigInt(`0x${todHex}`);
+
+    // Converta o valor TOD para nanossegundos
+    const todInNs = todValue * TOD_UNIT_IN_NS;
+
+    // Converta nanossegundos para milissegundos
+    const todInMs = todInNs / 1000000n;
+
+    // Adicione o deslocamento desde 1900 até 1970 para obter um timestamp Unix
+    const timestamp = todInMs + EPOCH_DIFF;
+
+    return Number(timestamp);
+}
+
+
+function formatDate(timestamp) {
+    const date = new Date(timestamp);
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}.${String(date.getMilliseconds()).padStart(3, '0')}`;
 }
 
 function transformarChaveValor(chave, valor) {
@@ -536,12 +660,10 @@ function transformarChaveValor(chave, valor) {
     }
 }
 
-
 // Chamada da função para construir a tabela ao carregar a página
 window.onload = function() {
     // (CODIGO NOVO)
     buildTable([
-        { coluna: 'nome', modo: 'asc' },
-        { coluna: 'tempo_inicio', modo: 'desc' }
+        { coluna: 'hi_processamento', modo: 'asc' },
     ]);
 };
