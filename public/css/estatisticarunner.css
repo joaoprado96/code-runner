@@ -103,35 +103,20 @@ td {
     background-color: #6f3800;
 }
 
-/* Estilos para o container de bolas */
-#bolas-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: right; /* Espaçamento uniforme entre as bolas */
-    margin: 5px 0;
+/* Estilos do botão */
+.btn2 {
+    background-color: #ff5e00;
+    color: white;
+    padding: 4px 2px;
+    width: 90px;
+    border: none;
+    border-radius: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-.bola-container {
-    display: flex;
-    padding: 15px;
-    flex-direction: column;
-    align-items: center;
-}
-
-.bola {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    display: inline-block;
-    background-color: #FFA500;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-/*Codigo novo*/
-.label-bola {
-    font-size: 12px; /* Tamanho de fonte menor */
-    margin-top: 1px; /* Espaço entre a bola e o label */
-    color: #000000; /* Cor do texto do label */
+.btn2:hover {
+    background-color: #6f3800;
 }
 
 /* Estilos para parágrafos */
@@ -224,4 +209,28 @@ img.logo {
   
 .linha-clicada {
     background-color: #e7e7e7; /* Cinza claro */
+}
+
+.input-container {
+    display: flex;
+    justify-items: center;
+    background-color: #fff;
+    padding: 2px;
+    border-radius: 18px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    text-align: center;
+}
+
+h3 {
+    margin-top: 0;
+}
+
+#datasets {
+    width: 98%;
+    padding: 8px;
+    margin: 2x 2px;
+    border-radius: 18px;
+    border: 2px solid #ccc;
+    font-size: 11px;
 }

@@ -295,31 +295,38 @@ app.get('/get_estatistica', (req, res) => {
     res.json(text);
 });
 
-app.post('/post_estatistica', async (req, res) => {
-    const baseURL = 'https://apiexemplo.com/zosmf/restfiles/';
+app.post('/estatistica', async (req, res) => {
+    const baseURL = 'https://zosmfbd.itau:1600/zosmf/restfiles/ds/';
 
-    // Certifique-se de que o corpo da requisição tem 'usuario', 'senha' e 'dataset'
-    if (!req.body.usuario || !req.body.senha || !req.body.dataset) {
-        return res.status(400).send({ message: 'Campos "usuario", "senha", e "dataset" são obrigatórios.' });
+    // Certifique-se de que o corpo da requisição tem 'usuario', 'senha' e 'datasets'
+    if (!req.body.usuario || !req.body.senha || !req.body.datasets || !Array.isArray(req.body.datasets)) {
+        return res.status(400).send({ message: 'Campos "usuario", "senha", e "datasets" são obrigatórios e "datasets" deve ser uma lista.' });
     }
-
-    const fullURL = baseURL + req.body.dataset;
 
     // Codificar nome de usuário e senha em base64
     const credentials = Buffer.from(`${req.body.usuario}:${req.body.senha}`).toString('base64');
 
-    try {
-        const response = await axios.get(fullURL, {
-            headers: {
-                'Authorization': `Basic ${credentials}`
-            }
-        });
+    const results = [];
 
-        res.json(response.data);
-    } catch (error) {
-        res.status(500).send({message: `Erro ao buscar dados: ${error.message}`});
+    for (let dataset of req.body.datasets) {
+        const fullURL = baseURL + dataset;
+        try {
+            const response = await axios.get(fullURL, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': `Basic ${credentials}`
+                }
+            });
+
+            results.push(response.data);
+        } catch (error) {
+            results.push({ dataset: dataset, error: `Erro ao buscar dados: ${error.message}` });
+        }
     }
+
+    res.json(results);
 });
+
 
 app.get('/codes/:scriptName', (req, res) => {
     const scriptName = req.params.scriptName;

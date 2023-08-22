@@ -87,7 +87,13 @@ function extrairValoresDaLinha(linha, configuracoes) {
     let indiceInicial = 0;
     for (const [nomeVariavel, tamanhoColuna] of Object.entries(configuracoes)) {
         const valor = linha.slice(indiceInicial, indiceInicial + tamanhoColuna).trim();
-        valoresExtraidos[nomeVariavel] = valor;
+        if (nomeVariavel === 'processamento' || nomeVariavel === 'numero_sequencial' || nomeVariavel === 'task'){
+            valoresExtraidos[nomeVariavel] = toHexString(valor)
+        }
+        else{
+            valoresExtraidos[nomeVariavel] = valor;
+        }
+        
         indiceInicial += tamanhoColuna;
     }
 
@@ -97,7 +103,6 @@ function extrairValoresDaLinha(linha, configuracoes) {
 function linhasParaRegistros(texto, configuracoes) {
     // Dividir a string em linhas usando a quebra de linha como delimitador
     var linhas = texto.trim().split('\n');
-    console.log(linhas)
 
     // Mapear cada linha para um registro JSON usando extrairValoresDaLinha
     var registros = linhas.map(function(linha) {
@@ -105,6 +110,22 @@ function linhasParaRegistros(texto, configuracoes) {
     });
 
     return registros;
+}
+
+function processarInput() {
+    // Obtém o valor da entrada
+    let datasetsStr = document.getElementById('datasets').value.trim();
+    
+    // Se a entrada não estiver vazia
+    if (datasetsStr) {
+        // Divide a entrada em uma lista usando a vírgula como delimitador
+        let datasetsList = datasetsStr.split(',').map(ds => ds.trim());
+
+        // Processa a lista de datasets
+        console.log(datasetsList);  // Aqui, você pode fazer o que quiser com a lista
+    } else {
+        alert('Por favor, insira ao menos um dataset.');
+    }
 }
 
 async function buildTable(ordens = []) {
@@ -268,6 +289,13 @@ function closePopup() {
     document.getElementById('customPopup').style.display = 'none';
 }
 
+function toHexString(input) {
+    // Convertendo a string para um buffer UTF-8 usando TextEncoder
+    let utf8Array = new TextEncoder().encode(input);
+
+    // Convertendo o array UTF-8 para uma string hexadecimal
+    return Array.from(utf8Array).map(byte => byte.toString(16).padStart(2, '0')).join('').toUpperCase();
+}
 
 function transformarChaveValor(chave, valor) {
     switch (chave) {
@@ -296,29 +324,21 @@ function transformarChaveValor(chave, valor) {
         case "processamento":
             switch(valor){
                 case '2':
-                    return [chave.toUpperCase(), valor.toLowerCase() + ' - Transação'];
-                case '4':
-                    return [chave.toUpperCase(), valor.toLowerCase() + ' - Serviço'];
-                case 'c':
-                    return [chave.toUpperCase(), valor.toLowerCase() + ' - Status de Processamento'];
+                    return [chave.toUpperCase(), valor];
                 default:
                     return [chave.toUpperCase(), valor];
             }
         case "transmissao":
             switch(valor){
                 case '2':
-                    return [chave.toUpperCase(), valor.toLowerCase() + ' - Transação'];
-                case '4':
-                    return [chave.toUpperCase(), valor.toLowerCase() + ' - Serviço'];
-                case 'b':
-                    return [chave.toUpperCase(), valor.toLowerCase() + ' - Transação'];
+                    return [chave.toUpperCase(), valor];
                 default:
                     return [chave.toUpperCase(), valor];
             }
         case "task":
             switch(valor){
                 default:
-                    return [chave.toUpperCase(), valor.toUpperCase()];
+                    return [chave.toUpperCase(), valor];
             }
         case "cpu_term":
             switch(valor){
