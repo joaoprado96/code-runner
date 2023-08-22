@@ -285,6 +285,16 @@ app.get('/get_logs', (req, res) => {
     });
 });
 
+app.get('/get_estatistica', (req, res) => {
+    var text = `
+1bcdefgHhhhhijjjjpptttf8888888899999999333333334444444466666666yyyyyyyyqxxppioooooooobbbbbbbb!!!!!!@@##$$$$$$$$&NNNNNNNNBBBB00GGGGGGÇÇÇÇTTQZMMMMMMMMSSWWRRCCmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+2acdefgHhhhhijjjjpptttf8888888899999999333333334444444466666666yyyyyyyyqxxppioooooooobbbbbbbb!!!!!!@@##$$$$$$$$&NNNNNNNNBBBB00GGGGGGÇÇÇÇTTQZMMMMMMMMSSWWRRCCmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+3dcdefgHhhhhijjjjpptttf8888888899999999333333334444444466666666yyyyyyyyqxxppioooooooobbbbbbbb!!!!!!@@##$$$$$$$$&NNNNNNNNBBBB00GGGGGGÇÇÇÇTTQZMMMMMMMMSSWWRRCCmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+4ecdefgHhhhhijjjjpptttf8888888899999999333333334444444466666666yyyyyyyyqxxppioooooooobbbbbbbb!!!!!!@@##$$$$$$$$&NNNNNNNNBBBB00GGGGGGÇÇÇÇTTQZMMMMMMMMSSWWRRCCmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+`;  
+    res.json(text);
+});
+
 app.get('/codes/:scriptName', (req, res) => {
     const scriptName = req.params.scriptName;
 
@@ -294,6 +304,30 @@ app.get('/codes/:scriptName', (req, res) => {
     }
 
     res.send({message: `CodeRunner: ${scriptName} está executando`});
+});
+
+app.post('/get_estatistica', async (req, res) => {
+    const url = 'https://apiexemplo.com/zosmf/restfiles/XI.BEDES.X1STA';
+
+    // Certifique-se de que o corpo da requisição tem 'usuario' e 'senha'
+    if (!req.body.usuario || !req.body.senha) {
+        return res.status(400).send({ message: 'Campos "usuario" e "senha" são obrigatórios.' });
+    }
+
+    // Codificar nome de usuário e senha em base64
+    const credentials = Buffer.from(`${req.body.usuario}:${req.body.senha}`).toString('base64');
+
+    try {
+        const response = await axios.get(url, {
+            headers: {
+                'Authorization': `Basic ${credentials}`
+            }
+        });
+
+        res.json(response.data);
+    } catch (error) {
+        res.status(500).send({message: `Erro ao buscar dados: ${error.message}`});
+    }
 });
 
 app.delete('/codes/:scriptName', (req, res) => {

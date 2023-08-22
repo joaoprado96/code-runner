@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Estatistica Runner</title>
+    <link rel="stylesheet" type="text/css" href="css/estatisticarunner.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+<body>
+    <div id="top-bar">
+        <img src="img/regressiverunner.PNG" alt="Logo" class="logo">
+        <h1>ESTATISTICA RUNNER</h1>
+        <input type="text" id="usuario" placeholder="Usuário">
+        <input type="password" id="senha" placeholder="Senha">
+        <select id="versao" onchange="buildTable()">
+            <option value="TODAS">TODAS</option>
+            <option value="Base">Base</option>
+            <option value="V86A">V86A</option>
+            <option value="V86B">V86B</option>
+            <option value="V86C">V86C</option>
+            <option value="V86D">V86D</option>
+            <option value="V86E">V86E</option>
+            <option value="V86G">V86F</option>
+            <option value="V86G">V86G</option>
+            <option value="V86G">V86H</option>
+        </select>
+        <p>
+    </div>
+    </div>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th> </th>
+                <th> </th>
+                <th> </th>
+                <th>Protocolo</th>
+                <th>Registro</th>
+                <th>Processamento</th>
+                <th>Transação</th>
+                <th>Task</th>
+                <th>CPU Term</th>
+                <th>CPU Origem</th>
+                <th>CPU Destino</th>
+                <th>Horario de Processamento</th>
+                <th>APPLID</th>
+                <th>Nome Logico</th>
+                <th>Terminal</th>
+                <th>Número Serie</th>
+                <th>Rastreio</th>
+            </tr>
+            <tr>
+                <th>  </th>
+                <th>  </th>
+                <th>  </th>
+                <th><input type="text" id="filtro-protocolo"         class="filtro-input1" oninput="filtrarRegistros()" placeholder="Protocolo"></th>
+                <th><input type="text" id="filtro-registro"          class="filtro-input1" oninput="filtrarRegistros()" placeholder="Registro"></th>
+                <th><input type="text" id="filtro-processamento"     class="filtro-input1" oninput="filtrarRegistros()" placeholder="Processamento"></th>
+                <th><input type="text" id="filtro-transacao"         class="filtro-input2" oninput="filtrarRegistros()" placeholder="Transação"></th>
+                <th><input type="text" id="filtro-task"              class="filtro-input1" oninput="filtrarRegistros()" placeholder="Task"></th>
+                <th><input type="text" id="filtro-cpu_term"          class="filtro-input1" oninput="filtrarRegistros()" placeholder="CPU Terminal"></th>
+                <th><input type="text" id="filtro-cpu_origem"        class="filtro-input1" oninput="filtrarRegistros()" placeholder="CPU Origem"></th>
+                <th><input type="text" id="filtro-cpu_destino"       class="filtro-input1" oninput="filtrarRegistros()" placeholder="CPU Destino"></th>
+                <th><input type="text" id="filtro-hi_processamento"  class="filtro-input4" oninput="filtrarRegistros()" placeholder="Horário de Processamento"></th>
+                <th><input type="text" id="filtro-applid_grbe"       class="filtro-input3" oninput="filtrarRegistros()" placeholder="APPLID GRBE"></th>
+                <th><input type="text" id="filtro-nome_logico"       class="filtro-input3" oninput="filtrarRegistros()" placeholder="Nome Lógico"></th>
+                <th><input type="text" id="filtro-terminal_logico"   class="filtro-input3" oninput="filtrarRegistros()" placeholder="Terminal"></th>
+                <th><input type="text" id="filtro-numero_serie"      class="filtro-input3" oninput="filtrarRegistros()" placeholder="Número de Série"></th>
+                <th><input type="text" id="filtro-numero_sequencial" class="filtro-input3" oninput="filtrarRegistros()" placeholder="Sequencial ou Hexa"></th>
+            </tr>
+        </thead>
+        <tbody id="registros">
+        </tbody>
+    </table>
+    <div class="popup" id="customPopup">
+        <div class="popup-content">
+          <span class="close-btn" onclick="closePopup()">&times;</span>
+          <div id="popupInfo"></div>
+        </div>
+      </div>      
+
+    <script src="js_files/estatisticarunner.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
+</body>
+</html>
