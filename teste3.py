@@ -119,3 +119,26 @@ var textoModificado = substituirUnicodePorHexa(textoOriginal);
 
 console.log(textoModificado);
 
+import json
+
+def adicionar_elementos_json(objeto_json, novos_elementos):
+    for chave, valor in novos_elementos.items():
+        if chave not in objeto_json:
+            objeto_json[chave] = valor
+
+# Exemplo de uso
+objeto_json = {
+    "chave1": "valor1",
+    "chave2": "valor2"
+}
+
+novos_elementos = {
+    "chave2": "novo_valor2",
+    "chave3": "valor3"
+}
+
+adicionar_elementos_json(objeto_json, novos_elementos)
+
+print(json.dumps(objeto_json, indent=4))  # Exibe o objeto JSON atualizado
+
+
