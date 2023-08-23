@@ -108,3 +108,14 @@ const configuracoes = {
 const valores = extrairValoresDaLinha(linha, configuracoes);
 console.log(valores); // Saída esperada: { nome: 'João', idade: '25', genero: 'Masculino' }
 
+function substituirUnicodePorHexa(texto) {
+  return texto.replace(/[\u0080-\uFFFF]/g, function(match) {
+    return "\\u" + match.charCodeAt(0).toString(16).padStart(4, "0");
+  });
+}
+
+var textoOriginal = "Olá, mundo!";
+var textoModificado = substituirUnicodePorHexa(textoOriginal);
+
+console.log(textoModificado);
+
