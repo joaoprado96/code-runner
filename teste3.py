@@ -141,4 +141,32 @@ adicionar_elementos_json(objeto_json, novos_elementos)
 
 print(json.dumps(objeto_json, indent=4))  # Exibe o objeto JSON atualizado
 
+def salvar_linhas_com_prefixo(texto, prefixo_alvo, prefixos_ignorados):
+    linhas_salvas = []
+    salvar = False
+
+    for linha in texto.split('\n'):
+        if linha.startswith(prefixo_alvo):
+            salvar = not salvar
+
+        if salvar and not any(linha.startswith(p) for p in prefixos_ignorados):
+            linhas_salvas.append(linha)
+
+    return '\n'.join(linhas_salvas)
+
+# Exemplo de uso
+texto = """
+AAAAAA linha 1
+XXXXXX linha 2
+BBBBBB linha 3
+CCCCCC linha 4
+XXXXXX linha 5
+DDDDDD linha 6
+"""
+
+prefixo_alvo = "XXXXXX"
+prefixos_ignorados = ["BBBBBB", "CCCCCC"]
+
+resultado = salvar_linhas_com_prefixo(texto, prefixo_alvo, prefixos_ignorados)
+print(resultado)
 
