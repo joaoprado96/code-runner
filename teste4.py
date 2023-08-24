@@ -67,3 +67,76 @@ adicionar_objeto(obj_principal,'AGEDSECT',objeto_json)
 
 json_str = json.dumps(obj_principal, indent=4)  # 4 espaços para indentação
 print(json_str)
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Navegador JSON</title>
+</head>
+<body>
+    <h1>Navegador JSON</h1>
+    <div id="jsonNavigator"></div>
+
+    <script>
+        var jsonNavigator = document.getElementById("jsonNavigator");
+
+        async function fetchJsonData() {
+            try {
+                var response = await fetch('/snaprunner', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({}) // You can add data here if needed
+                });
+
+                if (response.ok) {
+                    var jsonData = await response.json();
+                    renderObject(jsonData, jsonNavigator);
+                } else {
+                    console.error('Failed to fetch JSON data');
+                }
+            } catch (error) {
+                console.error('An error occurred:', error);
+            }
+        }
+
+        function renderObject(obj, element) {
+            var ul = document.createElement("ul");
+
+            for (var key in obj) {
+                if (typeof obj[key] === "object") {
+                    var li = document.createElement("li");
+                    li.textContent = key;
+                    li.addEventListener("click", async function () {
+                        ul.innerHTML = "";
+                        var response = await fetch('/snaprunner', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ key: key }) // You can add data here if needed
+                        });
+                        if (response.ok) {
+                            var nestedJsonData = await response.json();
+                            renderObject(nestedJsonData, ul);
+                        }
+                    });
+                    ul.appendChild(li);
+                } else {
+                    var li = document.createElement("li");
+                    li.textContent = key + ": " + obj[key].toString();
+                    ul.appendChild(li);
+                }
+            }
+
+            element.appendChild(ul);
+        }
+
+        fetchJsonData();
+    </script>
+</body>
+</html>
+
