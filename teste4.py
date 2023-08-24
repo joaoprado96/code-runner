@@ -32,6 +32,9 @@ def salvar_linhas_com_prefixo(texto, prefixo_alvo, prefixos_ignorados,json):
 
     return '\n'.join(linhas_salvas)
 
+# Ordenando o dicionário pelos valores hexadecimais
+sorted_data = {k: v for k, v in sorted(data.items(), key=lambda item: int(item[1], 16))}
+
 
 # Exemplo de uso
 obj_principal={}
