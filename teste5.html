@@ -92,7 +92,7 @@
             }
 
             select.addEventListener("change", function() {
-                if (select.value && typeof obj[select.value] === "object") {
+                if (select.value) {
                     if (Array.isArray(obj[select.value])) { // Se for uma array, exibir valores
                         displayValues(obj[select.value]);
                     } else {
@@ -110,7 +110,7 @@
                 }
             });
 
-            jsonNavigator.innerHTML = "";
+            jsonNavigator.innerHTML = ""; // Limpar o anterior
             jsonNavigator.appendChild(select);
         }
 
