@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Navegador JSON</title>
+</head>
+<body>
+    <h1>Navegador JSON</h1>
+    <button id="backButton" disabled>Voltar</button>
+    <div id="jsonNavigator"></div>
+
+    <script>
+        var dados = {
+            "AGEDSECT": {
+                "AGE35CDA": ["00001A", "2233"],
+                "AGE35CDB": ["00001A", "2233"],
+                "AGE35CDC": ["00001A", "2233"]
+            },
+            "AG2DSECT": {
+                "AGE25CDA": ["00001A", "2233"],
+                "AGE25CDB": ["00001A", "2233"],
+                "AGE25CDC": ["00001A", "2233"]
+            }
+        };
+
+        var jsonNavigator = document.getElementById("jsonNavigator");
+        var backButton = document.getElementById("backButton");
+
+        var historyStack = [];
+        function renderObject(obj, element) {
+            var select = document.createElement("select");
+
+            for (var key in obj) {
+                var option = document.createElement("option");
+                option.value = key;
+                option.textContent = key;
+                select.appendChild(option);
+            }
+
+            select.addEventListener("change", function() {
+                if (typeof obj[select.value] === "object") {
+                    historyStack.push(obj);
+                    renderObject(obj[select.value], element);
+                }
+            });
+
+            element.innerHTML = "";
+            element.appendChild(select);
+            backButton.disabled = historyStack.length === 0;
+        }
+
+        backButton.addEventListener("click", function() {
+            if (historyStack.length > 0) {
+                var lastObject = historyStack.pop();
+                renderObject(lastObject, jsonNavigator);
+            }
+        });
+
+        renderObject(dados, jsonNavigator);
+    </script>
+</body>
+</html>
