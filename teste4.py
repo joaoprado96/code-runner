@@ -140,3 +140,56 @@ print(json_str)
 </body>
 </html>
 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Navegador JSON</title>
+</head>
+<body>
+    <h1>Navegador JSON</h1>
+    <div id="jsonNavigator"></div>
+
+    <script>
+        var dados = {
+            "AGEDSECT": {
+                "AGE35CDA": ["00001A", "2233"],
+                "AGE35CDB": ["00001A", "2233"],
+                "AGE35CDC": ["00001A", "2233"]
+            },
+            "AG2DSECT": {
+                "AGE25CDA": ["00001A", "2233"],
+                "AGE25CDB": ["00001A", "2233"],
+                "AGE25CDC": ["00001A", "2233"]
+            }
+        };
+
+        var jsonNavigator = document.getElementById("jsonNavigator");
+
+        function renderObject(obj, element) {
+            var ul = document.createElement("ul");
+
+            for (var key in obj) {
+                if (typeof obj[key] === "object") {
+                    var li = document.createElement("li");
+                    li.textContent = key;
+                    li.addEventListener("click", function () {
+                        ul.innerHTML = "";
+                        renderObject(obj[key], ul);
+                    });
+                    ul.appendChild(li);
+                } else {
+                    var li = document.createElement("li");
+                    li.textContent = key + ": " + obj[key].toString();
+                    ul.appendChild(li);
+                }
+            }
+
+            element.appendChild(ul);
+        }
+
+        renderObject(dados, jsonNavigator);
+    </script>
+</body>
+</html>
+
+
