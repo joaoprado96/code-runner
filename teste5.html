@@ -1,12 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Navegador JSON</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 50px;
+        }
+
+        #jsonNavigatorContainer {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        #breadcrumb {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        #breadcrumb button {
+            padding: 5px 10px;
+            border: none;
+            background-color: #007BFF;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <h1>Navegador JSON</h1>
-    <button id="backButton" disabled>Voltar</button>
-    <div id="jsonNavigator"></div>
+    <div id="jsonNavigatorContainer">
+        <h1>Navegador JSON</h1>
+        <div id="breadcrumb"></div>
+        <div id="jsonNavigator"></div>
+    </div>
 
     <script>
         var dados = {
@@ -23,39 +70,37 @@
         };
 
         var jsonNavigator = document.getElementById("jsonNavigator");
-        var backButton = document.getElementById("backButton");
+        var breadcrumb = document.getElementById("breadcrumb");
 
-        var historyStack = [];
-        function renderObject(obj, element) {
+        function renderObject(obj) {
             var select = document.createElement("select");
+            select.appendChild(new Option("-- Selecione --", "")); // Option padrão
 
             for (var key in obj) {
-                var option = document.createElement("option");
-                option.value = key;
-                option.textContent = key;
+                var option = new Option(key, key);
                 select.appendChild(option);
             }
 
             select.addEventListener("change", function() {
-                if (typeof obj[select.value] === "object") {
-                    historyStack.push(obj);
-                    renderObject(obj[select.value], element);
+                if (select.value && typeof obj[select.value] === "object") {
+                    const button = document.createElement("button");
+                    button.textContent = select.value;
+                    button.addEventListener("click", function() {
+                        while (breadcrumb.lastChild !== button) {
+                            breadcrumb.removeChild(breadcrumb.lastChild);
+                        }
+                        renderObject(obj[button.textContent]);
+                    });
+                    breadcrumb.appendChild(button);
+                    renderObject(obj[select.value]);
                 }
             });
 
-            element.innerHTML = "";
-            element.appendChild(select);
-            backButton.disabled = historyStack.length === 0;
+            jsonNavigator.innerHTML = "";
+            jsonNavigator.appendChild(select);
         }
 
-        backButton.addEventListener("click", function() {
-            if (historyStack.length > 0) {
-                var lastObject = historyStack.pop();
-                renderObject(lastObject, jsonNavigator);
-            }
-        });
-
-        renderObject(dados, jsonNavigator);
+        renderObject(dados);
     </script>
 </body>
 </html>
