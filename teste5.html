@@ -30,6 +30,7 @@
             font-size: 16px;
             border-radius: 4px;
             border: 1px solid #ccc;
+            margin-bottom: 10px;
         }
 
         #breadcrumb {
@@ -46,6 +47,12 @@
             border-radius: 4px;
             cursor: pointer;
         }
+
+        #dataValues {
+            padding: 10px;
+            background-color: #e9e9e9;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
@@ -53,6 +60,7 @@
         <h1>Navegador JSON</h1>
         <div id="breadcrumb"></div>
         <div id="jsonNavigator"></div>
+        <div id="dataValues"></div>
     </div>
 
     <script>
@@ -71,8 +79,10 @@
 
         var jsonNavigator = document.getElementById("jsonNavigator");
         var breadcrumb = document.getElementById("breadcrumb");
+        var dataValues = document.getElementById("dataValues");
 
         function renderObject(obj) {
+            dataValues.innerHTML = ""; // Limpando os valores anteriores
             var select = document.createElement("select");
             select.appendChild(new Option("-- Selecione --", "")); // Option padrão
 
@@ -83,21 +93,29 @@
 
             select.addEventListener("change", function() {
                 if (select.value && typeof obj[select.value] === "object") {
-                    const button = document.createElement("button");
-                    button.textContent = select.value;
-                    button.addEventListener("click", function() {
-                        while (breadcrumb.lastChild !== button) {
-                            breadcrumb.removeChild(breadcrumb.lastChild);
-                        }
-                        renderObject(obj[button.textContent]);
-                    });
-                    breadcrumb.appendChild(button);
-                    renderObject(obj[select.value]);
+                    if (Array.isArray(obj[select.value])) { // Se for uma array, exibir valores
+                        displayValues(obj[select.value]);
+                    } else {
+                        const button = document.createElement("button");
+                        button.textContent = select.value;
+                        button.addEventListener("click", function() {
+                            while (breadcrumb.lastChild !== button) {
+                                breadcrumb.removeChild(breadcrumb.lastChild);
+                            }
+                            renderObject(obj[button.textContent]);
+                        });
+                        breadcrumb.appendChild(button);
+                        renderObject(obj[select.value]);
+                    }
                 }
             });
 
             jsonNavigator.innerHTML = "";
             jsonNavigator.appendChild(select);
+        }
+
+        function displayValues(values) {
+            dataValues.innerHTML = values.join(", ");
         }
 
         renderObject(dados);
