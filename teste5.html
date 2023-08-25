@@ -88,13 +88,23 @@
         }
 
         function displayValues(values) {
-            dataValues.innerHTML = "";
-            values.forEach(value => {
-                const div = document.createElement("div");
-                div.textContent = value + (descricao[value] ? ` (${descricao[value]})` : "");
-                dataValues.appendChild(div);
-            });
-        }
+    dataValues.innerHTML = "";
+
+    // Se existir o primeiro valor
+    if (values[0]) {
+        const div1 = document.createElement("div");
+        div1.textContent = `Deslocamento: ${values[0]}`;
+        dataValues.appendChild(div1);
+    }
+
+    // Se existir o segundo valor
+    if (values[1]) {
+        const div2 = document.createElement("div");
+        div2.textContent = `Tamanho do campo: ${values[1]}`;
+        dataValues.appendChild(div2);
+    }
+}
+
 
         renderObject(dados);
     </script>
