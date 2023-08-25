@@ -77,14 +77,19 @@
             }
         };
 
+        var descricao = {
+            "00001A": "Descrição para 00001A",
+            "2233": "Descrição para 2233"
+        };
+
         var jsonNavigator = document.getElementById("jsonNavigator");
         var breadcrumb = document.getElementById("breadcrumb");
         var dataValues = document.getElementById("dataValues");
 
-        function renderObject(obj) {
-            dataValues.innerHTML = ""; // Limpando os valores anteriores
+        function renderObject(obj, breadcrumbPath = []) {
+            dataValues.innerHTML = ""; 
             var select = document.createElement("select");
-            select.appendChild(new Option("-- Selecione --", "")); // Option padrão
+            select.appendChild(new Option("-- Selecione --", "")); 
 
             for (var key in obj) {
                 var option = new Option(key, key);
@@ -93,29 +98,45 @@
 
             select.addEventListener("change", function() {
                 if (select.value) {
-                    if (Array.isArray(obj[select.value])) { // Se for uma array, exibir valores
+                    breadcrumbPath.push(select.value);
+                    updateBreadcrumb(breadcrumbPath);
+                    if (Array.isArray(obj[select.value])) {
                         displayValues(obj[select.value]);
                     } else {
-                        const button = document.createElement("button");
-                        button.textContent = select.value;
-                        button.addEventListener("click", function() {
-                            while (breadcrumb.lastChild !== button) {
-                                breadcrumb.removeChild(breadcrumb.lastChild);
-                            }
-                            renderObject(obj[button.textContent]);
-                        });
-                        breadcrumb.appendChild(button);
-                        renderObject(obj[select.value]);
+                        renderObject(obj[select.value], breadcrumbPath);
                     }
                 }
             });
 
-            jsonNavigator.innerHTML = ""; // Limpar o anterior
+            jsonNavigator.innerHTML = "";
             jsonNavigator.appendChild(select);
         }
 
+        function updateBreadcrumb(path) {
+            breadcrumb.innerHTML = "";
+            for (let i = 0; i < path.length; i++) {
+                const button = document.createElement("button");
+                button.textContent = path[i];
+                button.addEventListener("click", function() {
+                    while (path.length > i + 1) {
+                        path.pop();
+                    }
+                    let obj = dados;
+                    for (let j = 0; j < path.length; j++) {
+                        obj = obj[path[j]];
+                    }
+                    renderObject(obj, [...path]);
+                });
+                breadcrumb.appendChild(button);
+            }
+        }
+
         function displayValues(values) {
-            dataValues.innerHTML = values.join(", ");
+            let content = '';
+            values.forEach(value => {
+                content += `<strong>${value}</strong>: ${descricao[value] || 'Sem descrição'}<br>`;
+            });
+            dataValues.innerHTML = content;
         }
 
         renderObject(dados);
