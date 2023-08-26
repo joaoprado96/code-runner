@@ -1,24 +1,85 @@
-var dados = {
-    "AGEDSECT": {
-        "AGE35CDA": ["00001A", "2233"],
-        "AGE35CDB": ["00001A", "2233"],
-        "AGE35CDC": ["00001A", "2233"]
-    },
-    "AG2DSECT": {
-        "AGE25CDA": ["00001A", "2233"],
-        "AGE25CDB": ["00001A", "2233"],
-        "AGE25CDC": ["00001A", "2233"]
-    }
-};
+document.addEventListener("DOMContentLoaded", function() {
+    // Seu código aqui
+    $(document).ready(function() {
+        $('.select2').select2({
+            placeholder: 'Selecione uma opção depois de carregar o arquivo',
+            allowClear: true
+        });
+      });    
+  });
 
-var descricao = {
-    "00001A": "Descrição para 00001A",
-    "2233": "Descrição para 2233"
-};
-
+var dados;
 var jsonNavigator = document.getElementById("jsonNavigator");
 var breadcrumb = document.getElementById("breadcrumb");
 var dataValues = document.getElementById("dataValues");
+
+  // Preenchendo o elemento 'select' com as áreas
+  var selectElement = document.getElementById("areaSelect");
+
+async function carregar(){
+    const usuario = document.getElementById('usuario').value;
+    const senha   = document.getElementById('senha').value;
+    const baseline= document.querySelector('input[name="baseline"]:checked').value;
+    const pacote  = document.getElementById('pacote').value;
+    const versao  = document.getElementById('versao').value;
+    const datasets= document.getElementById('datasets').value;
+    const id_snap = document.getElementById('id_snap').value;
+    const modo    = document.querySelector('input[name="modo"]:checked').value;
+    if (!usuario || !senha || !datasets || !id_snap ){
+        alert("Preencha as informações minimas: usuario, senha, arquivo e id do snap")
+        return;
+    }
+    const response = await fetch('/front/snaprunnerVLD',{
+        method: 'POST',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify({racf: usuario,senha:senha,pacote:pacote,baseline:baseline,versao:versao,datasets:datasets,id_snap:id_snap,modo:modo})
+    });
+    dados = await response.json();
+    
+    // Valida se os códigos de validação acusaram erro
+    if (dados.status == "Falha"){
+        alert(dados.mensagem);
+        return;
+    }
+    // Continuar com as tratativas trazer a lista de CSECT disponíveis
+    if (dados.status != 'Falha'){
+        console.log(dados.mensagem);
+        for (var i = 0; i < dados.areas.length; i++) {
+            var option = document.createElement("option");
+            option.value = dados.areas[i];
+            option.text = dados.areas[i];
+            selectElement.appendChild(option);
+          }
+    }
+
+}
+
+async function analisar(){
+    const usuario = document.getElementById('usuario').value;
+    const senha   = document.getElementById('senha').value;
+    const baseline= document.querySelector('input[name="baseline"]:checked').value;
+    const pacote  = document.getElementById('pacote').value;
+    const versao  = document.getElementById('versao').value;
+    const datasets= document.getElementById('datasets').value;
+    const id_snap = document.getElementById('id_snap').value;
+    const modo    = document.querySelector('input[name="modo"]:checked').value;
+    var selectedOptions = $('#areaSelect').val();
+    console.log("Áreas selecionadas:", selectedOptions);
+    if (!usuario || !senha){
+        return;
+    }
+    const response = await fetch('/front/snaprunner',{
+        method: 'POST',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify({racf: usuario,senha:senha,pacote:pacote,baseline:baseline,versao:versao,datasets:datasets,id_snap:id_snap,modo:modo,areas:selectedOptions})
+    });
+    dados = await response.json();
+    renderObject(dados)
+}
 
 function renderObject(obj, breadcrumbPath = []) {
     dataValues.innerHTML = "";

@@ -3,21 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snap Runner</title>
+    <title>Snap Runner - GRBE</title>
+    <link rel="icon" href="img/coderunner.PNG" type="image/png">
     <link rel="stylesheet" type="text/css" href="css/snaprunner.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     </head>
 </head>
 <body>
     <div id="top-bar">
         <img src="img/coderunner.PNG" alt="Logo" class="logo">
         <h1>SNAP RUNNER</h1>
-        <input type="text" id="usuario" placeholder="Usuário">
-        <input type="password" id="senha" placeholder="Senha">
+        <input type="text" id="usuario" placeholder="Usuário" value="JVSPPNX">
+        <input type="password" id="senha" placeholder="Senha" value="23232323">
     </div>
-    <div class="input-container">
-        <input type="text" id="datasets" placeholder="Ex: dataset1,dataset2,dataset3" oninput="toUpperCase(this)">
-        <button onclick="alert('Clicou em processar')" class="btn2">Processar</button>
+    <div class="inline-container">
+        <div class="input-container">
+            <input type="text" id="pacote"  placeholder="Coloque o pacote da versão que será usada como base. Se for utilziar Desenvolvimento. Ex: MI0P000211 ..." value="MI0P000211">
+            <input type="text" id="versao"  placeholder="Coloque a versão que será usada como base. Ex: 86F ..." value="45H">
+            <input type="radio" id="basesim"   name="baseline" value="sim"></input>
+            <label for="rapido">Baseline</label>
+            <input type="radio" id="basenao" name="baseline" value="nao" checked></input>
+            <label for="completo">Desenvolvimento</label>
+        </div>
+        <div class="input-container">
+            <input type="text" id="datasets" placeholder="Coloque o arquivo a ser analisado. Ex: MI.GRBEDES.R2DMP" oninput="toUpperCase(this)" value="MI.GRBEDES.R2DMP">
+            <input type="text" id="id_snap"  placeholder="Coloque o ID do SNAP a ser analisado Ex: 1, 10, 100" value="1">
+            <input type="radio" id="rapido"   name="modo" value="rapido" checked></input>
+            <label for="rapido">Rapido</label>
+            <input type="radio" id="completo" name="modo" value="completo"></input>
+            <label for="completo">Completo</label>
+        </div>
+    </div>
+    <button onclick="carregar()" class="btn2">CARREGAR</button>
+    <button onclick="analisar()" class="btn2">ANALISAR</button>
+    <div class="select-container">
+        <label for="areaSelect">ÁREAS DISPONÍVEIS NO ARQUIVO</label>
+        <select id="areaSelect" multiple class="select2">
+            <!-- As opções serão inseridas aqui pelo JavaScript -->
+        </select>
     </div>
     <div id="jsonNavigatorContainer">
         <div id="breadcrumb"></div>
@@ -25,5 +49,7 @@
         <div id="dataValues"></div>
     </div>
     <script src="js_pages/snaprunner.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </body>
 </html>
