@@ -9,12 +9,12 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
 var dados;
-var jsonNavigator = document.getElementById("jsonNavigator");
-var breadcrumb = document.getElementById("breadcrumb");
-var dataValues = document.getElementById("dataValues");
-
-  // Preenchendo o elemento 'select' com as áreas
-  var selectElement = document.getElementById("areaSelect");
+var jsonNavigator   = document.getElementById("jsonNavigator");
+var breadcrumb      = document.getElementById("breadcrumb");
+var dataValues      = document.getElementById("dataValues");
+var formElement     = document.getElementById("jsonForm");
+var formElement2    = document.getElementById("jsonBPH");
+var selectElement   = document.getElementById("areaSelect");
 
 async function carregar(){
     const usuario = document.getElementById('usuario').value;
@@ -45,15 +45,15 @@ async function carregar(){
     }
     // Continuar com as tratativas trazer a lista de CSECT disponíveis
     if (dados.status != 'Falha'){
-        console.log(dados.mensagem);
         for (var i = 0; i < dados.areas.length; i++) {
             var option = document.createElement("option");
             option.value = dados.areas[i];
             option.text = dados.areas[i];
             selectElement.appendChild(option);
           }
+        runVLD();
+        runBPH();
     }
-
 }
 
 async function analisar(){
@@ -70,7 +70,7 @@ async function analisar(){
     if (!usuario || !senha){
         return;
     }
-    const response = await fetch('/front/snaprunner',{
+    const response = await fetch('/front/snaprunnerRUN',{
         method: 'POST',
         headers:{
             'Content-Type':'application/json'
@@ -79,6 +79,115 @@ async function analisar(){
     });
     dados = await response.json();
     renderObject(dados)
+}
+
+async function runVLD(){
+    const usuario = document.getElementById('usuario').value;
+    const senha   = document.getElementById('senha').value;
+    const baseline= document.querySelector('input[name="baseline"]:checked').value;
+    const pacote  = document.getElementById('pacote').value;
+    const versao  = document.getElementById('versao').value;
+    const datasets= document.getElementById('datasets').value;
+    const id_snap = document.getElementById('id_snap').value;
+    const modo    = document.querySelector('input[name="modo"]:checked').value;
+    const responseV = await fetch('/front/snaprunnerVLD',{
+        method: 'POST',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify({racf: usuario,senha:senha,pacote:pacote,baseline:baseline,versao:versao,datasets:datasets,id_snap:id_snap,modo:modo})
+    });
+    dadosV = await responseV.json();
+    
+    // Valida se os códigos de validação acusaram erro
+    if (dadosV.status == "Falha"){
+        alert(dadosV.mensagem);
+        return;
+    }
+    // Continuar com as tratativas trazer a lista de CSECT disponíveis
+    if (dadosV.status != 'Falha'){
+        renderJsonAsForm(dadosV, formElement);
+    }
+}
+
+async function runPRE(){
+    const usuario = document.getElementById('usuario').value;
+    const senha   = document.getElementById('senha').value;
+    const baseline= document.querySelector('input[name="baseline"]:checked').value;
+    const pacote  = document.getElementById('pacote').value;
+    const versao  = document.getElementById('versao').value;
+    const datasets= document.getElementById('datasets').value;
+    const id_snap = document.getElementById('id_snap').value;
+    const modo    = document.querySelector('input[name="modo"]:checked').value;
+    const responseP = await fetch('/front/snaprunnerPRE',{
+        method: 'POST',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify({racf: usuario,senha:senha,pacote:pacote,baseline:baseline,versao:versao,datasets:datasets,id_snap:id_snap,modo:modo})
+    });
+    dadosP = await responseP.json();
+    renderJsonAsForm(dadosP, formElement);
+}
+
+async function runBPH(){
+    const usuario = document.getElementById('usuario').value;
+    const senha   = document.getElementById('senha').value;
+    const baseline= document.querySelector('input[name="baseline"]:checked').value;
+    const pacote  = document.getElementById('pacote').value;
+    const versao  = document.getElementById('versao').value;
+    const datasets= document.getElementById('datasets').value;
+    const id_snap = document.getElementById('id_snap').value;
+    const modo    = document.querySelector('input[name="modo"]:checked').value;
+    const responseB = await fetch('/front/snaprunnerBPH',{
+        method: 'POST',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify({racf: usuario,senha:senha,pacote:pacote,baseline:baseline,versao:versao,datasets:datasets,id_snap:id_snap,modo:modo})
+    });
+    dadosB = await responseB.json();
+    
+    // Valida se os códigos de validação acusaram erro
+    if (dadosB.status == "Falha"){
+        alert(dadosB.mensagem);
+        return;
+    }
+    // Continuar com as tratativas trazer a lista de CSECT disponíveis
+    if (dadosB.status != 'Falha'){
+        renderJsonAsForm(dadosB, formElement2);
+    }
+}
+
+function renderJsonAsForm(obj, element) {
+    for (var key in obj) {
+        var value = obj[key];
+        var fieldSet = document.createElement('fieldset');
+        var legend = document.createElement('legend');
+        legend.innerHTML = key;
+        fieldSet.appendChild(legend);
+
+        if (Array.isArray(value)) {
+            var arrayDiv = document.createElement('div');
+            arrayDiv.className = 'array-container';
+            value.forEach(function (item) {
+                var itemDiv = document.createElement('div');
+                itemDiv.className = 'array-item';
+                itemDiv.textContent = item;
+                arrayDiv.appendChild(itemDiv);
+            });
+            fieldSet.appendChild(arrayDiv);
+        } else if (typeof value === 'object') {
+            renderJsonAsForm(value, fieldSet);
+        } else {
+            var input = document.createElement('input');
+            input.type = 'text';
+            input.value = value;
+            fieldSet.appendChild(input);
+        }
+
+        element.appendChild(fieldSet);
+    }
 }
 
 function renderObject(obj, breadcrumbPath = []) {

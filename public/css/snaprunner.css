@@ -57,36 +57,6 @@ td {
     font-size: 11px;
 }
 
-/* Largura dos campos de filtro */
-.filtro-input1 {
-    width: 30px;
-    padding: 6px;
-    border: 1px solid #dddddd;
-    border-radius: 4px;
-    font-size: 11px;
-}
-.filtro-input2 {
-    width: 60px;
-    padding: 6px;
-    border: 1px solid #dddddd;
-    border-radius: 4px;
-    font-size: 11px;
-}
-.filtro-input3 {
-    width: 100px;
-    padding: 6px;
-    border: 1px solid #dddddd;
-    border-radius: 4px;
-    font-size: 11px;
-}
-.filtro-input4 {
-    width: 140px;
-    padding: 6px;
-    border: 1px solid #dddddd;
-    border-radius: 4px;
-    font-size: 11px;
-}
-
 /* Estilos do botão */
 .btn {
     background-color: #ff5e00;
@@ -125,47 +95,28 @@ p {
     font-weight: bold;
     font-family: 'Roboto', sans-serif;
 }
+
 img.logo {
     height: 80px;
     display: block;
 }
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.4);
-  }
   
-  .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-  }
-  
-  .close {
+.close {
     color: #aaa;
     float: right;
     font-size: 28px;
     font-weight: bold;
-  }
-  
-  .close:hover,
-  .close:focus {
+}
+
+.close:hover,
+.close:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
-  }
+}
 
 /* CÓDIGO NOVO */
-  .popup {
+.popup {
     display: none;
     position: fixed;
     top: 0;
@@ -174,9 +125,9 @@ img.logo {
     height: 100%;
     background-color: rgba(0,0,0,0.7);
     z-index: 1;
-  }
-  
-  .popup-content {
+}
+
+.popup-content {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -187,8 +138,8 @@ img.logo {
     max-width: 70%;
     max-height: 600px; /* ou qualquer valor que você achar apropriado */
     overflow-y: auto; /* barra de rolagem vertical quando necessário */
-  }
-/* CÓDIGO NOVO */
+}
+
 .fechar {
     position: absolute;
     top: 0;
@@ -201,15 +152,12 @@ img.logo {
   color: #000000;
   text-decoration: none;
 }
-/* CÓDIGO NOVO */
+
 #tabelaExecucoes th,
 #tabelaExecucoes td {
     padding: 20px; /* Ajuste o valor conforme necessário */
 }
-  
-.linha-clicada {
-    background-color: #e7e7e7; /* Cinza claro */
-}
+
 
 .input-container {
     display: flex;
@@ -235,10 +183,6 @@ input[type="text"], input[type="radio"], label {
 }
 label {
     vertical-align: middle;
-}
-
-h3 {
-    margin-top: 0;
 }
 
 #datasets {
@@ -299,25 +243,33 @@ h3 {
 
 }
 
-
 #jsonNavigatorContainer {
     background-color: #fff;
     padding: 20px;
     border-radius: 5px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    font-weight: bold;
 }
 
+#jsonExibe {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+
 .select-container {
-    width: 100%;
-    margin: 10px;
+    width: 96%;
+    margin: 20px;
     text-align: left;
     font-family: 'Roboto', sans-serif;
+    font-weight: bold;
   }
-  
+
 select {
     width: 98%;
     padding: 10px;
-    font-size: 12px;
+    font-size: 11px;
     border-radius: 4px;
     border: 1px solid #ccc;
     margin-bottom: 10px;
@@ -329,6 +281,7 @@ select {
 #breadcrumb {
     font-weight: bold;
     margin-bottom: 10px;
+    margin-left: 30px;
     color:  #ff5e00;
 }
 
@@ -353,4 +306,36 @@ button {
 
 button:hover {
     background-color: #6f3800;
+}
+
+.array-item {
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 11px;
+}
+
+fieldset {
+    border: 1px solid #ccc;
+    margin-top: 5px;
+    padding: 10px;
+    width: 100%;
+    font-size: 11px;
+}
+legend {
+    font-weight: bold;
+    font-size: 11px;
+}
+input[type="text"] {
+    padding: 5px;
+    margin-top: 5px;
+}
+.array-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+.array-item {
+    background: #f2f2f2;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 4px;
 }
