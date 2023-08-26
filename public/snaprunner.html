@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snap Runner</title>
+    <link rel="stylesheet" type="text/css" href="css/snaprunner.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    </head>
+</head>
+<body>
+    <div id="top-bar">
+        <img src="img/coderunner.PNG" alt="Logo" class="logo">
+        <h1>SNAP RUNNER</h1>
+        <input type="text" id="usuario" placeholder="Usuário">
+        <input type="password" id="senha" placeholder="Senha">
+    </div>
+    <div class="input-container">
+        <input type="text" id="datasets" placeholder="Ex: dataset1,dataset2,dataset3" oninput="toUpperCase(this)">
+        <button onclick="alert('Clicou em processar')" class="btn2">Processar</button>
+    </div>
+    <div id="jsonNavigatorContainer">
+        <div id="breadcrumb"></div>
+        <div id="jsonNavigator"></div>
+        <div id="dataValues"></div>
+    </div>
+    <script src="js_pages/snaprunner.js"></script>
+</body>
+</html>
