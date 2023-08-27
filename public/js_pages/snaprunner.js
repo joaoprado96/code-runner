@@ -29,10 +29,47 @@ async function carregar(){
         alert("Preencha as informações minimas: usuario, senha, arquivo e id do snap")
         return;
     }
+    // Resetar os elementos
+    while(selectElement.firstChild) {
+        selectElement.removeChild(selectElement.firstChild);
+    }
+    jsonNavigator.innerHTML     = '';
+    breadcrumb.innerHTML        = '';
+    dataValues.innerHTML        = '';
+    formElement.innerHTML       = '';
+    formElement2.innerHTML      = '';
+    formElement.reset();
+    formElement2.reset();
+    document.getElementById('carregarButton').disabled   = true;
+
     runVLD();
     runPRE();
     runBPH();
 }
+
+async function liberar(){
+    document.getElementById('carregarButton').disabled  = false;
+    document.getElementById('analisarButton').disabled  = true;
+    document.getElementById('liberarButton').disabled   = true;
+    document.getElementById('usuario').disabled         = false;
+    document.getElementById('senha').disabled           = false;
+    document.getElementById('pacote').disabled          = false;
+    document.getElementById('versao').disabled          = false;
+    document.getElementById('datasets').disabled        = false;
+    document.getElementById('id_snap').disabled         = false;
+    // Resetar os elementos
+    while(selectElement.firstChild) {
+        selectElement.removeChild(selectElement.firstChild);
+    }
+    jsonNavigator.innerHTML     = '';
+    breadcrumb.innerHTML        = '';
+    dataValues.innerHTML        = '';
+    formElement.innerHTML       = '';
+    formElement2.innerHTML      = '';
+    formElement.reset();
+    formElement2.reset();
+}
+
 
 async function runVLD(){
     const usuario = document.getElementById('usuario').value;
@@ -59,6 +96,14 @@ async function runVLD(){
     }
     // Continuar com as tratativas trazer a lista de CSECT disponíveis
     if (dadosV.status != 'Falha'){
+        document.getElementById('analisarButton').disabled  = false;
+        document.getElementById('liberarButton').disabled   = false;
+        document.getElementById('usuario').disabled         = true;
+        document.getElementById('senha').disabled           = true;
+        document.getElementById('pacote').disabled          = true;
+        document.getElementById('versao').disabled          = true;
+        document.getElementById('datasets').disabled        = true;
+        document.getElementById('id_snap').disabled         = true;
         for (var i = 0; i < dadosV.areas.length; i++) {
             var option = document.createElement("option");
             option.value = dadosV.areas[i];
@@ -127,8 +172,9 @@ async function analisar(){
     const id_snap = document.getElementById('id_snap').value;
     const modo    = document.querySelector('input[name="modo"]:checked').value;
     var selectedOptions = $('#areaSelect').val();
-    console.log("Áreas selecionadas:", selectedOptions);
-    if (!usuario || !senha){
+
+    if (!usuario || !senha || !baseline || !versao || !datasets || !id_snap || !modo){
+        alert("Está faltando preencher dados de entrada")
         return;
     }
     const response = await fetch('/front/snaprunnerRUN',{

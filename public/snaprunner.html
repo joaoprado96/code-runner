@@ -35,8 +35,9 @@
             <label for="completo">Completo</label>
         </div>
     </div>
-    <button onclick="carregar()" class="btn2">CARREGAR</button>
-    <button onclick="analisar()" class="btn2">ANALISAR</button>
+    <button id="carregarButton" onclick="carregar()" class="btn2">CARREGAR</button>
+    <button id="liberarButton"  disabled onclick="liberar()" class="btn2">LIBERAR</button>
+    <button id="analisarButton" disabled onclick="analisar()" class="btn2">ANALISAR</button>
     <div class="select-container">
         <label for="areaSelect">ÁREAS DISPONÍVEIS NO ARQUIVO</label>
         <select id="areaSelect" multiple class="select2">
