@@ -44,6 +44,8 @@
             <!-- As opções serão inseridas aqui pelo JavaScript -->
         </select>
     </div>
+    <button id="openModalBtn"  disabled class="btn2">ÁREAS GERAL</button>
+    <button id="openModalBtn2" disabled class="btn2">ÁREAS PRINCIPAIS</button>
     <div id="jsonNavigatorContainer">
         <label for="jsonNavigatorContainer">ÁREA DE NAVEGAÇÃO</label>
         <div id="breadcrumb"></div>
@@ -61,6 +63,25 @@
         <form id="jsonBPH">
             <!-- O formulário será gerado aqui -->
         </form>
+    </div>
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+        <label for="jsonAREAS">TODAS ÀS ÁREAS</label>
+        <span class="close">&times;</span>
+        <form id="jsonAREAS">
+            <!-- O formulário será preenchido aqui -->
+        </form>
+        </div>
+    </div>
+    <div id="myModal2" class="modal">
+        <div class="modal-content">
+        <label for="jsonAREAS2">ÁREAS PRINCIPAIS</label>
+        <span class="close2">&times;</span>
+        <form id="jsonAREAS2">
+            <!-- O formulário será preenchido aqui -->
+        </form>
+        </div>
     </div>
     <script src="js_pages/snaprunner.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

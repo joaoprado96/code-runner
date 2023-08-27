@@ -5,7 +5,61 @@ document.addEventListener("DOMContentLoaded", function() {
             placeholder: 'Selecione uma opção depois de carregar o arquivo',
             allowClear: true
         });
-      });    
+      });
+      const modal   = document.getElementById("myModal");
+      const modal2  = document.getElementById("myModal2");
+      const btn     = document.getElementById("openModalBtn");
+      const btn2    = document.getElementById("openModalBtn2");
+      const span    = document.getElementsByClassName("close")[0];
+      const span2    = document.getElementsByClassName("close2")[0];
+
+    
+      btn.onclick = function() {
+        const formElement3     = document.getElementById("jsonAREAS");
+        const formElement4     = document.getElementById("jsonAREAS2");
+        formElement3.innerHTML = '';
+        formElement4.innerHTML = '';
+        formElement3.reset();
+        formElement4.reset();
+        // A função 'algumaFuncaoParaPegarJSON()' deve retornar o JSON que você quer exibir
+        renderJsonAsForm(dados, formElement3);
+        modal.style.display = "block";
+      }
+    
+      span.onclick = function() {
+        modal.style.display = "none";
+      }
+    
+      window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+      btn2.onclick = function() {
+        const formElement3     = document.getElementById("jsonAREAS");
+        const formElement4     = document.getElementById("jsonAREAS2");
+        formElement3.innerHTML = '';
+        formElement4.innerHTML = '';
+        formElement3.reset();
+        formElement4.reset();
+        const fields = ["AGEDSECT.AGE35CDA","AGEDSECT.AGE35CDB"];
+        const extractedFields = extractFieldsFromJson(dados, fields);
+        console.log(extractedFields)
+
+        // A função 'algumaFuncaoParaPegarJSON()' deve retornar o JSON que você quer exibir
+        renderJsonAsForm(extractedFields, formElement4);
+        modal2.style.display = "block";
+      }
+    
+      span2.onclick = function() {
+        modal2.style.display = "none";
+      }
+    
+      window.onclick = function(event) {
+        if (event.target == modal2) {
+          modal2.style.display = "none";
+        }
+      }      
   });
 
 var dados;
@@ -50,6 +104,8 @@ async function carregar(){
 async function liberar(){
     document.getElementById('carregarButton').disabled  = false;
     document.getElementById('analisarButton').disabled  = true;
+    document.getElementById('openModalBtn').disabled    = true;
+    document.getElementById('openModalBtn2').disabled   = true;
     document.getElementById('liberarButton').disabled   = true;
     document.getElementById('usuario').disabled         = false;
     document.getElementById('senha').disabled           = false;
@@ -186,6 +242,8 @@ async function analisar(){
     });
     dados = await response.json();
     renderObject(dados)
+    document.getElementById('openModalBtn').disabled    = false;
+    document.getElementById('openModalBtn2').disabled   = false;
 }
 
 function renderJsonAsForm(obj, element) {
@@ -288,4 +346,26 @@ dataValues.innerHTML = "";
         div3.textContent = `Conteúdo do campo: ${values[2]}`;
         dataValues.appendChild(div3);
         }
+}
+
+function extractFieldsFromJson(jsonObj, fieldsToExtract) {
+    const result = {};
+
+    function helper(obj, field, res) {
+        let [first, ...rest] = field.split(".");
+        if (!obj.hasOwnProperty(first)) return;
+
+        if (rest.length === 0) {
+            res[first] = obj[first];
+        } else {
+            res[first] = res[first] || {};
+            helper(obj[first], rest.join("."), res[first]);
+        }
+    }
+
+    fieldsToExtract.forEach(field => {
+        helper(jsonObj, field, result);
+    });
+
+    return result;
 }

@@ -353,3 +353,37 @@ input[type="text"] {
     margin: 5px;
     border-radius: 4px;
 }
+
+.modal {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    overflow: auto; /* Ativar rolagem */
+    z-index: 1; /* Ficar no topo */
+  }
+  
+  .modal-content {
+    background-color: #fefefe;
+    margin: auto; /* Centralizar */
+    padding: 20px;
+    margin-top: 50px;
+    border: 1px solid #888;
+    width: 80%; /* ou qualquer outra largura que você desejar */
+    overflow-y: auto; /* Rola somente em Y */
+    max-height: 80vh; /* No máximo 80% da altura da janela */
+    word-break: break-word;
+  }
+  .close {
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  .close2 {
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
