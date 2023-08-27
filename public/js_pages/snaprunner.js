@@ -16,11 +16,8 @@ document.addEventListener("DOMContentLoaded", function() {
     
       btn.onclick = function() {
         const formElement3     = document.getElementById("jsonAREAS");
-        const formElement4     = document.getElementById("jsonAREAS2");
         formElement3.innerHTML = '';
-        formElement4.innerHTML = '';
         formElement3.reset();
-        formElement4.reset();
         // A função 'algumaFuncaoParaPegarJSON()' deve retornar o JSON que você quer exibir
         renderJsonAsForm(dados, formElement3);
         modal.style.display = "block";
@@ -36,15 +33,11 @@ document.addEventListener("DOMContentLoaded", function() {
         }
       }
       btn2.onclick = function() {
-        const formElement3     = document.getElementById("jsonAREAS");
         const formElement4     = document.getElementById("jsonAREAS2");
-        formElement3.innerHTML = '';
         formElement4.innerHTML = '';
-        formElement3.reset();
         formElement4.reset();
         const fields = ["AGEDSECT.AGE35CDA","AGEDSECT.AGE35CDB"];
         const extractedFields = extractFieldsFromJson(dados, fields);
-        console.log(extractedFields)
 
         // A função 'algumaFuncaoParaPegarJSON()' deve retornar o JSON que você quer exibir
         renderJsonAsForm(extractedFields, formElement4);
