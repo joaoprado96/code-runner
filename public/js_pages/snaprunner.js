@@ -238,8 +238,7 @@ async function analisar(){
     document.getElementById('openModalBtn').disabled    = false;
     document.getElementById('openModalBtn2').disabled   = false;
 }
-
-function renderJsonAsForm(obj, element) {
+function renderJsonAsForm(obj, element, legends) {
     for (var key in obj) {
         var value = obj[key];
         var fieldSet = document.createElement('fieldset');
@@ -250,12 +249,26 @@ function renderJsonAsForm(obj, element) {
         if (Array.isArray(value)) {
             var arrayDiv = document.createElement('div');
             arrayDiv.className = 'array-container';
-            value.forEach(function (item) {
+
+            value.forEach(function (item, index) {
                 var itemDiv = document.createElement('div');
                 itemDiv.className = 'array-item';
-                itemDiv.textContent = item;
+
+                // Usar a legenda correspondente do array de legendas, se disponível
+                var itemLegend = legends && legends[index] ? legends[index] : 'Legenda ' + (index + 1);
+
+                var labelLegend = document.createElement('label');
+                labelLegend.innerHTML = itemLegend + ': ';
+
+                itemDiv.appendChild(labelLegend);
+
+                var itemContent = document.createElement('span');
+                itemContent.textContent = item;
+                itemDiv.appendChild(itemContent);
+
                 arrayDiv.appendChild(itemDiv);
             });
+
             fieldSet.appendChild(arrayDiv);
         } else if (typeof value === 'object') {
             renderJsonAsForm(value, fieldSet);
