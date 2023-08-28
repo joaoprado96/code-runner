@@ -238,6 +238,7 @@ async function analisar(){
     document.getElementById('openModalBtn').disabled    = false;
     document.getElementById('openModalBtn2').disabled   = false;
 }
+
 function renderJsonAsForm(obj, element, legends) {
     for (var key in obj) {
         var value = obj[key];
@@ -282,6 +283,7 @@ function renderJsonAsForm(obj, element, legends) {
         element.appendChild(fieldSet);
     }
 }
+
 
 function renderObject(obj, breadcrumbPath = []) {
     dataValues.innerHTML = "";
