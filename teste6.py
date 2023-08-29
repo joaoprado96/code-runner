@@ -72,3 +72,19 @@ const listaHex = lista.map(elemento => {
 
 console.log(listaHex);
 
+
+function hexToAscii(hexStr) {
+  let asciiStr = '';
+  for (let i = 0; i < hexStr.length; i += 2) {
+    const hexPair = hexStr.slice(i, i + 2);
+    const asciiChar = String.fromCharCode(parseInt(hexPair, 16));
+    asciiStr += asciiChar;
+  }
+  return asciiStr;
+}
+
+// Exemplo de uso
+const hexString = '68656c6c6f';
+const asciiString = hexToAscii(hexString);
+console.log(asciiString); // Saída será "hello"
+
