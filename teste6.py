@@ -58,3 +58,17 @@ const listaHex = lista.map(elemento => {
 
 console.log(listaHex);
 sdas
+
+const lista = ['\x00\x009', '\x00\x00A', '  ', '\x00\x00JOAO', '\x00\x00!@:', ';#$%^&*()-_=+'];
+
+const listaHex = lista.map(elemento => {
+  return Array.from(elemento).map(char => {
+    if (char.charCodeAt(0) >= 32 && char.charCodeAt(0) <= 126) {
+      return char;
+    }
+    return char.charCodeAt(0).toString(16).padStart(2, '0');
+  }).join('');
+});
+
+console.log(listaHex);
+
