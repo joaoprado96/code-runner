@@ -43,3 +43,12 @@ print("Resultado 1:")
 print(json_result1)
 print("Resultado 2:")
 print(json_result2)
+
+
+const lista = ['\x00\x00', '\x00\x00', '\x00\x00', '\x00\x00'];
+
+const listaHex = lista.map(elemento => {
+  return Array.from(elemento).map(char => char.charCodeAt(0).toString(16).padStart(2, '0')).join('');
+});
+
+console.log(listaHex);
