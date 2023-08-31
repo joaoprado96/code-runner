@@ -47,7 +47,7 @@ def excel_to_json(excel_file):
         # Itera sobre as linhas do DataFrame
         for index, row in df.iterrows():
             # Obtém o valor da primeira coluna (chave)
-            chave = "T"+str(row[df.columns[0]])
+            chave = str(row[df.columns[0]])
             
             # Inicializa o dicionário interno para cada transação
             transacao = {}
@@ -67,39 +67,93 @@ def excel_to_json(excel_file):
     except Exception as e:
         return str(e)
 
+import json
+
+def process_line(line, current_data, all_data):
+    # Se a linha começa com um '*', é um comentário e deve ser ignorado
+    if line.startswith('*'):
+        return
+    
+    if line[:7] == "MITBH10":
+        # Esta é uma nova linha de dados, então reiniciamos o dicionário atual
+        if current_data:  # Se o dicionário atual não está vazio, adicionamos à lista all_data
+            tran_id = current_data.get('TRANID')
+            if tran_id:
+                all_data[tran_id] = current_data.copy()
+        current_data.clear()
+
+    # Removemos espaços à esquerda e à direita e dividimos pelos espaços
+    entries = line[7:].strip().split(',')
+    for entry in entries:
+        # Removemos espaços em branco extras e separamos chave e valor,
+        # em seguida, armazenamos no dicionário
+        if '=' in entry:
+            key, value = entry.strip().split('=')
+            current_data[key.strip()] = value.strip()
+
+def get_keys_from_json(json_obj):
+    return list(json_obj.keys())
+
+
+# Alterar este trecho para pegar a MTTR do mainframe.
+mttr_data = {}
+current_data = {}
+lines = [
+    "MITBH10 TRANID=B57,PROG=2109120938,TIPO=CLE,FUNC=ASDADASOPDAS,HOJE=CASADA          ",
+    "                                                       FUNC2=ASDOIASIDJASIOD",
+    "                                                       FUNC3=SOMETHINGELSE",
+    "MITBH10 TRANID=B58,PROG=2109120939,TIPO=CLE,FUNC=OTHERFUNC,HOJE=CASADA",
+    "                                                       FUNC2=OTHERFUNC2",
+    "MITBH10 TRANID=1,PROG=2109120938,TIPO=CLE,FUNC=ASDADASOPDAS,HOJE=CASADA          ",
+    "                                                       FUNC2=ASDOIASIDJASIOD",
+    "                                                       FUNC3=SOMETHINGELSE",
+    "MITBH10 TRANID=10,PROG=2109120939,TIPO=CLE,FUNC=OTHERFUNC,HOJE=CASADA",
+    "                                                       FUNC2=OTHERFUNC2",
+]
+
+for line in lines:
+    process_line(line, current_data, mttr_data)
+
+# Adicionar o último current_data se não estiver vazio
+if current_data:
+    tran_id = current_data.get('TRANID')
+    if tran_id:
+        mttr_data[tran_id] = current_data
+
+print("O JSON abaixo representa a tabela MTTR depois de processada!!!")
+print(json.dumps(mttr_data, indent=4))
+
+
 # Substitua "caminho_para_arquivo.xlsx" pelo caminho do seu arquivo Excel
 excel_file_path = "cmdb/cmdb_base.xlsx"
 json_output = excel_to_json(excel_file_path)
 
 # Primeiro, faça o parsing da string JSON para um dicionário
-data = json.loads(json_output)
+cmdb_data = json.loads(json_output)
 
-# Primeiro, faça o parsing da string JSON para um dicionário
-data2 = json.loads(json_output)
+# Adicionando volumetria transação 1
+add_element_to_tran(cmdb_data,'1','VOLUMETRIA',232030)
 
-# Adiciona o elemento ao objeto json
-add_element_to_tran(data2,'T17','VOLUMETRIA',2348780)
+# Unindo o JSON da MTTR com o JSON do CMDB
+merge_jsons(cmdb_data, mttr_data)
 
-# Agora você pode acessar o objeto com a chave "T1"
-t17_object = data2["T17"]
+print("O JSON abaixo representa a união dos dados da MTTR com CMDB!!!")
+print(json.dumps(cmdb_data, indent=4))
 
-# Imprime o objeto "T17"
-print(json.dumps(t17_object, indent=4))
 
+print("Testes de Funcionalidades irão aparecer!!!")
 option_value_pairs = [
     ("OPCAO 1", 1),
-    ("OPCAO 2", 2)
+    ("OPCAO 2", 1)
 ]
 
-matching_keys = find_options(data, option_value_pairs)
-
+print("Buscar por transações que possuem as opções pré-definidas!!!")
+matching_keys = find_options(cmdb_data, option_value_pairs)
 print(matching_keys)
 
-tran_ids = ["T1", "T2", "T3"]  # Substitua pelas IDs das transações desejadas
+print("Procurar na base por uma determinada opção retornando a lista de transações que!!!")
+tran_ids = ["1", "2", "3"]  # Substitua pelas IDs das transações desejadas
 option_key = "OPCAO 5"
-option_values = get_option_values(data, tran_ids, option_key)
-
+option_values = get_option_values(cmdb_data, tran_ids, option_key)
 print(option_values)
 
-merge_jsons(data, data2)
-print(json1)
