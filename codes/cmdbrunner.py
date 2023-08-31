@@ -21,6 +21,18 @@ def remove_special_characters(input_str):
     
     return cleaned_str
 
+from unidecode import unidecode
+
+def remove_special_characters_from_int(input_int):
+    # Converte o objeto inteiro em string e remove acentos e caracteres especiais
+    cleaned_str = unidecode(str(input_int))
+    
+    # Remove caracteres que não sejam números
+    cleaned_str = ''.join(e for e in cleaned_str if e.isdigit())
+    
+    return int(cleaned_str) if cleaned_str else input_int
+
+
 # Exemplo
 input_text = "Olá, como está você? Café ☕"
 cleaned_text = remove_special_characters(input_text)
