@@ -1,96 +1,69 @@
-def process_line(line, current_data, all_data):
-    # Se a linha começa com um '*', é um comentário e deve ser ignorado
-    if line.startswith('*'):
-        return
+import re
+import json
+
+def process_lines(lines):
+    data = {}
+    pending_line = ""
     
-    if line[:7] == "MITBH10":
-        # Esta é uma nova linha de dados, então reiniciamos o dicionário atual
-        if current_data:  # Se o dicionário atual não está vazio, adicionamos à lista all_data
-            tran_id = current_data.get('TRANSID')
-            if tran_id:
-                all_data[tran_id] = current_data.copy()
-        current_data.clear()
-
-    # Removemos espaços à esquerda e à direita e dividimos pelos espaços
-    entries = line[7:].strip().split(',')
-    for entry in entries:
-        # Removemos espaços em branco extras e separamos chave e valor
-        entry = entry.strip()
-        if '=' in entry:
-            key, value = entry.split('=')
-            key = key.strip()
-            value = value.strip()
+    for line in lines:
+        # If there is a pending line, concatenate it with the current line.
+        if pending_line:
+            line = pending_line + line.strip()
+            pending_line = ""
+        
+        # Check if the line has a continuation indicator in column 72.
+        if len(line) >= 72 and line[71] == 'X':
+            pending_line = line[:71]
+            continue
+        
+        line = line[:71].strip()  # Only consider content up to column 71.
+        
+        # Extract TRANSID, TRANSID1, and TRANSID2 using regex.
+        transid_match = re.search(r'TRANSID=(\d+)', line)
+        transid1_match = re.search(r'TRANSID1=(\d+)', line)
+        transid2_match = re.search(r'TRANSID2=(\w+)', line)
+        
+        transid = transid_match.group(1) if transid_match else None
+        transid1 = transid1_match.group(1) if transid1_match else "0"
+        transid2 = transid2_match.group(1) if transid2_match else "0000"
+        
+        key = f"{transid1}{transid2}"
+        
+        if transid not in data:
+            data[transid] = {}
+        
+        data[transid][key] = {}
+        
+        for attr_match in re.finditer(r'(\w+)=(\([^)]+\)|\w+)', line):
+            attr_key, attr_value = attr_match.groups()
             
-            # Ignorar palavras sem atribuição
-            if value:
-                # Verificar se o valor está entre parênteses
-                if '(' in value and ')' in value:
-                    start_index = value.find('(')
-                    end_index = value.find(')')
-                    value = value[start_index + 1:end_index]
-                    # Separar elementos dentro de parênteses
-                    elements = [element.strip() for element in value.split(',')]
-                    current_data[key] = elements
-                else:
-                    current_data[key] = value
+            if attr_value.startswith("("):
+                data[transid][key][attr_key] = attr_value[1:-1].split(',')
+            else:
+                data[transid][key][attr_key] = attr_value
+    
+    return data
 
-# Exemplo de uso
-line1 = '         MTBTRA TRANSID=920,TRANSID1=0,TRANSID2=GF19,ATIVA=NAO,       XMTTR'
-line2 = '                      GRUPO=(G00),PROGID=X0GF,TERM=(51)                                                     MTTR'
-line3 = '         MTBTRA TRANSID=922,TRANSID1=0,TRANSID2=GF19,ATIVA=NAO,       XMTTR'
-line4 = '                      GRUPO=(G00),                                                                                                          XMTTR'
-line5 = '                      GRUP2=(G01 ),             CONSISTENCIA                                                            XMTTR'
+# Test the function
+lines = [
+'         MTBTRA47 TRANSID=001,TRANSID1=2,TRANSID2=GF18,ATIVA=SIM,      XMTTR'
+'               GRUPO=(G00,G01,G03,P002)     CONSITENCIA                 MTTR',
+'         MTBTRA47 TRANSID=001,TRANSID1=2,TRANSID2=GF19,ATIVA=SIM,      XMTTR',
+'               GRUPO=(G00,G01,G03,P002),    CONSITENCIA                XMTTR',
+'               TERM=(00,01,03,02),          CONSITENCIA                XMTTR',
+'               PROGID=X0BH                                              MTTR',
+'         MTBTRA47 TRANSID=002,TRANSID1=2,TRANSID2=GF18,ATIVA=SIM        MTTR',
+'         MTBTRA47 TRANSID=011,ATIVA=SIM                                 MTTR',
+'         MTBTRA47 TRANSID=003,TRANSID1=2,TRANSID2=GF18,ATIVA=SIM        MTTR',
+'         MTBTRA47 TRANSID=004,TRANSID1=2,TRANSID2=GF18,ATIVA=SIM        MTTR',
+'         MTBTRA47 TRANSID=005,TRANSID1=2,TRANSID2=GF18,ATIVA=SIM        MTTR',
+'         MTBTRA47 TRANSID=006,TRANSID1=2,TRANSID2=GF18,ATIVA=SIM        MTTR',
+'         MTBTRA47 TRANSID=007,TRANSID1=2,TRANSID2=GF18,ATIVA=SIM        MTTR',
+'         MTBTRA47 TRANSID=008,TRANSID1=2,TRANSID2=GF18,ATIVA=SIM        MTTR',
+'         MTBTRA47 TRANSID=009,TRANSID1=2,TRANSID2=GF18,ATIVA=SIM        MTTR',
+'         MTBTRA47 TRANSID=010,TRANSID1=2,TRANSID2=GF18,ATIVA=SIM        MTTR',
+'         MTBTRA47 TRANSID=012,ATIVA=SIM                                 MTTR'
+]
 
-all_data = {}
-current_data = {}
-
-process_line(line1, current_data, all_data)
-process_line(line2, current_data, all_data)
-process_line(line3, current_data, all_data)
-process_line(line4, current_data, all_data)
-process_line(line5, current_data, all_data)
-
-print(all_data)
-
-
-def parse_string(s):
-    result = {}
-    key = ""
-    value = ""
-    in_parentheses = False
-    part = ""
-
-    # Iterar através de cada caractere na string
-    for char in s:
-        if char == ',' and not in_parentheses:
-            key, value = part.split('=')
-            if value.startswith('(') and value.endswith(')'):
-                value = value[1:-1].split(',')
-            result[key.strip()] = value if isinstance(value, list) else value.strip()
-            part = ""
-        elif char == '(':
-            in_parentheses = True
-            part += char
-        elif char == ')':
-            in_parentheses = False
-            part += char
-        else:
-            part += char
-
-    # Para pegar o último par chave-valor
-    if part:
-        key, value = part.split('=')
-        if value.startswith('(') and value.endswith(')'):
-            value = value[1:-1].split(',')
-        result[key.strip()] = value if isinstance(value, list) else value.strip()
-
-    return result
-
-# Teste da função
-s = 'GRUPO=(G00),PROGID=X0GF,TERM=(51,53,54,55,56) '
-parsed_data = parse_string(s)
-
-# Exibe os resultados formatados
-print(f'GRUPO= {parsed_data.get("GRUPO", [])}')
-print(f'PROGID= "{parsed_data.get("PROGID", "")}"')
-print(f'TERM= {parsed_data.get("TERM", [])}')
+data = process_lines(lines)
+print(json.dumps(data, indent=4))
