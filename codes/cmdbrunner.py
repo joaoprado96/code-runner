@@ -1,6 +1,7 @@
 import pandas as pd
 import json
 import datetime
+from unidecode import unidecode
 
 def get_timestamp_content(timestamp_obj):
     if isinstance(timestamp_obj, pd.Timestamp):
@@ -10,6 +11,21 @@ def get_timestamp_content(timestamp_obj):
             return "Valor de tempo inválido"
     else:
         return timestamp_obj
+
+def remove_special_characters(input_str):
+    # Remove acentos e converte caracteres unicode em ASCII
+    cleaned_str = unidecode(input_str)
+    
+    # Remove caracteres especiais que não sejam letras ou números
+    cleaned_str = ''.join(e for e in cleaned_str if e.isalnum() or e.isspace())
+    
+    return cleaned_str
+
+# Exemplo
+input_text = "Olá, como está você? Café ☕"
+cleaned_text = remove_special_characters(input_text)
+print(cleaned_text)  # Saída: 'Ola como esta voce Cafe '
+
 
 # Exemplo
 timestamp = datetime.datetime(2023, 8, 30, 14, 30, 0)
