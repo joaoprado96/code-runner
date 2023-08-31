@@ -1,6 +1,15 @@
 import pandas as pd
 import json
 
+def find_options(data, option_value_pairs):
+    matching_keys = []
+    
+    for key, value in data.items():
+        option_match = all(value.get(option_key) == option_value for option_key, option_value in option_value_pairs)
+        if option_match:
+            matching_keys.append(key)
+    
+    return matching_keys
 
 def add_element_to_tran(all_data, tran_id, new_key, new_value):
     if tran_id in all_data:
@@ -57,3 +66,12 @@ t17_object = data["T17"]
 
 # Imprime o objeto "T17"
 print(json.dumps(t17_object, indent=4))
+
+option_value_pairs = [
+    ("OPCAO 1", 1),
+    ("OPCAO 2", 2)
+]
+
+matching_keys = find_options(data, option_value_pairs)
+
+print(matching_keys)
