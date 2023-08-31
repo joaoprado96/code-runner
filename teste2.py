@@ -45,3 +45,8 @@ comments = [
 ]
 
 print(analyze_comments(comments))
+
+
+pip install nltk
+pip install gensim
+
