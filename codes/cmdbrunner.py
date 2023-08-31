@@ -3,10 +3,13 @@ import json
 import datetime
 
 def get_timestamp_content(timestamp_obj):
-    if isinstance(timestamp_obj, datetime.datetime):
-        return timestamp_obj.strftime('%Y-%m-%d %H:%M:%S')
+    if isinstance(timestamp_obj, pd.Timestamp):
+        if pd.notna(timestamp_obj):
+            return timestamp_obj.strftime('%Y-%m-%d %H:%M:%S')
+        else:
+            return "Valor de tempo inválido"
     else:
-        return None
+        return timestamp_obj
 
 # Exemplo
 timestamp = datetime.datetime(2023, 8, 30, 14, 30, 0)
