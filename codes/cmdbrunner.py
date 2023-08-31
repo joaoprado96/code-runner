@@ -11,6 +11,15 @@ def find_options(data, option_value_pairs):
     
     return matching_keys
 
+def get_option_values(data, tran_ids, option_key):
+    option_values = []
+    
+    for tran_id in tran_ids:
+        if tran_id in data and option_key in data[tran_id]:
+            option_values.append(data[tran_id][option_key])
+    
+    return option_values
+
 def add_element_to_tran(all_data, tran_id, new_key, new_value):
     if tran_id in all_data:
         all_data[tran_id][new_key] = new_value
@@ -75,3 +84,9 @@ option_value_pairs = [
 matching_keys = find_options(data, option_value_pairs)
 
 print(matching_keys)
+
+tran_ids = ["T1", "T2", "T3"]  # Substitua pelas IDs das transações desejadas
+option_key = "OPCAO 5"
+option_values = get_option_values(data, tran_ids, option_key)
+
+print(option_values)
