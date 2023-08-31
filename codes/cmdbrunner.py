@@ -20,6 +20,13 @@ def get_option_values(data, tran_ids, option_key):
     
     return option_values
 
+def merge_jsons(json1, json2):
+    for tran_id, options in json2.items():
+        if tran_id not in json1:
+            json1[tran_id] = options
+        else:
+            json1[tran_id].update(options)
+
 def add_element_to_tran(all_data, tran_id, new_key, new_value):
     if tran_id in all_data:
         all_data[tran_id][new_key] = new_value
@@ -67,11 +74,14 @@ json_output = excel_to_json(excel_file_path)
 # Primeiro, faça o parsing da string JSON para um dicionário
 data = json.loads(json_output)
 
+# Primeiro, faça o parsing da string JSON para um dicionário
+data2 = json.loads(json_output)
+
 # Adiciona o elemento ao objeto json
-add_element_to_tran(data,'T17','VOLUMETRIA',2348780)
+add_element_to_tran(data2,'T17','VOLUMETRIA',2348780)
 
 # Agora você pode acessar o objeto com a chave "T1"
-t17_object = data["T17"]
+t17_object = data2["T17"]
 
 # Imprime o objeto "T17"
 print(json.dumps(t17_object, indent=4))
@@ -90,3 +100,6 @@ option_key = "OPCAO 5"
 option_values = get_option_values(data, tran_ids, option_key)
 
 print(option_values)
+
+merge_jsons(data, data2)
+print(json1)
