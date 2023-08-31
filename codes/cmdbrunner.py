@@ -1,5 +1,18 @@
 import pandas as pd
 import json
+import datetime
+
+def get_timestamp_content(timestamp_obj):
+    if isinstance(timestamp_obj, datetime.datetime):
+        return timestamp_obj.strftime('%Y-%m-%d %H:%M:%S')
+    else:
+        return None
+
+# Exemplo
+timestamp = datetime.datetime(2023, 8, 30, 14, 30, 0)
+content = get_timestamp_content(timestamp)
+print(content)  # Saída: '2023-08-30 14:30:00'
+
 
 def find_options(data, option_value_pairs):
     matching_keys = []
