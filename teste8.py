@@ -1,69 +1,77 @@
-import re
 import json
+import re
 
 def process_lines(lines):
     data = {}
-    pending_line = ""
+    current_line = ""
     
     for line in lines:
-        # If there is a pending line, concatenate it with the current line.
-        if pending_line:
-            line = pending_line + line.strip()
-            pending_line = ""
-        
-        # Check if the line has a continuation indicator in column 72.
-        if len(line) >= 72 and line[71] == 'X':
-            pending_line = line[:71]
-            continue
-        
-        line = line[:71].strip()  # Only consider content up to column 71.
-        
-        # Extract TRANSID, TRANSID1, and TRANSID2 using regex.
-        transid_match = re.search(r'TRANSID=(\d+)', line)
-        transid1_match = re.search(r'TRANSID1=(\d+)', line)
-        transid2_match = re.search(r'TRANSID2=(\w+)', line)
-        
-        transid = transid_match.group(1) if transid_match else None
-        transid1 = transid1_match.group(1) if transid1_match else "0"
-        transid2 = transid2_match.group(1) if transid2_match else "0000"
-        
-        key = f"{transid1}{transid2}"
-        
-        if transid not in data:
-            data[transid] = {}
-        
-        data[transid][key] = {}
-        
-        for attr_match in re.finditer(r'(\w+)=(\([^)]+\)|\w+)', line):
-            attr_key, attr_value = attr_match.groups()
+        # Concatenate lines if the line is a continuation of the previous line
+        if line[-1].strip() == 'XMTTR' or line[-1].strip() == 'MTTR':
+            current_line += line.strip()[:71]  # Only consider content up to column 71
+        else:
+            current_line += ' ' + line.strip()[:71]
             
-            if attr_value.startswith("("):
-                data[transid][key][attr_key] = attr_value[1:-1].split(',')
-            else:
-                data[transid][key][attr_key] = attr_value
-    
+        # If this is the last part of the line, process it
+        if line[-1].strip() == 'MTTR':
+            transid = re.search(r'TRANSID=(\d+)', current_line)
+            transid1 = re.search(r'TRANSID1=(\d+)', current_line)
+            transid2 = re.search(r'TRANSID2=(\w+)', current_line)
+            
+            if transid:
+                transid = transid.group(1)
+                if transid not in data:
+                    data[transid] = {}
+                    
+                transid1 = transid1.group(1) if transid1 else '0'
+                transid2 = transid2.group(1) if transid2 else '0000'
+                
+                key = f"{transid1}{transid2}"
+                
+                if key not in data[transid]:
+                    data[transid][key] = {}
+                    
+                for attr in re.findall(r'(\w+)=\(([^)]+)\)|(\w+)=(\w+)', current_line):
+                    if attr[0]:
+                        data[transid][key][attr[0]] = attr[1].split(',')
+                    else:
+                        data[transid][key][attr[2]] = attr[3]
+            
+            current_line = ""
+            
     return data
 
 # Test the function
 lines = [
-'         MTBTRA47 TRANSID=001,TRANSID1=2,TRANSID2=GF18,ATIVA=SIM,      XMTTR'
-'               GRUPO=(G00,G01,G03,P002)     CONSITENCIA                 MTTR',
-'         MTBTRA47 TRANSID=001,TRANSID1=2,TRANSID2=GF19,ATIVA=SIM,      XMTTR',
-'               GRUPO=(G00,G01,G03,P002),    CONSITENCIA                XMTTR',
-'               TERM=(00,01,03,02),          CONSITENCIA                XMTTR',
-'               PROGID=X0BH                                              MTTR',
-'         MTBTRA47 TRANSID=002,TRANSID1=2,TRANSID2=GF18,ATIVA=SIM        MTTR',
-'         MTBTRA47 TRANSID=011,ATIVA=SIM                                 MTTR',
-'         MTBTRA47 TRANSID=003,TRANSID1=2,TRANSID2=GF18,ATIVA=SIM        MTTR',
-'         MTBTRA47 TRANSID=004,TRANSID1=2,TRANSID2=GF18,ATIVA=SIM        MTTR',
-'         MTBTRA47 TRANSID=005,TRANSID1=2,TRANSID2=GF18,ATIVA=SIM        MTTR',
-'         MTBTRA47 TRANSID=006,TRANSID1=2,TRANSID2=GF18,ATIVA=SIM        MTTR',
-'         MTBTRA47 TRANSID=007,TRANSID1=2,TRANSID2=GF18,ATIVA=SIM        MTTR',
-'         MTBTRA47 TRANSID=008,TRANSID1=2,TRANSID2=GF18,ATIVA=SIM        MTTR',
-'         MTBTRA47 TRANSID=009,TRANSID1=2,TRANSID2=GF18,ATIVA=SIM        MTTR',
-'         MTBTRA47 TRANSID=010,TRANSID1=2,TRANSID2=GF18,ATIVA=SIM        MTTR',
-'         MTBTRA47 TRANSID=012,ATIVA=SIM                                 MTTR'
+    'MTBTRA47 TRANSID=001,TRANSID1=2,TRANSID2=GF18,ATIVA=SIM,      XMTTR',
+    '               GRUPO=(G00,G01,G03,P002)     CONSITENCIA                 MTTR',
+    'MTBTRA47 TRANSID=001,TRANSID1=2,TRANSID2=GF19,ATIVA=SIM,      XMTTR',
+    '               GRUPO=(G00,G01,G03,P002),    CONSITENCIA                XMTTR',
+    '               TERM=(00,01,03,02),          CONSITENCIA                XMTTR',
+    '               PROGID=X0BH                                              MTTR',
+    'MTBTRA47 TRANSID=002,TRANSID1=2,TRANSID2=GF18,ATIVA=SIM        MTTR',
+    'MTBTRA47 TRANSID=011,ATIVA=SIM                                 MTTR',
+    # ... (rest of the lines)
 ]
 
 data = process_lines(lines)
 print(json.dumps(data, indent=4))
+
+import re
+
+def remove_words_without_assignment(s):
+    # Padrão regex para palavras com atribuição
+    pattern = r'\b\w+=\([^)]+\)|\b\w+=\w+'
+    
+    # Encontrar todas as palavras com atribuição
+    words_with_assignment = re.findall(pattern, s)
+    
+    # Juntar palavras com atribuição de volta em uma string
+    result = ', '.join(words_with_assignment)
+    
+    return result
+
+# Teste a função
+s = "INICIAL=JOAO, INICIAL=(JOAO,PRADO,SANTOS), CONSITENCIA, MTTR, NOME"
+new_s = remove_words_without_assignment(s)
+print(new_s)
