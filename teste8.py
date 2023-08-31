@@ -51,3 +51,46 @@ process_line(line4, current_data, all_data)
 process_line(line5, current_data, all_data)
 
 print(all_data)
+
+
+def parse_string(s):
+    result = {}
+    key = ""
+    value = ""
+    in_parentheses = False
+    part = ""
+
+    # Iterar através de cada caractere na string
+    for char in s:
+        if char == ',' and not in_parentheses:
+            key, value = part.split('=')
+            if value.startswith('(') and value.endswith(')'):
+                value = value[1:-1].split(',')
+            result[key.strip()] = value if isinstance(value, list) else value.strip()
+            part = ""
+        elif char == '(':
+            in_parentheses = True
+            part += char
+        elif char == ')':
+            in_parentheses = False
+            part += char
+        else:
+            part += char
+
+    # Para pegar o último par chave-valor
+    if part:
+        key, value = part.split('=')
+        if value.startswith('(') and value.endswith(')'):
+            value = value[1:-1].split(',')
+        result[key.strip()] = value if isinstance(value, list) else value.strip()
+
+    return result
+
+# Teste da função
+s = 'GRUPO=(G00),PROGID=X0GF,TERM=(51,53,54,55,56) '
+parsed_data = parse_string(s)
+
+# Exibe os resultados formatados
+print(f'GRUPO= {parsed_data.get("GRUPO", [])}')
+print(f'PROGID= "{parsed_data.get("PROGID", "")}"')
+print(f'TERM= {parsed_data.get("TERM", [])}')
