@@ -1,118 +1,47 @@
-<!DOCTYPE html>
-<html>
-<head>
-<style>
-  table {
-    border-collapse: collapse;
-    width: 100%;
-  }
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from gensim import corpora, models
+from collections import Counter
 
-  th, td {
-    border: 1px solid black;
-    padding: 8px;
-    text-align: left;
-  }
+# Certifique-se de baixar o conjunto de palavras irrelevantes (stopwords) do NLTK antes de rodar o código.
+# Você pode fazer isso com o seguinte comando: nltk.download('stopwords')
 
-  tr.success {
-    background-color: green;
-  }
-</style>
-</head>
-<body>
+def analyze_comments(comments_list):
+    # Tokenizar e remover stopwords de cada comentário
+    texts = [[word for word in word_tokenize(comment.lower()) if word not in stopwords.words('english')]
+             for comment in comments_list]
 
-<table>
-  <tr>
-    <th>Coluna 1</th>
-    <th>Coluna 2</th>
-    <th>Coluna 3</th>
-    <th>Coluna 4</th>
-  </tr>
-  <tr>
-    <td>Dado 1</td>
-    <td>Dado 2</td>
-    <td>Dado 3</td>
-    <td>Sucesso</td>
-  </tr>
-  <tr class="success">
-    <td>Dado 4</td>
-    <td>Dado 5</td>
-    <td>Dado 6</td>
-    <td>Sucesso</td>
-  </tr>
-  <tr>
-    <td>Dado 7</td>
-    <td>Dado 8</td>
-    <td>Dado 9</td>
-    <td>Outro Valor</td>
-  </tr>
-</table>
+    # Criar um dicionário e corpus com base nos textos processados
+    dictionary = corpora.Dictionary(texts)
+    corpus = [dictionary.doc2bow(text) for text in texts]
 
-</body>
-</html>
+    # Aplicar o modelo LDA
+    lda_model = models.LdaModel(corpus, num_topics=3, id2word=dictionary, passes=15)
 
+    # Coletar palavras-chave dos tópicos mais relevantes
+    keywords = []
+    for idx, topic in lda_model.print_topics(-1):
+        # Coleta apenas as palavras, ignorando os pesos
+        words = topic.split("+")
+        for word in words:
+            keywords.append(word.split("*")[1].replace('"', '').replace(' ', ''))
 
+    # Contar a frequência das palavras-chave e pegar as mais comuns
+    keyword_frequencies = Counter(keywords)
+    most_common_keywords = keyword_frequencies.most_common(5)
 
+    # Criar uma descrição baseada nas palavras-chave mais frequentes
+    description = "Este código parece lidar com: " + ', '.join([keyword[0] for keyword in most_common_keywords])
 
+    return description
 
+# Exemplo de uso
+comments = [
+    "# Initialize variables",
+    "# Compute the factorial",
+    "# This function checks for prime numbers",
+    "# Loop through the array",
+    "# Handle exceptions"
+]
 
-
-
-
-
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Principal</title>
-</head>
-<body>
-    <button onclick="abrirJanela('caminho_do_seu_arquivo.txt')">Abrir Janela</button>
-
-    <script>
-        function abrirJanela(caminhoDoArquivo) {
-            const url = 'nova_janela.html?arquivo=' + encodeURIComponent(caminhoDoArquivo);
-            window.open(url, '_blank', 'width=500, height=400');
-        }
-    </script>
-</body>
-</html>
-
-
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nova Janela</title>
-</head>
-<body>
-    <pre id="conteudo"></pre> <!-- Usando a tag <pre> para manter a formatação do arquivo de texto -->
-
-    <script>
-        function getQueryParam(name) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(name);
-        }
-
-        function carregarArquivo() {
-            const caminhoDoArquivo = getQueryParam('arquivo');
-            fetch(caminhoDoArquivo)
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('conteudo').textContent = data;
-                })
-                .catch(error => {
-                    console.error("Erro ao carregar o arquivo:", error);
-                });
-
-            // Atualizar a página a cada 2 segundos
-            setTimeout(function(){
-                location.reload();
-            }, 2000);
-        }
-
-        carregarArquivo();
-    </script>
-</body>
-</html>
+print(analyze_comments(comments))
