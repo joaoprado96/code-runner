@@ -1,5 +1,3 @@
-import json
-
 def process_line(line, current_data, all_data):
     # Se a linha começa com um '*', é um comentário e deve ser ignorado
     if line.startswith('*'):
@@ -8,7 +6,7 @@ def process_line(line, current_data, all_data):
     if line[:7] == "MITBH10":
         # Esta é uma nova linha de dados, então reiniciamos o dicionário atual
         if current_data:  # Se o dicionário atual não está vazio, adicionamos à lista all_data
-            tran_id = current_data.get('TRANID')
+            tran_id = current_data.get('TRANSID')
             if tran_id:
                 all_data[tran_id] = current_data.copy()
         current_data.clear()
@@ -16,46 +14,40 @@ def process_line(line, current_data, all_data):
     # Removemos espaços à esquerda e à direita e dividimos pelos espaços
     entries = line[7:].strip().split(',')
     for entry in entries:
-        # Removemos espaços em branco extras e separamos chave e valor,
-        # em seguida, armazenamos no dicionário
+        # Removemos espaços em branco extras e separamos chave e valor
+        entry = entry.strip()
         if '=' in entry:
-            key, value = entry.strip().split('=')
-            current_data[key.strip()] = value.strip()
+            key, value = entry.split('=')
+            key = key.strip()
+            value = value.strip()
+            
+            # Ignorar palavras sem atribuição
+            if value:
+                # Verificar se o valor está entre parênteses
+                if '(' in value and ')' in value:
+                    start_index = value.find('(')
+                    end_index = value.find(')')
+                    value = value[start_index + 1:end_index]
+                    # Separar elementos dentro de parênteses
+                    elements = [element.strip() for element in value.split(',')]
+                    current_data[key] = elements
+                else:
+                    current_data[key] = value
 
-def add_element_to_tranid(all_data, tran_id, new_key, new_value):
-    if tran_id in all_data:
-        all_data[tran_id][new_key] = new_value
-    else:
-        print(f"TRANID {tran_id} não encontrado.")
+# Exemplo de uso
+line1 = '         MTBTRA TRANSID=920,TRANSID1=0,TRANSID2=GF19,ATIVA=NAO,       XMTTR'
+line2 = '                      GRUPO=(G00),PROGID=X0GF,TERM=(51)                                                     MTTR'
+line3 = '         MTBTRA TRANSID=922,TRANSID1=0,TRANSID2=GF19,ATIVA=NAO,       XMTTR'
+line4 = '                      GRUPO=(G00),                                                                                                          XMTTR'
+line5 = '                      GRUP2=(G01 ),             CONSISTENCIA                                                            XMTTR'
 
-def get_keys_from_json(json_obj):
-    return list(json_obj.keys())
-
-
-
-# Para testar a função
 all_data = {}
 current_data = {}
-lines = [
-    "MITBH10 TRANID=B57,PROG=2109120938,TIPO=CLE,FUNC=ASDADASOPDAS,HOJE=CASADA          ",
-    "                                                       FUNC2=ASDOIASIDJASIOD",
-    "                                                       FUNC3=SOMETHINGELSE",
-    "MITBH10 TRANID=B58,PROG=2109120939,TIPO=CLE,FUNC=OTHERFUNC,HOJE=CASADA",
-    "                                                       FUNC2=OTHERFUNC2",
-]
 
-for line in lines:
-    process_line(line, current_data, all_data)
+process_line(line1, current_data, all_data)
+process_line(line2, current_data, all_data)
+process_line(line3, current_data, all_data)
+process_line(line4, current_data, all_data)
+process_line(line5, current_data, all_data)
 
-# Adicionar o último current_data se não estiver vazio
-if current_data:
-    tran_id = current_data.get('TRANID')
-    if tran_id:
-        all_data[tran_id] = current_data
-
-add_element_to_tranid(all_data,'B57','VOLUMETRIA',232030)
-
-print(get_keys_from_json(all_data))
-print(json.dumps(all_data, indent=4))
-
-
+print(all_data)
