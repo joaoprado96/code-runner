@@ -1,0 +1,112 @@
+/* Estilização geral */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    transition: background-color 0.3s ease;
+}
+
+.container {
+    width: 90%;
+    margin: auto;
+    overflow: hidden;
+    border-radius: 8px;  /* borda circular */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* efeito de sombra */
+    transition: box-shadow 0.3s ease;
+}
+
+/* Estilização de cabeçalho */
+header {
+    background: #50b3a2;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;  /* borda circular */
+}
+
+/* Estilização de tabela */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 18px;
+    text-align: left;
+    border-radius: 8px;  /* borda circular */
+}
+
+th {
+    background-color: #009879;
+    color: white;
+    border-radius: 4px;  /* borda circular */
+}
+
+th, td {
+    border: 1px solid #dddddd;
+    padding: 8px;
+    border-radius: 4px;  /* borda circular */
+    transition: background-color 0.3s ease;
+}
+
+tr:nth-child(even) {
+    background-color: #f3f3f3;
+}
+
+/* Estilização de gráficos */
+#transVolChart, #transMipsChart {
+    width: 100%;
+    height: 400px;
+    border-radius: 8px;  /* borda circular */
+}
+
+/* Estilização do Loader */
+#loader {
+    display: none;  /* inicialmente escondido */
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.8) url('loader.gif') 50% 50% no-repeat;
+    border-radius: 8px;  /* borda circular */
+}
+
+/* Estilização de botões */
+button {
+    background-color: #009879;
+    color: white;
+    padding: 14px 20px;
+    margin: 14px 0;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 8px;  /* borda circular */
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+
+button:hover {
+    opacity: 0.8;
+    background-color: #007a63;  /* cor de fundo ao passar o mouse */
+}
+
+/* Animação de Fade-In */
+.fade-in {
+    opacity: 0;
+    animation: fadeIn ease 1s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fadeIn {
+    100% {
+        opacity: 1;
+    }
+}
+
+.graph-container {
+    text-align: center;
+    margin: 30px;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}

@@ -1,6 +1,54 @@
 import ibm_db
 import json
 
+data_base = {
+        "B53":{
+                "10000": {
+                            "PROGID":"X0XA",
+                            "TRANSID": "B53",
+                            "ATIVA": "SIM"
+                },
+                "20000": {
+                            "PROGID":"X0XB",
+                            "TRANSID": "B53",
+                            "ATIVA": "SIM"
+                },
+                "30000": {
+                            "PROGID":"X0XC",
+                            "TRANSID": "B53",
+                            "ATIVA": "SIM"
+                },
+                "40000": {
+                            "PROGID":"X0XD",
+                            "TRANSID": "B53",
+                            "ATIVA": "SIM"
+                },
+                "TERM":['11','71','30'],
+                "GRUPO":['G11','G32','G40'],
+                "VOLMETRIA":{
+                            "AGENSP01":30000,
+                            "AGENSP02":30000,
+                            "AGENSP03":30000,
+                            "AGENSP04":30000,
+                            "AGENSP05":30000,
+
+                },
+                "MIPS":{
+                            "AGENSP01":0.001,
+                            "AGENSP02":0.001,
+                            "AGENSP03":0.001,
+                            "AGENSP04":0.001,
+                            "AGENSP05":0.001,
+
+                },
+                "SIGLA":"X0",
+                "SERV_NEGOCIOS": "PAGAMENTO DE BOLETOS",
+                "GRUPO_SUPORTE":"BOLETO PAGO (S000900)",
+                "LCTIO": "NAPOLI",
+                "CTIO": "DOUGLAS SANTOS"
+        }
+}
+
 def fetch_data_from_db2(connection_string, query, key_column=None):
     """
     Pega dados de uma tabela DB2 e os transforma em um dicionário JSON.
