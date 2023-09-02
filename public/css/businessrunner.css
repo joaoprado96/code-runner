@@ -9,7 +9,7 @@ body {
 }
 
 .container {
-    width: 90%;
+    width: 85%;
     margin: auto;
     overflow: hidden;
     border-radius: 8px;  /* borda circular */
@@ -109,4 +109,36 @@ button:hover {
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-style {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-entry {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.form-entry .description, .form-entry .value {
+    flex: 1;
+    padding: 5px;
+}
+
+html, body, #businessProgramGraph, svg {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+.link {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 2px;
 }

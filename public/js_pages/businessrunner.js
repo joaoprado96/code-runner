@@ -18,6 +18,37 @@ document.addEventListener('DOMContentLoaded', async (event) => {
         });
         const transformed_data = await response2.json();
 
+
+        // Preencher o dashboard de estatísticas gerais
+        const generalStatsDiv = document.getElementById('generalStats');
+        for (const [key, value] of Object.entries(transformed_data.general_stats)) {
+            const friendlyName = getFriendlyName(key);
+            generalStatsDiv.innerHTML += `
+            <div class="form-entry">
+                <div class="description"><strong>${friendlyName}</strong></div>
+                <div class="value">${value}</div>
+            </div>`;
+        }
+
+        // Preencher o dashboard de estatísticas de programa
+        const programStatsDiv = document.getElementById('programStats');
+        for (const [program, stats] of Object.entries(transformed_data.program_stats)) {
+            const businessLines = stats.business_lines.join(', ');
+            const transactions = stats.transactions.join(', ');
+
+            programStatsDiv.innerHTML += `<strong>PROGRAMA: ${program}</strong>`;
+            programStatsDiv.innerHTML += `
+                <div class="form-entry">
+                    <div class="description"><strong>LINHA(S) DE NEGÓCIO</strong></div>
+                    <div class="value">${businessLines}</div>
+                </div>`;
+            programStatsDiv.innerHTML += `
+                <div class="form-entry">
+                    <div class="description"><strong>TRANSAÇÕES</strong></div>
+                    <div class="value">${transactions}</div>
+                </div>`;
+        }
+
         // Preencher linhas de negócio
         const businessLinesDiv = document.getElementById('business-lines');
         for (const [businessLine, data] of Object.entries(transformed_data.business_lines)) {
@@ -26,6 +57,8 @@ document.addEventListener('DOMContentLoaded', async (event) => {
                                             <p>Grupo de Suporte: ${data.support_group}</p>`;
         }
 
+
+        
         // Preencher grupos de suporte
         const supportGroupsDiv = document.getElementById('support-groups');
         for (const [group, lines] of Object.entries(transformed_data.support_group)) {
@@ -208,8 +241,8 @@ document.addEventListener('DOMContentLoaded', async (event) => {
 
 
         // Criação do gráfico
-        const businessLineByMonitorChartctx = document.getElementById('businessLineByMonitorChart').getContext('2d');
-        new Chart(businessLineByMonitorChartctx, {
+        const businessLineVolByMonitorChartctx = document.getElementById('businessLineVolByMonitorChart').getContext('2d');
+        new Chart(businessLineVolByMonitorChartctx, {
             type: 'bar',
             data: {
                 labels: monitorLabels,
@@ -227,6 +260,110 @@ document.addEventListener('DOMContentLoaded', async (event) => {
             }
         });
 
+        const datasets2 = businessLinesMonitorData.map((line, index) => {
+            return {
+                label: line,
+                data: monitorLabels.map((monitor, index) => {
+                    if(datasetMips[index] && typeof datasetMips[index] === 'object') {
+                      return datasetMips[index][line] || 0;
+                    } else {
+                      return 0;
+                    }
+                  }),
+                backgroundColor: `rgba(${index * 50}, ${index * 20}, ${index * 30}, 0.5)`,  // cores aleatórias, você pode ajustar
+                borderColor: `rgba(${index * 50}, ${index * 20}, ${index * 30}, 1)`,
+                borderWidth: 1
+            };
+        });
+
+
+        // Criação do gráfico
+        const businessLineMipsByMonitorChartctx = document.getElementById('businessLineMipsByMonitorChart').getContext('2d');
+        new Chart(businessLineMipsByMonitorChartctx, {
+            type: 'bar',
+            data: {
+                labels: monitorLabels,
+                datasets: datasets2
+            },
+            options: {
+                scales: {
+                    x: {
+                        stacked: true
+                    },
+                    y: {
+                        stacked: true
+                    }
+                }
+            }
+        });
+
+        const $ = go.GraphObject.make;
+
+        const myDiagram = $(go.Diagram, "myDiagramDiv", {
+        "undoManager.isEnabled": true,
+        layout: $(go.TreeLayout, {
+            angle: 90,
+            layerSpacing: 50,
+            alternateLayerSpacing: 40
+        })
+        });
+
+        myDiagram.nodeTemplate =
+        $(go.Node, "Auto",
+            $(go.Shape, "RoundedRectangle", { strokeWidth: 0 },
+            new go.Binding("fill", "color")),
+            $(go.TextBlock, { margin: 8 },
+            new go.Binding("text", "key"))
+        );
+
+        myDiagram.linkTemplate =
+        $(go.Link,
+            $(go.Shape, { strokeWidth: 1.5 }),
+            $(go.Shape, { toArrow: "Standard", stroke: null })
+        );
+
+        // Seus dados JSON aqui
+        console.log(transformed_data.business_lines_program)
+
+        // Converter o JSON em um formato que GoJS pode entender
+        var nodeDataArray = [];
+        var linkDataArray = [];
+        
+        Object.keys(transformed_data.business_lines_program).forEach((businessLine, index) => {
+        nodeDataArray.push({ key: businessLine, color: "lightblue" });
+        transformed_data.business_lines_program[businessLine].forEach(program => {
+            if (!programExistsInNodeDataArray(nodeDataArray, program)) {
+                nodeDataArray.push({ key: program, color: "lightgreen" });
+              }
+            linkDataArray.push({ from: businessLine, to: program });
+            });
+        });
+
+        nodeDataArray = nodeDataArray.map((node, index) => {
+            const x = node.color === "lightblue" ? 50 : 800;
+            return {
+                ...node,
+                loc: `${50} ${index * 100}`
+            };
+        });
+
+        myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
+
+
+    function programExistsInNodeDataArray(nodeDataArray, program) {
+        return nodeDataArray.some(item => item.key === program);
+    }
+    function getFriendlyName(key) {
+        const friendlyNames = {
+            num_trans: "TRANSAÇÕES",
+            num_programs: "PROGRAMAS",
+            num_business_lines: "LINHAS DE NEGÓCIO",
+            num_monitors: "MONITORES",
+            num_support_groups: "GRUPOS DE SUPORTE",
+            num_siglas: "SIGLAS"
+        };
+        return friendlyNames[key] || key; // Retorna o valor amigável, ou a própria chave se não estiver no mapa
+    }     
     // Função para gerar uma cor aleatória (apenas um exemplo)
     function randomColor() {
         const letters = '0123456789ABCDEF';

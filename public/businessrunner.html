@@ -10,50 +10,76 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    <script src="https://unpkg.com/gojs@2.1.45/release/go.js"></script>
 </head>
 <body>
     <header>
         <h1>Business Runner - GRBE</h1>
     </header>
-
+    <br>
     <main class="container">
-        <section id="business-lines">
-            <h2>Linhas de Negócio</h2>
-        </section>
+        <br>
+        <h1>LINHAS DE NEGÓCIO</h1>
+        <div class="container">
+            <section id="business-lines"></section>
+        </div>
 
+        <h1>ESTASTÍSTICAS GERAIS DO GRBE</h1>
+        <div class="container">
+            <div id="generalStats" class="form-style">
+                <!-- As estatísticas gerais serão preenchidas aqui -->
+            </div>
+        </div>
+
+        <h1>PERFORMANCE DAS LINHAS DE NEGÓCIO</h1>
         <section id="business-line-monitor">
-            <h2>Volumetria e MIPS por Linha e Monitor</h2>
             <div class="graph-container">
+                <h2>VOLUMETRIA POR LINHA DE NEGÓCIO</h2>
                 <canvas id="businessVolChart"></canvas>
-                <br>
-                <br>
+                <h2>MIPS POR LINHA DE NEGÓCIO</h2>
                 <canvas id="businessMipsChart"></canvas>
-                <br>
-                <br>
-                <canvas id="businessLineByMonitorChart"></canvas>
+                <h2>VOLUMETRIA POR MONITOR PARA CADA LINHA DE NEGÓCIO</h2>
+                <canvas id="businessLineVolByMonitorChart"></canvas>
+                <h2>MIPS POR MONITOR PARA CADA LINHA DE NEGÓCIO</h2>
+                <canvas id="businessLineMipsByMonitorChart"></canvas>
             </div>
         </section>
 
+        <h1>DETALHAMENTO DOS PROGRAMAS EM LINHAS DE NEGÓCIO</h1>
+        <div class="container">
+            <div id="programStats" class="form-style">
+                <!-- As estatísticas de programa serão preenchidas aqui -->
+            </div>
+        </div>
+
+        <h1>PERFORMANCE TRANSACIONAIS</h1>
         <section id="transaction-data">
-            <h2>Volumetria e MIPS por Transação</h2>
             <div class="graph-container">
+                <h2>VOLUMETRIA POR TRANSAÇÃO</h2>
                 <canvas id="transVolChart"></canvas>
+                <h2>MIPS POR TRANSAÇÃO</h2>
                 <canvas id="transMipsChart"></canvas>
             </div>
+            <h2>TABELA GERAL DE VOLUMETRIA POR MONITOR</h2>
             <div id="trans-vol-table-container"></div>
+            <h2>TABELA GERAL DE MIPS POR MONITOR</h2>
             <div id="trans-mips-table-container"></div>
+
         </section>
 
-
-        <section id="support-groups">
-            <h2>Grupos de Suporte</h2>
-        </section>
-
-        <section id="line-terminals">
-            <h2>Terminais por Linha de Negócio</h2>
-        </section>
-
+        <h2>GRUPOS DE SUPORTE POR LINHA DE NEGOCIO</h2>
+        <div class="container">
+            <section id="support-groups"></section>
+        </div>
+        <h2>TERMINAIS POR LINHA DE NEGOCIO</h2>
+        <div class="container">
+            <section id="line-terminals"></section>
+        </div>
     </main>
+
+    <div class="container">
+        <div id="myDiagramDiv" style="width:95%; height:1300px; background-color: #DAE4E4;"></div>
+    </div>
 
     <div id="loader" class="loader"></div>
 
