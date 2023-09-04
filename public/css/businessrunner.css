@@ -9,7 +9,7 @@ body {
 }
 
 .container {
-    width: 85%;
+    width: 94%;
     margin: auto;
     overflow: hidden;
     border-radius: 8px;  /* borda circular */
@@ -141,4 +141,117 @@ html, body, #businessProgramGraph, svg {
     fill: none;
     stroke: #ccc;
     stroke-width: 2px;
+}
+
+.business-box {
+    margin: 10px;
+    padding: 10px;
+}
+
+.transaction-box, .support-group-box {
+    display: inline-block;
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: white;  /* Cor de fundo padrão */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s, transform 0.3s;
+    cursor: pointer;
+}
+
+.transaction-box:hover, .support-group-box:hover {
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+    transform: scale(1.05);
+    background-color: #007a63;
+    color: white;
+    font-weight: bold;
+}
+
+.group-box {
+    margin: 10px;
+    padding: 10px;
+}
+
+.line-box {
+    display: inline-block;
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: white;  /* Cor de fundo padrão */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s, transform 0.3s;
+    cursor: pointer;
+}
+
+.line-box:hover {
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+    transform: scale(1.05);
+    background-color: #007a63;
+    color: white;
+    font-weight: bold;
+}
+
+.line-terminal-box {
+    margin: 10px;
+    padding: 10px;
+}
+
+.terminal-box {
+    display: inline-block;
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: white;  /* Cor de fundo padrão */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s, transform 0.3s, background-color 0.3s;
+    cursor: pointer;
+}
+
+.terminal-box:hover {
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+    transform: scale(1.05);
+    background-color: #007a63;
+    color: white;
+    font-weight: bold;
+}
+
+.program-box {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.form-entry {
+    margin-top: 10px;
+}
+
+.description {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.line-box, .transaction-box {
+    display: inline-block;
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s, transform 0.3s, background-color 0.3s;
+    cursor: pointer;
+    color: black;
+    font-weight: normal;
+}
+
+.line-box:hover, .transaction-box:hover {
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+    transform: scale(1.05);
+    background-color: #007a63;  
+    color: white;
+    font-weight: bold;
 }

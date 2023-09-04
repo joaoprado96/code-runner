@@ -32,40 +32,96 @@ document.addEventListener('DOMContentLoaded', async (event) => {
 
         // Preencher o dashboard de estatísticas de programa
         const programStatsDiv = document.getElementById('programStats');
+
         for (const [program, stats] of Object.entries(transformed_data.program_stats)) {
-            const businessLines = stats.business_lines.join(', ');
-            const transactions = stats.transactions.join(', ');
-
-            programStatsDiv.innerHTML += `<strong>PROGRAMA: ${program}</strong>`;
-            programStatsDiv.innerHTML += `
-                <div class="form-entry">
-                    <div class="description"><strong>LINHA(S) DE NEGÓCIO</strong></div>
-                    <div class="value">${businessLines}</div>
-                </div>`;
-            programStatsDiv.innerHTML += `
-                <div class="form-entry">
-                    <div class="description"><strong>TRANSAÇÕES</strong></div>
-                    <div class="value">${transactions}</div>
-                </div>`;
-        }
-
-        // Preencher linhas de negócio
-        const businessLinesDiv = document.getElementById('business-lines');
-        for (const [businessLine, data] of Object.entries(transformed_data.business_lines)) {
-            businessLinesDiv.innerHTML += `<h2>${businessLine}</h2>
-                                            <p>Transações: ${data.trans.join(', ')}</p>
-                                            <p>Grupo de Suporte: ${data.support_group}</p>`;
-        }
-
-
+            const programDiv = document.createElement('div');
+            programDiv.classList.add('program-box');
+            programDiv.innerHTML = `<strong>PROGRAMA: ${program}</strong>`;
         
-        // Preencher grupos de suporte
-        const supportGroupsDiv = document.getElementById('support-groups');
-        for (const [group, lines] of Object.entries(transformed_data.support_group)) {
-            supportGroupsDiv.innerHTML += `<h2>${group}</h2>
-                                            <p>Linhas de Negócio: ${lines.join(', ')}</p>`;
+            // Adicionar linhas de negócio
+            const businessLinesDiv = document.createElement('div');
+            businessLinesDiv.classList.add('form-entry');
+            businessLinesDiv.innerHTML = '<div class="description"><strong>LINHA(S)</strong></div>';
+            stats.business_lines.forEach(line => {
+                const lineItem = document.createElement('span');
+                lineItem.classList.add('line-box');
+                lineItem.textContent = line;
+                businessLinesDiv.appendChild(lineItem);
+            });
+            programDiv.appendChild(businessLinesDiv);
+        
+            // Adicionar transações
+            const transactionsDiv = document.createElement('div');
+            transactionsDiv.classList.add('form-entry');
+            transactionsDiv.innerHTML = '<div class="description"><strong>TRANSAÇÕES</strong></div>';
+            stats.transactions.forEach(transaction => {
+                const transactionItem = document.createElement('span');
+                transactionItem.classList.add('transaction-box');
+                transactionItem.textContent = transaction;
+                transactionsDiv.appendChild(transactionItem);
+            });
+            programDiv.appendChild(transactionsDiv);
+        
+            programStatsDiv.appendChild(programDiv);
         }
+        
+        const businessLinesDiv = document.getElementById('business-lines');
 
+        for (const [businessLine, data] of Object.entries(transformed_data.business_lines)) {
+            const businessDiv = document.createElement('div');
+            businessDiv.classList.add('business-box');
+            businessDiv.innerHTML = `<h2>${businessLine}</h2>`;
+            
+            // Adicionar transações
+            const transDiv = document.createElement('div');
+            transDiv.innerHTML = 'Transações:';
+            data.trans.forEach(transaction => {
+                const transItem = document.createElement('span');
+                transItem.classList.add('transaction-box');
+                transItem.textContent = transaction;
+                transDiv.appendChild(transItem);
+            });
+            businessDiv.appendChild(transDiv);
+            
+            // Adicionar grupo de suporte
+            const supportGroupDiv = document.createElement('div');
+            supportGroupDiv.innerHTML = 'Grupo de Suporte:';
+            
+            data.support_group.forEach(group => {
+                const groupItem = document.createElement('span');
+                groupItem.classList.add('support-group-box');
+                groupItem.textContent = group;
+                supportGroupDiv.appendChild(groupItem);
+            });
+        
+            businessDiv.appendChild(supportGroupDiv);
+            
+            businessLinesDiv.appendChild(businessDiv);
+        }
+       
+        const supportGroupsDiv = document.getElementById('support-groups');
+
+        for (const [group, lines] of Object.entries(transformed_data.support_group)) {
+            const groupDiv = document.createElement('div');
+            groupDiv.classList.add('group-box');
+            groupDiv.innerHTML = `<h2>${group}</h2>`;
+            
+            const linesDiv = document.createElement('div');
+            linesDiv.innerHTML = 'Linhas de Negócio:';
+            
+            lines.forEach(line => {
+                const lineItem = document.createElement('span');
+                lineItem.classList.add('line-box');
+                lineItem.textContent = line;
+                linesDiv.appendChild(lineItem);
+            });
+        
+            groupDiv.appendChild(linesDiv);
+            
+            supportGroupsDiv.appendChild(groupDiv);
+        }
+     
+        // Preencher Volumetria por Transação
         // Preencher Volumetria por Transação
         const transVolDiv = document.getElementById('trans-vol-table-container');
 
@@ -78,18 +134,35 @@ document.addEventListener('DOMContentLoaded', async (event) => {
                 allMonitors.add(monitor);
             }
         }
+
         for (const monitor of allMonitors) {
             transVolTable += `<th>${monitor}</th>`;
         }
 
+        // Adicionar coluna de Soma Total no cabeçalho
+        transVolTable += '<th>Soma Total</th>';
+
         transVolTable += '</tr></thead><tbody>';
 
         // Preencher as linhas da tabela
-        for (const [trans, vol] of Object.entries(transformed_data.trans_vol)) {
+        // Primeiro, ordene as transações com base na soma de todos os monitores
+        const sortedTransactions = Object.entries(transformed_data.trans_vol).sort((a, b) => {
+            const sumA = Object.values(a[1]).reduce((acc, val) => acc + (val || 0), 0);
+            const sumB = Object.values(b[1]).reduce((acc, val) => acc + (val || 0), 0);
+            return sumB - sumA;  // ordem decrescente, mude para sumA - sumB para ordem crescente
+        });
+
+        for (const [trans, vol] of sortedTransactions) {
+            const totalSum = Object.values(vol).reduce((acc, val) => acc + (val || 0), 0);
+
             transVolTable += `<tr><td>${trans}</td>`;
             for (const monitor of allMonitors) {
                 transVolTable += `<td>${vol[monitor] || 'N/A'}</td>`;
             }
+
+            // Adicionar soma total em cada linha
+            transVolTable += `<td>${totalSum}</td>`;
+
             transVolTable += '</tr>';
         }
 
@@ -109,104 +182,282 @@ document.addEventListener('DOMContentLoaded', async (event) => {
                 allMonitorsMIPS.add(monitor);
             }
         }
+        
         for (const monitor of allMonitorsMIPS) {
             transMipsTable += `<th>${monitor}</th>`;
         }
         
+        // Adicionar coluna de Soma Total no cabeçalho
+        transMipsTable += '<th>Soma Total</th>';
+        
         transMipsTable += '</tr></thead><tbody>';
         
         // Preencher as linhas da tabela
-        for (const [trans, mips] of Object.entries(transformed_data.trans_mips)) {
+        // Primeiro, ordene as transações com base na soma de todos os monitores
+        const sortedTransactionsMIPS = Object.entries(transformed_data.trans_mips).sort((a, b) => {
+            const sumA = Object.values(a[1]).reduce((acc, val) => acc + (val || 0), 0);
+            const sumB = Object.values(b[1]).reduce((acc, val) => acc + (val || 0), 0);
+            return sumB - sumA;  // ordem decrescente, mude para sumA - sumB para ordem crescente
+        });
+        
+        for (const [trans, mips] of sortedTransactionsMIPS) {
+            const totalSumMIPS = Object.values(mips).reduce((acc, val) => acc + (val || 0), 0);
+        
             transMipsTable += `<tr><td>${trans}</td>`;
             for (const monitor of allMonitorsMIPS) {
                 transMipsTable += `<td>${mips[monitor] || 'N/A'}</td>`;
             }
+        
+            // Adicionar soma total em cada linha
+            transMipsTable += `<td>${totalSumMIPS}</td>`;
+            
             transMipsTable += '</tr>';
         }
         
         transMipsTable += '</tbody></table>';
         
         transMipsDiv.innerHTML = transMipsTable;
-        
+                
 
         // Preencher terminais por linha de negócio
         const lineTerminalsDiv = document.getElementById('line-terminals');
+
         for (const [line, terminals] of Object.entries(transformed_data.line_terminals)) {
-            lineTerminalsDiv.innerHTML += `<h2>${line}</h2>
-                                            <p>Terminais: ${terminals.join(', ')}</p>`;
+            const lineDiv = document.createElement('div');
+            lineDiv.classList.add('line-terminal-box');
+            lineDiv.innerHTML = `<h2>${line}</h2>`;
+            
+            const terminalsDiv = document.createElement('div');
+            terminalsDiv.innerHTML = 'Terminais:';
+            
+            terminals.forEach(terminal => {
+                const terminalItem = document.createElement('span');
+                terminalItem.classList.add('terminal-box');
+                terminalItem.textContent = terminal;
+                terminalsDiv.appendChild(terminalItem);
+            });
+        
+            lineDiv.appendChild(terminalsDiv);
+            
+            lineTerminalsDiv.appendChild(lineDiv);
         }
+        
         // Gráfico de Volumetria por Transação
         const transVolLabels = Object.keys(transformed_data.trans_vol);
         const transVolData = Object.values(transformed_data.trans_vol).map(innerObj => sumValues(innerObj));
+        const maxValueVol = Math.max(...transVolData);
+        const minValueVol = Math.min(...transVolData);
+        const scaleVol = 255 / (maxValueVol - minValueVol || 1);
+        
         const transVolCtx = document.getElementById('transVolChart').getContext('2d');
+        
         new Chart(transVolCtx, {
-        type: 'bar',
-        data: {
-            labels: transVolLabels,
-            datasets: [{
-            label: 'Volumetria',
-            data: transVolData,
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1
-            }]
-        }
+            type: 'bar',
+            data: {
+                labels: transVolLabels,
+                datasets: [{
+                    label: 'Volumetria',
+                    data: transVolData,
+                    backgroundColor: transVolData.map(value => getGreenColor((value - minValueVol) * scaleVol)),
+                    borderColor: transVolData.map(value => getGreenBorderColor((value - minValueVol) * scaleVol)),
+                    borderWidth: 1,
+                    hoverBackgroundColor: transVolData.map(value => getGreenColor((value - minValueVol) * scaleVol + 10)),
+                    hoverBorderColor: transVolData.map(value => getGreenBorderColor((value - minValueVol) * scaleVol + 10)),
+                    hoverBorderWidth: 2
+                }]
+            },
+            options: {
+                legend: {
+                    position: 'bottom',
+                    align: 'end'
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                    backgroundColor: 'rgba(0,0,0,0.7)',
+                    titleFontColor: 'white',
+                    bodyFontColor: 'white',
+                    borderColor: 'rgba(0,0,0,0.9)',
+                    borderWidth: 1
+                },
+                elements: {
+                    rectangle: {
+                        borderWidth: 2,
+                        borderColor: 'rgba(0, 255, 0, 1)',
+                        borderSkipped: 'bottom',
+                        shadowOffsetX: 0,
+                        shadowOffsetY: 3,
+                        shadowBlur: 10,
+                        shadowColor: 'rgba(0,0,0,0.3)'
+                    }
+                }
+            }
         });
 
         // Gráfico de MIPS por Transação
         const transMipsLabels = Object.keys(transformed_data.trans_mips);
         const transMipsData = Object.values(transformed_data.trans_mips).map(innerObj => sumValues(innerObj));
+        const maxValue = Math.max(...transMipsData);
+        const minValue = Math.min(...transMipsData);
+        const scale = 255 / (maxValue - minValue || 1);
+        
         const transMipsCtx = document.getElementById('transMipsChart').getContext('2d');
         new Chart(transMipsCtx, {
-        type: 'bar',
-        data: {
-            labels: transMipsLabels,
-            datasets: [{
-            label: 'MIPS',
-            data: transMipsData,
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            borderColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 1
-            }]
-        },
+            type: 'bar',
+            data: {
+                labels: transMipsLabels,
+                datasets: [{
+                    label: 'MIPS',
+                    data: transMipsData,
+                    backgroundColor: transMipsData.map(value => getGreenColor((value - minValue) * scale)),
+                    borderColor: transMipsData.map(value => getGreenBorderColor((value - minValue) * scale)),
+                    borderWidth: 1,
+                    hoverBackgroundColor: transMipsData.map(value => getGreenColor((value - minValue) * scale + 10)),
+                    hoverBorderColor: transMipsData.map(value => getGreenBorderColor((value - minValue) * scale + 10)),
+                    hoverBorderWidth: 2
+                }]
+            },
+            options: {
+                legend: {
+                    position: 'bottom',
+                    align: 'end'
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                    backgroundColor: 'rgba(0,0,0,0.7)',
+                    titleFontColor: 'white',
+                    bodyFontColor: 'white',
+                    borderColor: 'rgba(0,0,0,0.9)',
+                    borderWidth: 1
+                },
+                elements: {
+                    rectangle: {
+                        borderWidth: 2,
+                        borderColor: 'rgba(0, 255, 0, 1)',
+                        borderSkipped: 'bottom',
+                        shadowOffsetX: 0,
+                        shadowOffsetY: 3,
+                        shadowBlur: 10,
+                        shadowColor: 'rgba(0,0,0,0.3)'
+                    }
+                }
+            }
         });
 
         // Para Volumetria por Linha de Negócio
-        const businessVolLabels = Object.keys(transformed_data.business_lines); // Supondo que cada linha de negócio tem dados de Volumetria
-        const businessVolData = Object.values(transformed_data.business_lines).map(line => sumValues(line.vol || {})); // Supondo que 'vol' contém a Volumetria
+        const businessVolLabels = Object.keys(transformed_data.business_lines);
+        const businessVolData = Object.values(transformed_data.business_lines).map(line => sumValues(line.vol || {}));
         const businessVolCtx = document.getElementById('businessVolChart').getContext('2d');
+        
         new Chart(businessVolCtx, {
-        type: 'bar',
-        data: {
-            labels: businessVolLabels,
-            datasets: [{
-            label: 'Volumetria por Linha de Negócio',
-            data: businessVolData,
-            backgroundColor: 'rgba(0, 123, 255, 0.5)',
-            borderColor: 'rgba(0, 123, 255, 1)',
-            borderWidth: 1
-            }]
-        }
+            type: 'bar',
+            data: {
+                labels: businessVolLabels,
+                datasets: [{
+                    label: 'Volumetria por Linha de Negócio',
+                    data: businessVolData,
+                    backgroundColor: 'rgba(76, 175, 80, 0.5)',  // Cor verde com 50% de transparência
+                    borderColor: 'rgba(76, 175, 80, 1)',  // Cor verde sólida
+                    borderWidth: 1,
+                    hoverBackgroundColor: 'rgba(76, 175, 80, 0.7)',  // Cor verde ao passar o mouse com 70% de transparência
+                    hoverBorderColor: 'rgba(76, 175, 80, 1)',  // Cor verde sólida ao passar o mouse
+                    hoverBorderWidth: 2  // Aumenta a espessura da borda ao passar o mouse
+                }]
+            },
+            options: {
+                legend: {
+                    position: 'bottom',  // Posiciona a legenda na parte inferior
+                    align: 'end'  // Alinha a legenda à direita
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                    backgroundColor: 'rgba(0,0,0,0.7)',  // Tooltip de fundo preto com 70% de transparência
+                    titleFontColor: 'white',
+                    bodyFontColor: 'white',
+                    borderColor: 'rgba(0,0,0,0.9)',  // Borda do tooltip
+                    borderWidth: 1
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+                // Para adicionar uma leve sombra em cada barra
+                elements: {
+                    rectangle: {
+                        borderWidth: 2,
+                        borderColor: 'rgba(0, 255, 0, 1)',  // Cor verde para a borda
+                        borderSkipped: 'bottom',
+                        shadowOffsetX: 0,
+                        shadowOffsetY: 3,  // Deslocamento vertical da sombra
+                        shadowBlur: 10,  // Desfoque da sombra
+                        shadowColor: 'rgba(0,0,0,0.3)'  // Cor da sombra com 30% de transparência
+                    }
+                }
+            }
         });
+        
 
         // Para MIPS por Linha de Negócio
-        const businessMipsLabels = Object.keys(transformed_data.business_lines); // Supondo que cada linha de negócio tem dados de MIPS
-        const businessMipsData = Object.values(transformed_data.business_lines).map(line => sumValues(line.mips || {})); // Supondo que 'mips' contém os MIPS
+        const businessMipsLabels = Object.keys(transformed_data.business_lines);
+        const businessMipsData = Object.values(transformed_data.business_lines).map(line => sumValues(line.mips || {}));
         const businessMipsCtx = document.getElementById('businessMipsChart').getContext('2d');
+        
         new Chart(businessMipsCtx, {
-        type: 'bar',
-        data: {
-            labels: businessMipsLabels,
-            datasets: [{
-            label: 'MIPS por Linha de Negócio',
-            data: businessMipsData,
-            backgroundColor: 'rgba(255, 193, 7, 0.5)',
-            borderColor: 'rgba(255, 193, 7, 1)',
-            borderWidth: 1
-            }]
-        }
+            type: 'bar',
+            data: {
+                labels: businessMipsLabels,
+                datasets: [{
+                    label: 'MIPS por Linha de Negócio',
+                    data: businessMipsData,
+                    backgroundColor: 'rgba(76, 175, 80, 0.5)',  // Cor verde com 50% de transparência
+                    borderColor: 'rgba(76, 175, 80, 1)',  // Cor verde sólida
+                    borderWidth: 1,
+                    hoverBackgroundColor: 'rgba(76, 175, 80, 0.7)',  // Cor verde ao passar o mouse com 70% de transparência
+                    hoverBorderColor: 'rgba(76, 175, 80, 1)',  // Cor verde sólida ao passar o mouse
+                    hoverBorderWidth: 2  // Aumenta a espessura da borda ao passar o mouse
+                }]
+            },
+            options: {
+                legend: {
+                    position: 'bottom',  // Posiciona a legenda na parte inferior
+                    align: 'end'  // Alinha a legenda à direita
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                    backgroundColor: 'rgba(0,0,0,0.7)',  // Tooltip de fundo preto com 70% de transparência
+                    titleFontColor: 'white',
+                    bodyFontColor: 'white',
+                    borderColor: 'rgba(0,0,0,0.9)',  // Borda do tooltip
+                    borderWidth: 1
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+                // Para adicionar uma leve sombra em cada barra
+                elements: {
+                    rectangle: {
+                        borderWidth: 2,
+                        borderColor: 'rgba(0, 255, 0, 1)',  // Cor verde para a borda
+                        borderSkipped: 'bottom',
+                        shadowOffsetX: 0,
+                        shadowOffsetY: 3,  // Deslocamento vertical da sombra
+                        shadowBlur: 10,  // Desfoque da sombra
+                        shadowColor: 'rgba(0,0,0,0.3)'  // Cor da sombra com 30% de transparência
+                    }
+                }
+            }
         });
-
+        
         // Supondo que transformed_data seja a saída da função transform_data() e que ela esteja disponível aqui.
         const monitorData = transformed_data.business_lines_monitor;
 
@@ -222,24 +473,28 @@ document.addEventListener('DOMContentLoaded', async (event) => {
         });
 
         // Preparação dos dados para Chart.js
-        const businessLinesMonitorData = Object.keys(transformed_data.business_lines);  // Pega as linhas de negócio
+        const businessLinesMonitorData = Object.keys(transformed_data.business_lines);
+        const totalBusinessLines = businessLinesMonitorData.length;
+        
         const datasets = businessLinesMonitorData.map((line, index) => {
             return {
                 label: line,
                 data: monitorLabels.map((monitor, index) => {
                     if(datasetVol[index] && typeof datasetVol[index] === 'object') {
-                      return datasetVol[index][line] || 0;
+                        return datasetVol[index][line] || 0;
                     } else {
-                      return 0;
+                        return 0;
                     }
-                  }),
-                backgroundColor: `rgba(${index * 50}, ${index * 20}, ${index * 30}, 0.5)`,  // cores aleatórias, você pode ajustar
-                borderColor: `rgba(${index * 50}, ${index * 20}, ${index * 30}, 1)`,
-                borderWidth: 1
+                }),
+                backgroundColor: getGreenScaleColor(index, totalBusinessLines),
+                borderColor: getGreenScaleBorderColor(index, totalBusinessLines),
+                borderWidth: 1,
+                hoverBackgroundColor: getGreenScaleColor(index + 1, totalBusinessLines),
+                hoverBorderColor: getGreenScaleBorderColor(index + 1, totalBusinessLines),
+                hoverBorderWidth: 2
             };
         });
-
-
+        
         // Criação do gráfico
         const businessLineVolByMonitorChartctx = document.getElementById('businessLineVolByMonitorChart').getContext('2d');
         new Chart(businessLineVolByMonitorChartctx, {
@@ -256,6 +511,30 @@ document.addEventListener('DOMContentLoaded', async (event) => {
                     y: {
                         stacked: true
                     }
+                },
+                legend: {
+                    position: 'bottom',
+                    align: 'end'
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                    backgroundColor: 'rgba(0,0,0,0.7)',
+                    titleFontColor: 'white',
+                    bodyFontColor: 'white',
+                    borderColor: 'rgba(0,0,0,0.9)',
+                    borderWidth: 1
+                },
+                elements: {
+                    rectangle: {
+                        borderWidth: 2,
+                        borderColor: 'rgba(0, 255, 0, 1)',
+                        borderSkipped: 'bottom',
+                        shadowOffsetX: 0,
+                        shadowOffsetY: 3,
+                        shadowBlur: 10,
+                        shadowColor: 'rgba(0,0,0,0.3)'
+                    }
                 }
             }
         });
@@ -265,18 +544,20 @@ document.addEventListener('DOMContentLoaded', async (event) => {
                 label: line,
                 data: monitorLabels.map((monitor, index) => {
                     if(datasetMips[index] && typeof datasetMips[index] === 'object') {
-                      return datasetMips[index][line] || 0;
+                        return datasetMips[index][line] || 0;
                     } else {
-                      return 0;
+                        return 0;
                     }
-                  }),
-                backgroundColor: `rgba(${index * 50}, ${index * 20}, ${index * 30}, 0.5)`,  // cores aleatórias, você pode ajustar
-                borderColor: `rgba(${index * 50}, ${index * 20}, ${index * 30}, 1)`,
-                borderWidth: 1
+                }),
+                backgroundColor: getGreenScaleColor(index, totalBusinessLines),
+                borderColor: getGreenScaleBorderColor(index, totalBusinessLines),
+                borderWidth: 1,
+                hoverBackgroundColor: getGreenScaleColor(index + 1, totalBusinessLines),
+                hoverBorderColor: getGreenScaleBorderColor(index + 1, totalBusinessLines),
+                hoverBorderWidth: 2
             };
         });
-
-
+        
         // Criação do gráfico
         const businessLineMipsByMonitorChartctx = document.getElementById('businessLineMipsByMonitorChart').getContext('2d');
         new Chart(businessLineMipsByMonitorChartctx, {
@@ -293,63 +574,114 @@ document.addEventListener('DOMContentLoaded', async (event) => {
                     y: {
                         stacked: true
                     }
+                },
+                legend: {
+                    position: 'bottom',
+                    align: 'end'
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                    backgroundColor: 'rgba(0,0,0,0.7)',
+                    titleFontColor: 'white',
+                    bodyFontColor: 'white',
+                    borderColor: 'rgba(0,0,0,0.9)',
+                    borderWidth: 1
+                },
+                elements: {
+                    rectangle: {
+                        borderWidth: 2,
+                        borderColor: 'rgba(0, 255, 0, 1)',
+                        borderSkipped: 'bottom',
+                        shadowOffsetX: 0,
+                        shadowOffsetY: 3,
+                        shadowBlur: 10,
+                        shadowColor: 'rgba(0,0,0,0.3)'
+                    }
                 }
             }
         });
 
-        const $ = go.GraphObject.make;
+            const $ = go.GraphObject.make;
 
-        const myDiagram = $(go.Diagram, "myDiagramDiv", {
-        "undoManager.isEnabled": true,
-        layout: $(go.TreeLayout, {
-            angle: 90,
-            layerSpacing: 50,
-            alternateLayerSpacing: 40
-        })
-        });
-
-        myDiagram.nodeTemplate =
-        $(go.Node, "Auto",
-            $(go.Shape, "RoundedRectangle", { strokeWidth: 0 },
-            new go.Binding("fill", "color")),
-            $(go.TextBlock, { margin: 8 },
-            new go.Binding("text", "key"))
-        );
-
-        myDiagram.linkTemplate =
-        $(go.Link,
-            $(go.Shape, { strokeWidth: 1.5 }),
-            $(go.Shape, { toArrow: "Standard", stroke: null })
-        );
-
-        // Seus dados JSON aqui
-        console.log(transformed_data.business_lines_program)
-
-        // Converter o JSON em um formato que GoJS pode entender
-        var nodeDataArray = [];
-        var linkDataArray = [];
-        
-        Object.keys(transformed_data.business_lines_program).forEach((businessLine, index) => {
-        nodeDataArray.push({ key: businessLine, color: "lightblue" });
-        transformed_data.business_lines_program[businessLine].forEach(program => {
-            if (!programExistsInNodeDataArray(nodeDataArray, program)) {
-                nodeDataArray.push({ key: program, color: "lightgreen" });
-              }
-            linkDataArray.push({ from: businessLine, to: program });
+            const myDiagram = $(go.Diagram, "myDiagramDiv", {
+            "undoManager.isEnabled": true,
+            layout: $(go.TreeLayout)
             });
-        });
+            
+            myDiagram.nodeTemplate =
+            $(go.Node, "Auto",
+                $(go.Shape, "RoundedRectangle", { strokeWidth: 0 },
+                new go.Binding("fill", "color")),
+                $(go.TextBlock, { margin: 8 },
+                new go.Binding("text", "key"))
+            );
 
-        nodeDataArray = nodeDataArray.map((node, index) => {
-            const x = node.color === "lightblue" ? 50 : 800;
-            return {
-                ...node,
-                loc: `${50} ${index * 100}`
-            };
-        });
+            myDiagram.linkTemplate =
+            $(go.Link,
+                $(go.Shape, { strokeWidth: 1.5 }),
+                $(go.Shape, { toArrow: "Standard", stroke: null })
+            );
 
-        myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
+            // Converter o JSON em um formato que GoJS pode entender
+            var nodeDataArray = [];
+            var linkDataArray = [];
+            
+            Object.keys(transformed_data.business_lines_program).forEach((businessLine, index) => {
+            nodeDataArray.push({ key: businessLine, color: "lightblue" });
+            transformed_data.business_lines_program[businessLine].forEach(program => {
+                if (!programExistsInNodeDataArray(nodeDataArray, program)) {
+                    nodeDataArray.push({ key: program, color: "lightgreen" });
+                }
+                linkDataArray.push({ from: businessLine, to: program });
+                });
+            });
+
+            var yCoordGreen = 0;
+            var yCoordBlue = 0;
+            const verticalSpacing = 100; // Espaço vertical entre os nós
+            
+            nodeDataArray = nodeDataArray.map((node, index) => {
+                let xCoord;
+                console.log(`${yCoordBlue} yCoordBlue`);
+                console.log(`${yCoordGreen} yCoordBlue`);
+                if (node.color === "lightgreen") {
+                    xCoord = 500;  // Coluna da esquerda
+                    yCoordGreen += verticalSpacing;
+                } else {
+                    xCoord = 10; // Coluna da direita
+                    yCoordBlue += verticalSpacing;
+                }
+                return {
+                    ...node,
+                    loc: `${xCoord} ${node.color === "lightgreen" ? yCoordGreen : yCoordBlue}`
+                };
+            });
+
+            myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
 
 
+    function getGreenColor(value) {
+        const greenValue = Math.min(255, Math.max(0, value));
+        return `rgba(0, ${greenValue}, 0, 0.5)`;
+    }
+    
+    function getGreenBorderColor(value) {
+        const greenValue = Math.min(255, Math.max(0, value));
+        return `rgba(0, ${greenValue}, 0, 1)`;
+    }            
+    function getGreenScaleColor(index, total) {
+        const step = Math.floor(255 / total);
+        const greenValue = step * index;
+        return `rgba(0, ${greenValue}, 0, 0.5)`;
+    }
+    
+    function getGreenScaleBorderColor(index, total) {
+        const step = Math.floor(255 / total);
+        const greenValue = step * index;
+        return `rgba(0, ${greenValue}, 0, 1)`;
+    }
+            
     function programExistsInNodeDataArray(nodeDataArray, program) {
         return nodeDataArray.some(item => item.key === program);
     }

@@ -56,9 +56,13 @@
         <section id="transaction-data">
             <div class="graph-container">
                 <h2>VOLUMETRIA POR TRANSAÇÃO</h2>
-                <canvas id="transVolChart"></canvas>
+                <div id="chartWrapper" style="width:100%; overflow-x:auto;">
+                    <canvas id="transVolChart"></canvas>
+                </div>
                 <h2>MIPS POR TRANSAÇÃO</h2>
-                <canvas id="transMipsChart"></canvas>
+                <div id="chartWrapper2" style="width:100%; overflow-x:auto;">
+                    <canvas id="transMipsChart"></canvas>
+                </div>
             </div>
             <h2>TABELA GERAL DE VOLUMETRIA POR MONITOR</h2>
             <div id="trans-vol-table-container"></div>
