@@ -28,8 +28,3 @@ def fetch_data_as_json(conn_str, table_name):
     ibm_db.close(conn)
 
     return json.dumps(result_dict, indent=4)
-
-# Substitua 'YOUR_CONNECTION_STRING' pela sua string de conexão e 'YOUR_TABLE_NAME' pelo nome da tabela desejada
-conn_str = "YOUR_CONNECTION_STRING"
-table_name = "YOUR_TABLE_NAME"
-print(fetch_data_as_json(conn_str, table_name))
