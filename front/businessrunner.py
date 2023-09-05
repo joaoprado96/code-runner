@@ -8,6 +8,12 @@ def is_program_used_in_business_line(program_id, business_line):
     # na linha de negócios especificada.
     return True  # Ou False, dependendo da sua lógica
 
+def to_float(value):
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return 0.0
+
 def create_random_data():
     trans_ids = [f"B{random.randint(10, 1500)}" for _ in range(300)] # Aumentar a quantidade
     prog_ids = [f"X{random.randint(0, 9)}{chr(random.randint(65, 90))}{chr(random.randint(65, 90))}" for _ in range(50)]
@@ -80,8 +86,9 @@ def transform_data(data_base):
         business_line = info.get("SERV_NEGOCIOS", "N/A")
         support_group = info.get("GRUPO_SUPORTE", "N/A")
         terminals = info.get("TERM", [])
-        volumetria = info.get("VOLMETRIA", {})
-        mips = info.get("MIPS", {})
+        volumetria = {key: to_float(value) for key, value in info.get("VOLMETRIA", {}).items()}
+        mips = {key: to_float(value) for key, value in info.get("MIPS", {}).items()}
+
         
         transformed_data["general_stats"]["num_business_lines"].add(business_line)
         transformed_data["general_stats"]["num_support_groups"].add(support_group)
@@ -166,11 +173,11 @@ def transform_data(data_base):
     # Convert sets to lists for JSON serialization
     for support_group, business_lines in transformed_data["support_group"].items():
         transformed_data["support_group"][support_group] = list(business_lines)
-        
+
     for program_id, stats in transformed_data["program_stats"].items():
         transformed_data["program_stats"][program_id]["business_lines"] = list(stats["business_lines"])
         transformed_data["program_stats"][program_id]["transactions"] = list(stats["transactions"])
-        
+
     transformed_data["general_stats"]["num_business_lines"] = len(transformed_data["general_stats"]["num_business_lines"])
     transformed_data["general_stats"]["num_monitors"] = len(transformed_data["general_stats"]["num_monitors"])
     transformed_data["general_stats"]["num_support_groups"] = len(transformed_data["general_stats"]["num_support_groups"])
