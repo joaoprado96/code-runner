@@ -3,11 +3,6 @@ import json
 from datetime import datetime, date
 
 def fetch_data_as_json(conn_str, query, force_columns=None, ignore_columns=None, rename_columns=None):
-    """
-    Fetches data based on the provided query using the IBM_DB connection and returns the result as a JSON object.
-    Groups records by TRANID and avoids creating redundant sub-elements based on APPLID, unless specified in force_columns.
-    Allows ignoring certain columns and renaming columns based on the provided dictionary.
-    """
     if force_columns is None:
         force_columns = []
     if ignore_columns is None:
@@ -27,46 +22,29 @@ def fetch_data_as_json(conn_str, query, force_columns=None, ignore_columns=None,
     result_dict = {}
     row = ibm_db.fetch_assoc(stmt)
     while row:
-        # Convertendo possíveis datetime e date para string e removendo espaços em branco no final de strings
         for key, value in list(row.items()):
-            if isinstance(value, datetime):
+            # Convertendo possíveis datetime e date para string
+            if isinstance(value, datetime) or isinstance(value, date):
                 row[key] = value.isoformat()
-            elif isinstance(value, date):
-                row[key] = value.isoformat()
+            # Tratando strings para remover espaços em branco no final
             elif isinstance(value, str):
-                row[key] = value.rstrip()  # Remove espaços em branco no final da string
-
+                row[key] = value.rstrip()
             # Remover colunas ignoradas
             if key in ignore_columns:
                 del row[key]
-            
             # Renomear colunas
             if key in rename_columns:
                 row[rename_columns[key]] = row.pop(key)
-        
-        tranid = row['TRANID']
-        applid = row['APPLID']
-        
-        # Se TRANID não existir, adicione-o
+
+        tranid = row.pop('TRANID')
+        applid = row.pop('APPLID')
+
         if tranid not in result_dict:
-            result_dict[tranid] = {}
-        
-        should_add = False
+            result_dict[tranid] = []
 
-        # Verificar se a informação, excluindo o APPLID, já existe
-        existing_info = next((info for info in result_dict[tranid].values() if info == {k: v for k, v in row.items() if k != 'APPLID'}), None)
-
-        if not existing_info:
-            should_add = True
-        else:
-            # Verificar se alguma das colunas forçadas possui um valor diferente
-            for column in force_columns:
-                if existing_info.get(column) != row.get(column):
-                    should_add = True
-                    break
-        
-        if should_add:
-            result_dict[tranid][applid] = {k: v for k, v in row.items() if k != 'TRANID'}
+        # Incorporando APPLID dentro de cada linha
+        row_data = {applid: row}
+        result_dict[tranid].append(row_data)
 
         row = ibm_db.fetch_assoc(stmt)
 
