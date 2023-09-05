@@ -60,6 +60,13 @@ def fetch_data_as_json(conn_str, query, force_columns=None, ignore_columns=None,
 
         row = ibm_db.fetch_assoc(stmt)
 
+    # Verificar se todos os valores de APPLID dentro de uma chave são iguais
+    for tranid, tran_data in result_dict.items():
+        for key, applid_data in list(tran_data.items()):
+            unique_values = set(applid_data.values())
+            if len(unique_values) == 1:
+                result_dict[tranid][key] = next(iter(unique_values))
+
     # Encerrando a conexão
     ibm_db.close(conn)
 
