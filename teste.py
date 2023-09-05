@@ -5,7 +5,7 @@ from datetime import datetime, date
 def fetch_data_as_json(conn_str, query, force_columns=None, ignore_columns=None, rename_columns=None):
     """
     Fetches data based on the provided query using the IBM_DB connection and returns the result as a JSON object.
-    Groups records by TRANID and avoids creating redundant sub-elements based on APPLID, unless specified in force_columns.
+    Groups records by TRANID and organizes the values by APPLID.
     Allows ignoring certain columns and renaming columns based on the provided dictionary.
     """
     if force_columns is None:
@@ -46,14 +46,17 @@ def fetch_data_as_json(conn_str, query, force_columns=None, ignore_columns=None,
         
         tranid = row['TRANID']
         applid = row['APPLID']
-
+        
         # Se TRANID não existir, adicione-o
         if tranid not in result_dict:
             result_dict[tranid] = {}
         
-        # Incorporando o APPLID dentro de cada linha
-        row_data = {key: value for key, value in row.items() if key not in ['TRANID', 'APPLID']}
-        result_dict[tranid][applid] = row_data
+        # Inserir os valores por APPLID
+        for key, value in row.items():
+            if key not in ['TRANID', 'APPLID']:
+                if key not in result_dict[tranid]:
+                    result_dict[tranid][key] = {}
+                result_dict[tranid][key][applid] = value
 
         row = ibm_db.fetch_assoc(stmt)
 
