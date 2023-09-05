@@ -2,20 +2,26 @@ import ibm_db
 import json
 from datetime import datetime, date
 
-def fetch_data_as_json(conn_str, table_name, force_columns=[], ignore_columns=[], rename_columns={}):
+def fetch_data_as_json(conn_str, query, force_columns=None, ignore_columns=None, rename_columns=None):
     """
-    Fetches data from a table using the IBM_DB connection and returns the result as a JSON object.
+    Fetches data based on the provided query using the IBM_DB connection and returns the result as a JSON object.
     Groups records by TRANID and avoids creating redundant sub-elements based on APPLID, unless specified in force_columns.
     Allows ignoring certain columns and renaming columns based on the provided dictionary.
     """
+    if force_columns is None:
+        force_columns = []
+    if ignore_columns is None:
+        ignore_columns = []
+    if rename_columns is None:
+        rename_columns = {}
+    
     # Estabelecendo a conexão com o banco de dados
     conn = ibm_db.connect(conn_str, "", "")
     if not conn:
         print("Failed to connect to the database.")
         return
 
-    # Executando a query SELECT
-    query = f"SELECT * FROM {table_name}"
+    # Executando a query fornecida
     stmt = ibm_db.exec_immediate(conn, query)
 
     result_dict = {}
@@ -69,11 +75,7 @@ def fetch_data_as_json(conn_str, table_name, force_columns=[], ignore_columns=[]
 
     return json.dumps(result_dict, indent=4)
 
-# Substitua 'YOUR_CONNECTION_STRING' pela sua string de conexão e 'YOUR_TABLE_NAME' pelo nome da tabela desejada
-force_columns = ['YOUR_COLUMN_1', 'YOUR_COLUMN_2']
-ignore_columns = ['COLUMN_TO_IGNORE_1', 'COLUMN_TO_IGNORE_2']
-rename_columns = {'OLD_COLUMN_NAME_1': 'NEW_COLUMN_NAME_1', 'OLD_COLUMN_NAME_2': 'NEW_COLUMN_NAME_2'}
-
+# Substitua 'YOUR_CONNECTION_STRING' pela sua string de conexão e 'YOUR_QUERY' pela consulta desejada
 conn_str = "YOUR_CONNECTION_STRING"
-table_name = "YOUR_TABLE_NAME"
-print(fetch_data_as_json(conn_str, table_name, force_columns, ignore_columns, rename_columns))
+query = "YOUR_QUERY"
+print(fetch_data_as_json(conn_str, query))
