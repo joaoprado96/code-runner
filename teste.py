@@ -1,5 +1,6 @@
 import ibm_db
 import json
+from datetime import datetime
 
 def fetch_data_as_json(conn_str, table_name):
     """
@@ -19,6 +20,11 @@ def fetch_data_as_json(conn_str, table_name):
     result_dict = {}
     row = ibm_db.fetch_assoc(stmt)
     while row:
+        # Convertendo possíveis timestamps para string
+        for key, value in row.items():
+            if isinstance(value, datetime):
+                row[key] = value.isoformat()
+        
         # Usando TRANID como a chave principal
         tranid = row['TRANID']
         result_dict[tranid] = row
@@ -28,3 +34,8 @@ def fetch_data_as_json(conn_str, table_name):
     ibm_db.close(conn)
 
     return json.dumps(result_dict, indent=4)
+
+# Substitua 'YOUR_CONNECTION_STRING' pela sua string de conexão e 'YOUR_TABLE_NAME' pelo nome da tabela desejada
+conn_str = "YOUR_CONNECTION_STRING"
+table_name = "YOUR_TABLE_NAME"
+print(fetch_data_as_json(conn_str, table_name))
