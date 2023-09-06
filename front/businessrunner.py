@@ -92,7 +92,7 @@ def transform_data(data_base):
         
         transformed_data["general_stats"]["num_business_lines"].add(business_line)
         transformed_data["general_stats"]["num_support_groups"].add(support_group)
-        transformed_data["general_stats"]["num_monitors"].update(volumetria.keys())
+         
 
         # Novo código para listar os programas para cada linha de negócios
         if business_line not in transformed_data["business_lines_program"]:
