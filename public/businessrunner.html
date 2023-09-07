@@ -11,28 +11,36 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
     <script src="https://unpkg.com/gojs@2.1.45/release/go.js"></script>
-<body>
+
 </head>
+<body>
     <nav class="navbar">
-        <div class="navbar-title">
-            <h1>Business Runner</h1>
+        <div class="navbar-row">
+            <div class="navbar-title">
+                <h1>Business Runner</h1>
+            </div>
         </div>
-        <div class="navbar-links">
-            <a href="#business-lines">Linhas de Negócio</a>
-            <a href="#generalStats">Estatísticas Gerais</a>
-            <a href="#business-line-monitor">Performance Negócio </a>
-            <a href="#transVolChart">Performance Transacional</a>
-            <a href="#programStats">Programas</a>
-            <a href="#support-groups">Grupos de Suporte</a>
-            <a href="#line-terminals">Terminais</a>
-            <a href="#trans-vol-table-container">Volumetria</a>
-            <a href="#trans-mips-table-container">MIPS</a>
-            <a href="#myDiagramDiv">Diagrama</a>
+        <div class="navbar-row">
+            <div class="navbar-links">
+                <a href="#business-lines">Linhas de Negócio</a>
+                <a href="#generalStats">Estatísticas Gerais</a>
+                <a href="#business-line-monitor">Performance Negócio </a>
+                <a href="#transVolChart">Performance Transacional</a>
+                <a href="#programStats">Programas</a>
+                <a href="#support-groups">Grupos de Suporte</a>
+                <a href="#line-terminals">Terminais</a>
+                <a href="#trans-vol-table-container">Volumetria</a>
+                <a href="#trans-mips-table-container">MIPS</a>
+                <a href="#myDiagramDiv">Diagrama</a>
+            </div>
+        </div>
+        <div class="navbar-row2">
+            <div class="navbar-date-picker">
+                <input type="date" id="date-picker" name="date-picker">
+            </div>
         </div>
     </nav>
-
-
-    <div class="container2">
+    <div class="container4">
         <h1>LINHAS DE NEGÓCIO</h1>
     </div>
 
@@ -71,7 +79,7 @@
     </div>
     
     <div class="container2">
-        <h1>VOLUMETRIA POR TRANSAÇÃO</h1>
+        <h2>VOLUMETRIA POR TRANSAÇÃO</h2>
     </div>
 
     <div id="chartWrapper" style="width:100%; overflow-x:auto;">
@@ -79,7 +87,7 @@
     </div>
     
     <div class="container2">
-        <h1>MIPS POR TRANSAÇÃO</h1>
+        <h2>MIPS POR TRANSAÇÃO</h2>
     </div>
     
     <div id="chartWrapper2" style="max-width:100%; overflow-x:auto;">

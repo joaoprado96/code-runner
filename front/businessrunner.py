@@ -1,6 +1,8 @@
 from collections import OrderedDict
 import json
 import random
+import sys
+from datetime import datetime
 
 # A função abaixo é um exemplo. Substitua pela sua própria lógica.
 def is_program_used_in_business_line(program_id, business_line):
@@ -18,6 +20,7 @@ def create_random_data():
     trans_ids = [f"B{random.randint(10, 1500)}" for _ in range(1800)] # Aumentar a quantidade
     trans_ids.append("B000")  # Adiciona "B000" ao final da lista
     prog_ids = [f"X{random.randint(0, 9)}{chr(random.randint(65, 90))}{chr(random.randint(65, 90))}" for _ in range(600)]
+    prog_ids_fake = [f"F{random.randint(0, 9)}{chr(random.randint(65, 90))}{chr(random.randint(65, 90))}" for _ in range(600)]
     terms = [str(random.randint(10, 99)) for _ in range(20)]
     grupos = [f"G{random.randint(10, 99)}" for _ in range(20)]
     siglas = [f"X{random.randint(10, 99)}" for _ in range(40)]
@@ -92,6 +95,19 @@ def create_random_data():
                 "ATIVA": "SIM"
             }
         
+        # Randomly choose between 1 and 4 program IDs for this transaction
+        for prog_id in random.sample(prog_ids_fake, random.randint(1, 4)):
+            data_base[trans_id][prog_id] = {
+               trans_id: {
+                "PROGID": prog_id,
+                "TRANSID": trans_id,
+                "TRANSID2": trans_id,
+                "ATIVA": "SIM"
+                }
+            }
+        
+        
+        
         data_base[trans_id]['TERM'] = random.sample(terms, random.randint(1, 5))
         data_base[trans_id]['GRUPO'] = random.sample(grupos, random.randint(1, 5))
         data_base[trans_id]['SIGLA'] = random.sample(siglas, random.randint(1, 8))
@@ -106,8 +122,6 @@ def create_random_data():
         data_base[trans_id]['CTIO'] = random.choice(ctio)
         
     return data_base
-
-import json
 
 def transform_data(data_base):
     transformed_data = {
@@ -129,6 +143,7 @@ def transform_data(data_base):
         "business_lines_program": {}  # Novo campo
     }
 
+    programas = []
     for trans_id, info in data_base.items():
         # Update general statistics
         transformed_data["general_stats"]["num_trans"] += 1
@@ -209,16 +224,23 @@ def transform_data(data_base):
         for program_id, program_info in info.items():
             if isinstance(program_info, dict) and "PROGID" in program_info:
                 # Update general statistics
-                transformed_data["general_stats"]["num_programs"] += 1
+                if not program_info['PROGID'] in programas:
+                    programas.append(program_info['PROGID'])
+                    transformed_data["general_stats"]["num_programs"] += 1
                 
-                if program_id not in transformed_data["program_stats"]:
-                    transformed_data["program_stats"][program_id] = {
-                        "business_lines": set(),
-                        "transactions": set()
-                    }
-
-                transformed_data["program_stats"][program_id]["business_lines"].add(business_line)
-                transformed_data["program_stats"][program_id]["transactions"].add(trans_id)
+                if program_info.get("PROGID") is not None:
+                    if program_id not in transformed_data["program_stats"]:
+                        transformed_data["program_stats"][program_id] = {
+                            "business_lines": set(),
+                            "transactions": set()
+                        }
+                        transformed_data["program_stats"][program_id]["business_lines"].add(business_line)
+                        transformed_data["program_stats"][program_id]["transactions"].add(trans_id)
+                    else:
+                        if not business_line in transformed_data["program_stats"][program_id]["business_lines"]:
+                            transformed_data["program_stats"][program_id]["business_lines"].add(business_line)
+                        if not trans_id in transformed_data["program_stats"][program_id]["transactions"]:
+                            transformed_data["program_stats"][program_id]["transactions"].add(trans_id)
 
 
     # Convert sets to lists for JSON serialization
@@ -233,13 +255,29 @@ def transform_data(data_base):
     transformed_data["general_stats"]["num_monitors"] = len(transformed_data["general_stats"]["num_monitors"])
     transformed_data["general_stats"]["num_support_groups"] = len(transformed_data["general_stats"]["num_support_groups"])
     transformed_data["general_stats"]["num_siglas"] = len(transformed_data["general_stats"]["num_siglas"])
-
+    
 
     return transformed_data
 
 
 if __name__ == "__main__":
+    # O primeiro argumento é o nome do script, então ignoramos ele e pegamos o segundo
+    body = sys.argv[1]
+
+    # Transforma a string JSON em um objeto Python
+    data = json.loads(body)
+    dia = data['data']
+
+    # Converta a string para um objeto de data
+    dia_obj = datetime.strptime(dia, '%Y-%m-%d')
+
+    # Converta o objeto de data de volta para uma string no formato desejado
+    dia_formatado = dia_obj.strftime('%d-%m-%Y')
+
+
+    # Gera base de dados randômica
     random_data = create_random_data()
+    
     # JSON QUE PRECISA SER ENVIADO PARA PAGINA HTML
     transformed_data = transform_data(random_data)
     print(json.dumps(transformed_data))
