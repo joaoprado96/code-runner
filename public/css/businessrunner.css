@@ -8,13 +8,67 @@ body {
     transition: background-color 0.3s ease;
 }
 
+.navbar {
+    display: flex;
+    align-items: center;
+    background-color: #009879;
+    overflow: auto;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 10px;
+}
+
+.navbar-title {
+    flex: 1;
+}
+
+.navbar-title h1 {
+    margin: 0;
+    color: #f2f2f2;
+}
+
+.navbar-links {
+    display: flex;
+}
+
+.navbar a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    background-color: #ddd;
+    color: #009879;
+}
+
 .container {
-    width: 94%;
+    max-width: 100%;
     margin: auto;
     overflow: hidden;
     border-radius: 8px;  /* borda circular */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* efeito de sombra */
-    transition: box-shadow 0.3s ease;
+    overflow-x: auto; 
+}
+.container2 {
+    width: 100%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;  /* borda circular */
+}
+
+.container3 {
+    width: 50%;
+    margin: auto;
+    text-align: center;
+    border-radius: 8px;  /* borda circular */
 }
 
 /* Estilização de cabeçalho */
@@ -104,11 +158,12 @@ button:hover {
 }
 
 .graph-container {
+    max-width: 100%;
     text-align: center;
     margin: 30px;
     padding: 15px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
 }
 
 .form-style {

@@ -15,18 +15,69 @@ def to_float(value):
         return 0.0
 
 def create_random_data():
-    trans_ids = [f"B{random.randint(10, 1500)}" for _ in range(300)] # Aumentar a quantidade
-    prog_ids = [f"X{random.randint(0, 9)}{chr(random.randint(65, 90))}{chr(random.randint(65, 90))}" for _ in range(50)]
+    trans_ids = [f"B{random.randint(10, 1500)}" for _ in range(1800)] # Aumentar a quantidade
+    trans_ids.append("B000")  # Adiciona "B000" ao final da lista
+    prog_ids = [f"X{random.randint(0, 9)}{chr(random.randint(65, 90))}{chr(random.randint(65, 90))}" for _ in range(600)]
     terms = [str(random.randint(10, 99)) for _ in range(20)]
     grupos = [f"G{random.randint(10, 99)}" for _ in range(20)]
-    siglas = [f"X{random.randint(10, 99)}" for _ in range(10)]
+    siglas = [f"X{random.randint(10, 99)}" for _ in range(40)]
     
-    serv_negocios = ["PAGAMENTO DE BOLETOS", "TRANSFERÊNCIAS", "SAQUES", "INVESTIMENTOS","CRÉDITO PESSOAL","FINANCIAMENTO","PREVENÇÃO A FRAUDE","CONSOLIDAÇÃO CONTABIL","BALANÇO FINANCEIRO"]
+    serv_negocios = [   "PAGAMENTO DE BOLETOS", 
+                        "TRANSFERÊNCIAS",
+                        "SAQUES",
+                        "INVESTIMENTOS",
+                        "CRÉDITO PESSOAL",
+                        "FINANCIAMENTO",
+                        "PREVENÇÃO A FRAUDE",
+                        "CONSOLIDAÇÃO CONTÁBIL",
+                        "BALANÇO FINANCEIRO",
+                        "EMISSÃO DE FATURAS",
+                        "GESTÃO DE PATRIMÔNIO",
+                        "PLANEJAMENTO TRIBUTÁRIO",
+                        "SEGUROS",
+                        "CONSULTORIA FINANCEIRA",
+                        "ANÁLISE DE RISCOS",
+                        "ANÁLISE DE CRÉDITO",
+                        "CÂMBIO",
+                        "PENHOR",
+                        "LEASING",
+                        "RENEGOCIAÇÃO DE DÍVIDA",
+                        "CONSÓRCIOS",
+                        "CARTÃO DE CRÉDITO",
+                        "CARTÃO DE DÉBITO",
+                        "COBRANÇA",
+                        "RECOLHIMENTO DE IMPOSTOS",
+                        "AUDITORIA",
+                        "ANÁLISE DE INVESTIMENTOS",
+                        "CUSTÓDIA DE VALORES",
+                        "CAPTAÇÃO DE RECURSOS",
+                        "PLANEJAMENTO DE APOSENTADORIA",
+                        "ORÇAMENTO PESSOAL",
+                        "EDUCAÇÃO FINANCEIRA",
+                        "PAGAMENTO DE DIVIDENDOS",
+                        "PAGAMENTO DE SALÁRIOS",
+                        "GERENCIAMENTO DE FUNDO DE INVESTIMENTO",
+                        "HOME BANKING",
+                        "ABERTURA DE CONTAS",
+                        "EMPRÉSTIMO CONSIGNADO",
+                        "INVESTIMENTO EM AÇÕES",
+                        "COMPRA E VENDA DE TÍTULOS PÚBLICOS",
+                        "FINANCIAMENTO IMOBILIÁRIO",
+                        "FINANCIAMENTO DE VEÍCULOS",
+                        "ANTICIPAÇÃO DE RECEBÍVEIS",
+                        "CAPITAL DE GIRO",
+                        "MICROCRÉDITO",
+                        "GESTÃO DE CARTEIRAS",
+                        "INVESTIMENTO EM OURO",
+                        "INVESTIMENTO EM CRIPTOMOEDAS",
+                        "ANÁLISE DE MERCADO",
+                        "PRODUTOS DE PREVIDÊNCIA PRIVADA"]
+    
     grupo_suporte = ["BOLETO PAGO (S000900)", "TRANSFERÊNCIA (S000901)", "SAQUES (S000902)", "AUDITORIA (S000903)", "MAINFRAME (S000905)"]
     lctio = ["NAPOLI", "ROMA", "MILÃO"]
     ctio = ["DOUGLAS SANTOS", "ANA SILVA", "ROBERTO CARLOS"]
     
-    monitors = [f"AGENSP{str(i).zfill(2)}" for i in range(1, 11)]
+    monitors = [f"AGENSP{str(i).zfill(2)}" for i in range(1, 70)]
     
     data_base = {}
     
@@ -189,64 +240,72 @@ def transform_data(data_base):
 
 if __name__ == "__main__":
     random_data = create_random_data()
-    
-    # Exibir apenas a primeira transação
-    # first_trans_id = list(random_data.keys())[0]
-    # print(f"Dados para a primeira transação (TRANSID = {first_trans_id}):")
-    # print(json.dumps(random_data, indent=4))
-
     # JSON QUE PRECISA SER ENVIADO PARA PAGINA HTML
     transformed_data = transform_data(random_data)
     print(json.dumps(transformed_data))
-    # print(json.dumps(transformed_data, indent=4))
 
 
     #Entendimento dos dados:
-    # print(json.dumps(transformed_data["business_lines"],indent=4))
-    # print(json.dumps(transformed_data["trans_vol"],indent=4))
-    # print(json.dumps(transformed_data["trans_mips"],indent=4))
-    # print(json.dumps(transformed_data["support_group"],indent=4))
-    # print(json.dumps(transformed_data["line_terminals"],indent=4))
-    # print(json.dumps(transformed_data["business_lines_monitor"],indent=4))
-    # print(json.dumps(transformed_data["general_stats"],indent=4))
-    # print(json.dumps(transformed_data["program_stats"],indent=4))
-# Supondo que 'transformed_data' é o seu dicionário JSON após transformação.
+    # "business_lines": {},
+    # "trans_vol": {},
+    # "trans_mips": {},
+    # "support_group": {},
+    # "line_terminals": {},
+    # "business_lines_monitor": {},
+    # "general_stats": {
+        # "num_trans": 0,
+        # "num_programs": 0,
+        # "num_business_lines": set(),
+        # "num_monitors": set(),
+        # "num_support_groups": set(),
+        # "num_siglas": set()
+        # },
+    # "program_stats": {},
+    # "business_lines_program": {}  # Novo campo
 
-    # # Exibir todas as linhas de negócio
-    # print("Todas as linhas de negócio:")
-    # print(list(transformed_data["business_lines"].keys()))
+    # #BUSINESS_LINES
+    # objeto = transformed_data['business_lines'] #SOMENTE LINHAS DE NEGOCIO
+    # objeto = transformed_data['business_lines']['HOME BANKING'] # TRANS, SUPPORT_GROUP, VOL e MIPS
+    # objeto = transformed_data['business_lines']['HOME BANKING']['trans'] # LISTA DE TRANSAÇÕES
+    # objeto = transformed_data['business_lines']['HOME BANKING']['vol'] # DICIONÁRIO COM VOLMETRIA POR MONITOR
+    # objeto = transformed_data['business_lines']['HOME BANKING']['mips'] # DICIONÁRIO COM MIPS POR MONITOR
+    # objeto = transformed_data['business_lines']['HOME BANKING']['support_group'] # LISTA DE GRUPOS DE SUPORTE
 
-    # # Exibir todas as transações associadas a uma linha de negócio específica
-    # business_line = "PAGAMENTO DE BOLETOS"  # Substitua pelo nome real da linha de negócio
-    # print(f"Transações para a linha de negócio {business_line}:")
-    # print(transformed_data["business_lines"].get(business_line, {}).get("trans", []))
+    # #TRANS_VOL
+    # objeto = transformed_data['trans_vol'] #DICIONÁRIO COM TRANSAÇÕES
+    # objeto = transformed_data['trans_vol']['B48'] #DICIONÁRIO COM AS VOLUMETRIAS POR MONITOR
+    # objeto = transformed_data['trans_vol']['B48']['AGENSP10'] #VALOR DA VOLUMETRIA DAQUELA TRANSACAO NO MONITOR
 
-    # # Exibir o grupo de suporte para uma linha de negócio específica
-    # print(f"Grupo de suporte para a linha de negócio {business_line}:")
-    # print(transformed_data["business_lines"].get(business_line, {}).get("support_group", "N/A"))
+    # #TRANS_MIPS
+    # objeto = transformed_data['trans_mips'] #DICIONÁRIO COM TRANSAÇÕES
+    # objeto = transformed_data['trans_mips']['B48'] #DICIONÁRIO COM OS MIPS POR MONITOR
+    # objeto = transformed_data['trans_mips']['B48']['AGENSP10'] #VALOR DOS MIPS DAQUELA TRANSACAO NO MONITOR
 
-    # # Exibir a volumetria por monitor para uma linha de negócio específica
-    # print(f"Volumetria para a linha de negócio {business_line}:")
-    # print(transformed_data["business_lines"].get(business_line, {}).get("vol", {}))
+    # #SUPPORT_GROUP
+    # objeto = transformed_data['support_group'] #DICIONÁRIO COM GRUPOS DE SUPORTE
+    # objeto = transformed_data['support_group']['BOLETO PAGO (S000900)'] #LISTA COM TODOS OS SERVIÇOS DE NEGOCIO DAQUELE GRUPO
 
-    # # Exibir o consumo de MIPS por monitor para uma linha de negócio específica
-    # print(f"Consumo de MIPS para a linha de negócio {business_line}:")
-    # print(transformed_data["business_lines"].get(business_line, {}).get("mips", {}))
+    # #LINE_TERMINALS
+    # objeto = transformed_data['line_terminals'] #DICIONÁRIO COM AS LINHAS DE NEGOCIO
+    # objeto = transformed_data['line_terminals']['INVESTIMENTO EM CRIPTOMOEDAS'] #LISTA COM OS TERMINAIS DAQUELA LINHA DE NEGOCIO
 
-    # # Exibir todas as transações e suas volumetrias
-    # print("Todas as transações e suas volumetrias:")
-    # print(transformed_data["trans_vol"])
+    #BUSINESS_LINES
+    # objeto = transformed_data['business_lines_monitor'] #DICIONARIO COM OS MONITORES COMO CHAVE
+    # objeto = transformed_data['business_lines_monitor']['AGENSP01']  #DICIONARIO COM VOL E MIPS COMO CHAVE
+    # objeto = transformed_data['business_lines_monitor']['AGENSP01']['mips']  #DICIONARIO COM AS LINHAS DE NEGOCIO COMO CHAVE PARA MIPS
+    # objeto = transformed_data['business_lines_monitor']['AGENSP01']['vol']   #DICIONARIO COM AS LINHAS DE NEGOCIO COMO CHAVE PARA VOLUMETRIA
+    # objeto = transformed_data['business_lines_monitor']['AGENSP01']['vol']['CONSULTORIA FINANCEIRA']   #DICIONARIO COM AS LINHAS DE NEGOCIO COMO CHAVE PARA VOLUMETRIA
 
-    # # Exibir a volumetria para uma transação específica
-    # trans_id = "B53"  # Substitua pelo ID real da transação
-    # print(f"Volumetria para a transação {trans_id}:")
-    # print(transformed_data["trans_vol"].get(trans_id, {}))
+    # # GENERAL_STATS
+    # objeto = transformed_data['general_stats'] #DICIONÁRIO COM AS INFORMAÇÕES GERAIS
 
-    # # Exibir todos os grupos de suporte e suas linhas de negócio associadas
-    # print("Todos os grupos de suporte e suas linhas de negócio:")
-    # print(transformed_data["support_group"])
+    # # PROGRAM_STATS
+    # objeto = transformed_data['program_stats'] #DICIONÁRIO COM OS PROGRAMAS COMO CHAVES
+    # chaves_iter = iter(objeto.keys())
+    # primeira_chave = next(chaves_iter, None)
+    # objeto = transformed_data['program_stats'][primeira_chave] #DICIONÁRIO COM BUSINESS_LINES E TRANSACTIONS
+    # objeto = transformed_data['program_stats'][primeira_chave]['business_lines'] #LISTA COM AS LINHAS DE NEGOCIO
+    # objeto = transformed_data['program_stats'][primeira_chave]['transactions']   #LISTA COM AS TRANSAÇÕES
 
-    # # Exibir todas as linhas de negócio e seus terminais associados
-    # print("Todas as linhas de negócio e seus terminais:")
-    # print(transformed_data["line_terminals"])
-
+    # # Código para exibir objeto desejadp
+    # print(objeto)

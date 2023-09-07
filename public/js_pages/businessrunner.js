@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', async (event) => {
         $('#trans-mips-table').DataTable();
     });
 
+
+
     await get(); // Espera a função assíncrona ser concluída
     // Esconder loader e mostrar conteúdo
 
@@ -127,6 +129,7 @@ document.addEventListener('DOMContentLoaded', async (event) => {
 
         // Criar a tabela e o cabeçalho
         let transVolTable = '<table border="1"><thead><tr><th>Transação</th>';
+        transVolTable += '<th>Soma Total</th>';
 
         const allMonitors = new Set();
         for (const vol of Object.values(transformed_data.trans_vol)) {
@@ -137,10 +140,7 @@ document.addEventListener('DOMContentLoaded', async (event) => {
 
         for (const monitor of allMonitors) {
             transVolTable += `<th>${monitor}</th>`;
-        }
-
-        // Adicionar coluna de Soma Total no cabeçalho
-        transVolTable += '<th>Soma Total</th>';
+        }      
 
         transVolTable += '</tr></thead><tbody>';
 
@@ -156,12 +156,11 @@ document.addEventListener('DOMContentLoaded', async (event) => {
             const totalSum = Object.values(vol).reduce((acc, val) => acc + (val || 0), 0);
 
             transVolTable += `<tr><td>${trans}</td>`;
+            // Adicionar soma total em cada linha
+            transVolTable += `<td>${totalSum}</td>`;
             for (const monitor of allMonitors) {
                 transVolTable += `<td>${vol[monitor] || 'N/A'}</td>`;
             }
-
-            // Adicionar soma total em cada linha
-            transVolTable += `<td>${totalSum}</td>`;
 
             transVolTable += '</tr>';
         }
@@ -175,6 +174,7 @@ document.addEventListener('DOMContentLoaded', async (event) => {
 
         // Criar a tabela e o cabeçalho
         let transMipsTable = '<table border="1"><thead><tr><th>Transação</th>';
+        transMipsTable += '<th>Soma Total</th>';
         
         const allMonitorsMIPS = new Set();
         for (const mips of Object.values(transformed_data.trans_mips)) {
@@ -186,9 +186,6 @@ document.addEventListener('DOMContentLoaded', async (event) => {
         for (const monitor of allMonitorsMIPS) {
             transMipsTable += `<th>${monitor}</th>`;
         }
-        
-        // Adicionar coluna de Soma Total no cabeçalho
-        transMipsTable += '<th>Soma Total</th>';
         
         transMipsTable += '</tr></thead><tbody>';
         
@@ -204,12 +201,10 @@ document.addEventListener('DOMContentLoaded', async (event) => {
             const totalSumMIPS = Object.values(mips).reduce((acc, val) => acc + (val || 0), 0);
         
             transMipsTable += `<tr><td>${trans}</td>`;
+            transMipsTable += `<td>${totalSumMIPS}</td>`;
             for (const monitor of allMonitorsMIPS) {
                 transMipsTable += `<td>${mips[monitor] || 'N/A'}</td>`;
             }
-        
-            // Adicionar soma total em cada linha
-            transMipsTable += `<td>${totalSumMIPS}</td>`;
             
             transMipsTable += '</tr>';
         }
@@ -244,12 +239,19 @@ document.addEventListener('DOMContentLoaded', async (event) => {
         
         // Gráfico de Volumetria por Transação
         const transVolLabels = Object.keys(transformed_data.trans_vol);
-        const transVolData = Object.values(transformed_data.trans_vol).map(innerObj => sumValues(innerObj));
+        const transVolData = Object.values(transformed_data.trans_vol)
+                                  .map(innerObj => sumValues(innerObj))
+                                  .filter(value => value !== 0);  // Filtra valores zero
+        
+        // Atualiza os rótulos para corresponder aos dados filtrados
+        const filteredLabels = transVolLabels.filter((_, index) => transVolData[index] !== 0);
+        
         const maxValueVol = Math.max(...transVolData);
         const minValueVol = Math.min(...transVolData);
         const scaleVol = 255 / (maxValueVol - minValueVol || 1);
         
         const transVolCtx = document.getElementById('transVolChart').getContext('2d');
+        
         
         new Chart(transVolCtx, {
             type: 'bar',
@@ -263,10 +265,18 @@ document.addEventListener('DOMContentLoaded', async (event) => {
                     borderWidth: 1,
                     hoverBackgroundColor: transVolData.map(value => getGreenColor((value - minValueVol) * scaleVol + 10)),
                     hoverBorderColor: transVolData.map(value => getGreenBorderColor((value - minValueVol) * scaleVol + 10)),
-                    hoverBorderWidth: 2
+                    hoverBorderWidth: 2,
+                    barThickness: 10,  // Defina a espessura desejada aqui
                 }]
             },
             options: {
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        barPercentage: 0.5,
+                        categoryPercentage: 1.0,
+                    }
+                },
                 legend: {
                     position: 'bottom',
                     align: 'end'
@@ -296,12 +306,19 @@ document.addEventListener('DOMContentLoaded', async (event) => {
 
         // Gráfico de MIPS por Transação
         const transMipsLabels = Object.keys(transformed_data.trans_mips);
-        const transMipsData = Object.values(transformed_data.trans_mips).map(innerObj => sumValues(innerObj));
+        const transMipsData = Object.values(transformed_data.trans_mips)
+                              .map(innerObj => sumValues(innerObj))
+                              .filter(value => value !== 0);  // Filtra valores zero
+        
+        // Atualiza os rótulos para corresponder aos dados filtrados
+        const filteredMipsLabels = transMipsLabels.filter((_, index) => transMipsData[index] !== 0);
+        
         const maxValue = Math.max(...transMipsData);
         const minValue = Math.min(...transMipsData);
         const scale = 255 / (maxValue - minValue || 1);
         
         const transMipsCtx = document.getElementById('transMipsChart').getContext('2d');
+        
         new Chart(transMipsCtx, {
             type: 'bar',
             data: {
@@ -314,10 +331,18 @@ document.addEventListener('DOMContentLoaded', async (event) => {
                     borderWidth: 1,
                     hoverBackgroundColor: transMipsData.map(value => getGreenColor((value - minValue) * scale + 10)),
                     hoverBorderColor: transMipsData.map(value => getGreenBorderColor((value - minValue) * scale + 10)),
-                    hoverBorderWidth: 2
+                    hoverBorderWidth: 2,
+                    barThickness: 10,  // Defina a espessura desejada aqui
                 }]
             },
             options: {
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        barPercentage: 0.5,
+                        categoryPercentage: 1.0,
+                    }
+                },
                 legend: {
                     position: 'bottom',
                     align: 'end'
@@ -344,6 +369,7 @@ document.addEventListener('DOMContentLoaded', async (event) => {
                 }
             }
         });
+
 
         // Para Volumetria por Linha de Negócio
         const businessVolLabels = Object.keys(transformed_data.business_lines);
@@ -601,64 +627,61 @@ document.addEventListener('DOMContentLoaded', async (event) => {
                 }
             }
         });
+            // const $ = go.GraphObject.make;
 
-            const $ = go.GraphObject.make;
-
-            const myDiagram = $(go.Diagram, "myDiagramDiv", {
-            "undoManager.isEnabled": true,
-            layout: $(go.TreeLayout)
-            });
+            // const myDiagram = $(go.Diagram, "myDiagramDiv", {
+            // "undoManager.isEnabled": true,
+            // layout: $(go.TreeLayout)
+            // });
             
-            myDiagram.nodeTemplate =
-            $(go.Node, "Auto",
-                $(go.Shape, "RoundedRectangle", { strokeWidth: 0 },
-                new go.Binding("fill", "color")),
-                $(go.TextBlock, { margin: 8 },
-                new go.Binding("text", "key"))
-            );
+            // myDiagram.nodeTemplate =
+            // $(go.Node, "Auto",
+            //     $(go.Shape, "RoundedRectangle", { strokeWidth: 0 },
+            //     new go.Binding("fill", "color")),
+            //     $(go.TextBlock, { margin: 8 },
+            //     new go.Binding("text", "key"))
+            // );
 
-            myDiagram.linkTemplate =
-            $(go.Link,
-                $(go.Shape, { strokeWidth: 1.5 }),
-                $(go.Shape, { toArrow: "Standard", stroke: null })
-            );
+            // myDiagram.linkTemplate =
+            // $(go.Link,
+            //     $(go.Shape, { strokeWidth: 1.5 }),
+            //     $(go.Shape, { toArrow: "Standard", stroke: null })
+            // );
 
-            // Converter o JSON em um formato que GoJS pode entender
-            var nodeDataArray = [];
-            var linkDataArray = [];
+            // // Converter o JSON em um formato que GoJS pode entender
+            // var nodeDataArray = [];
+            // var linkDataArray = [];
             
-            Object.keys(transformed_data.business_lines_program).forEach((businessLine, index) => {
-            nodeDataArray.push({ key: businessLine, color: "lightblue" });
-            transformed_data.business_lines_program[businessLine].forEach(program => {
-                if (!programExistsInNodeDataArray(nodeDataArray, program)) {
-                    nodeDataArray.push({ key: program, color: "lightgreen" });
-                }
-                linkDataArray.push({ from: businessLine, to: program });
-                });
-            });
+            // Object.keys(transformed_data.business_lines_program).forEach((businessLine, index) => {
+            // nodeDataArray.push({ key: businessLine, color: "lightblue" });
+            // transformed_data.business_lines_program[businessLine].forEach(program => {
+            //     if (!programExistsInNodeDataArray(nodeDataArray, program)) {
+            //         nodeDataArray.push({ key: program, color: "lightgreen" });
+            //     }
+            //     linkDataArray.push({ from: businessLine, to: program });
+            //     });
+            // });
 
-            var yCoordGreen = 0;
-            var yCoordBlue = 0;
-            const verticalSpacing = 100; // Espaço vertical entre os nós
+            // var yCoordGreen = 0;
+            // var yCoordBlue = 0;
+            // const verticalSpacing = 100; // Espaço vertical entre os nós
             
-            nodeDataArray = nodeDataArray.map((node, index) => {
-                let xCoord;
-                console.log(`${yCoordBlue} yCoordBlue`);
-                console.log(`${yCoordGreen} yCoordBlue`);
-                if (node.color === "lightgreen") {
-                    xCoord = 500;  // Coluna da esquerda
-                    yCoordGreen += verticalSpacing;
-                } else {
-                    xCoord = 10; // Coluna da direita
-                    yCoordBlue += verticalSpacing;
-                }
-                return {
-                    ...node,
-                    loc: `${xCoord} ${node.color === "lightgreen" ? yCoordGreen : yCoordBlue}`
-                };
-            });
+            // nodeDataArray = nodeDataArray.map((node, index) => {
+            //     let xCoord;
+            //     if (node.color === "lightgreen") {
+            //         xCoord = 500;  // Coluna da esquerda
+            //         yCoordGreen += verticalSpacing;
+            //     } else {
+            //         xCoord = 10; // Coluna da direita
+            //         yCoordBlue += verticalSpacing;
+            //     }
+            //     return {
+            //         ...node,
+            //         loc: `${xCoord} ${node.color === "lightgreen" ? yCoordGreen : yCoordBlue}`
+            //     };
+            // });
 
-            myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
+            // myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
 
 
     function getGreenColor(value) {
