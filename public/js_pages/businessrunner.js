@@ -126,8 +126,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 supportGroupsDiv.appendChild(groupDiv);
             }
         
-            // Preencher Volumetria por Transação
-            // Preencher Volumetria por Transação
+            // Preencher Volumetria por Transação - ORDENAÇÃO 28/09
             const transVolDiv = document.getElementById('trans-vol-table-container');
 
             // Criar a tabela e o cabeçalho
@@ -149,10 +148,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
             // Preencher as linhas da tabela
             // Primeiro, ordene as transações com base na soma de todos os monitores
-            const sortedTransactions = Object.entries(transformed_data.trans_vol).sort((a, b) => {
+            const sortedTransactions = Object.entries(transformed_data.trans_vol)
+            .filter(([, vol]) => {
+                const totalSum = Object.values(vol).reduce((acc, val) => acc + (val || 0), 0);
+                return totalSum !== 0;  // Filtra apenas transações com soma total diferente de zero
+            })
+            .sort((a, b) => {
                 const sumA = Object.values(a[1]).reduce((acc, val) => acc + (val || 0), 0);
                 const sumB = Object.values(b[1]).reduce((acc, val) => acc + (val || 0), 0);
-                return sumB - sumA;  // ordem decrescente, mude para sumA - sumB para ordem crescente
+                return sumB - sumA;  // Ordem decrescente
             });
 
             for (const [trans, vol] of sortedTransactions) {
@@ -172,7 +176,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
             transVolDiv.innerHTML = transVolTable;
 
-            // Preencher MIPS por Transação
+            // Preencher MIPS por Transação - ORDENAÇÃO 28/09
             const transMipsDiv = document.getElementById('trans-mips-table-container');
 
             // Criar a tabela e o cabeçalho
@@ -193,11 +197,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
             transMipsTable += '</tr></thead><tbody>';
             
             // Preencher as linhas da tabela
-            // Primeiro, ordene as transações com base na soma de todos os monitores
-            const sortedTransactionsMIPS = Object.entries(transformed_data.trans_mips).sort((a, b) => {
+            const sortedTransactionsMIPS = Object.entries(transformed_data.trans_mips)
+            .filter(([, mips]) => {
+                const totalSum = Object.values(mips).reduce((acc, val) => acc + (val || 0), 0);
+                return totalSum !== 0;  // Filtra apenas transações com soma total diferente de zero
+            })
+            .sort((a, b) => {
                 const sumA = Object.values(a[1]).reduce((acc, val) => acc + (val || 0), 0);
                 const sumB = Object.values(b[1]).reduce((acc, val) => acc + (val || 0), 0);
-                return sumB - sumA;  // ordem decrescente, mude para sumA - sumB para ordem crescente
+                return sumB - sumA;  // Ordem decrescente
             });
             
             for (const [trans, mips] of sortedTransactionsMIPS) {
@@ -240,21 +248,39 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 lineTerminalsDiv.appendChild(lineDiv);
             }
             
-            // Gráfico de Volumetria por Transação
-            const transVolLabels = Object.keys(transformed_data.trans_vol);
-            const transVolData = Object.values(transformed_data.trans_vol)
-                                    .map(innerObj => sumValues(innerObj))
-                                    .filter(value => value !== 0);  // Filtra valores zero
+            // Gráfico de Volumetria por Transação  - ORDENAÇÃO 28.09
+            const transVolRawLabels = Object.keys(transformed_data.trans_vol);
+            const transVolRawData = Object.values(transformed_data.trans_vol).map(innerObj => sumValues(innerObj));
             
-            // Atualiza os rótulos para corresponder aos dados filtrados
-            const filteredLabels = transVolLabels.filter((_, index) => transVolData[index] !== 0);
+            // Combinar rótulos e dados
+            const combinedTransVol = transVolRawLabels.map((label, index) => {
+                return {
+                    label: label,
+                    value: transVolRawData[index]
+                };
+            });
+            
+            // Ordenar em ordem decrescente
+            combinedTransVol.sort((a, b) => b.value - a.value);
+            
+            // Pegar as 50 primeiras e somar o restante como 'Outros'
+            const top50Trans = combinedTransVol.slice(0, 1050);
+            const othersValue = combinedTransVol.slice(1050).reduce((acc, item) => acc + item.value, 0);
+            
+            if (othersValue !== 0) {
+                top50Trans.push({
+                    label: 'Outros',
+                    value: othersValue
+                });
+            }
+            
+            const transVolLabels = top50Trans.map(item => item.label);
+            const transVolData = top50Trans.map(item => item.value);
             
             const maxValueVol = Math.max(...transVolData);
             const minValueVol = Math.min(...transVolData);
             const scaleVol = 255 / (maxValueVol - minValueVol || 1);
-            
             const transVolCtx = document.getElementById('transVolChart').getContext('2d');
-            
             
             new Chart(transVolCtx, {
                 type: 'bar',
@@ -307,14 +333,34 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 }
             });
 
-            // Gráfico de MIPS por Transação
-            const transMipsLabels = Object.keys(transformed_data.trans_mips);
-            const transMipsData = Object.values(transformed_data.trans_mips)
-                                .map(innerObj => sumValues(innerObj))
-                                .filter(value => value !== 0);  // Filtra valores zero
+            // Gráfico de MIPS por Transação  - ORDENAÇÃO 28.09
+            const transMipsRawLabels = Object.keys(transformed_data.trans_mips);
+            const transMipsRawData = Object.values(transformed_data.trans_mips).map(sumValues);
             
-            // Atualiza os rótulos para corresponder aos dados filtrados
-            const filteredMipsLabels = transMipsLabels.filter((_, index) => transMipsData[index] !== 0);
+            // Combinar rótulos e dados
+            const combinedTransMips = transMipsRawLabels.map((label, index) => {
+                return {
+                    label: label,
+                    value: transMipsRawData[index]
+                };
+            });
+            
+            // Ordenar em ordem decrescente
+            combinedTransMips.sort((a, b) => b.value - a.value);
+            
+            // Pegar as 50 primeiras transações e calcular a soma das restantes
+            const top50MipsTrans = combinedTransMips.slice(0, 1050);
+            const othersMipsSum = combinedTransMips.slice(1050).reduce((sum, item) => sum + item.value, 0);
+            
+            // Criar novos arrays de rótulos e dados
+            let transMipsLabels = top50MipsTrans.map(item => item.label);
+            let transMipsData = top50MipsTrans.map(item => item.value);
+            
+            // Adicionar a categoria 'Outros' se a soma for diferente de zero
+            if (othersMipsSum !== 0) {
+                transMipsLabels.push('Outros');
+                transMipsData.push(othersMipsSum);
+            }
             
             const maxValue = Math.max(...transMipsData);
             const minValue = Math.min(...transMipsData);
@@ -374,18 +420,31 @@ document.addEventListener('DOMContentLoaded', (event) => {
             });
 
 
-            // Para Volumetria por Linha de Negócio
+            // Para Volumetria por Linha de Negócio - ORDENAÇÃO 28.09
             const businessVolLabels = Object.keys(transformed_data.business_lines);
-            const businessVolData = Object.values(transformed_data.business_lines).map(line => sumValues(line.vol || {}));
+            const businessVolDataRaw = Object.values(transformed_data.business_lines).map(line => sumValues(line.vol || {}));
+            const combinedBusinessVol = businessVolLabels.map((label, index) => {
+                return {
+                    label: label,
+                    value: businessVolDataRaw[index]
+                };
+            });
+
+            // Ordenar em ordem decrescente
+            combinedBusinessVol.sort((a, b) => b.value - a.value);
+
+            // Separar novamente os rótulos e dados
+            const sortedBusinessVolLabels = combinedBusinessVol.map(item => item.label);
+            const sortedBusinessVolData = combinedBusinessVol.map(item => item.value);
             const businessVolCtx = document.getElementById('businessVolChart').getContext('2d');
             
             new Chart(businessVolCtx, {
                 type: 'bar',
                 data: {
-                    labels: businessVolLabels,
+                    labels: sortedBusinessVolLabels,
                     datasets: [{
                         label: 'Volumetria por Linha de Negócio',
-                        data: businessVolData,
+                        data: sortedBusinessVolData,
                         backgroundColor: 'rgba(76, 175, 80, 0.5)',  // Cor verde com 50% de transparência
                         borderColor: 'rgba(76, 175, 80, 1)',  // Cor verde sólida
                         borderWidth: 1,
@@ -430,19 +489,31 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 }
             });
             
-
-            // Para MIPS por Linha de Negócio
+            // Para MIPS por Linha de Negócio - ORDENAÇÃO 28.09
             const businessMipsLabels = Object.keys(transformed_data.business_lines);
-            const businessMipsData = Object.values(transformed_data.business_lines).map(line => sumValues(line.mips || {}));
+            const businessMipsDataRaw = Object.values(transformed_data.business_lines).map(line => sumValues(line.mips || {}));
+            const combinedBusinessMips = businessMipsLabels.map((label, index) => {
+                return {
+                    label: label,
+                    value: businessMipsDataRaw[index]
+                };
+            });
+
+            // Ordenar em ordem decrescente
+            combinedBusinessMips.sort((a, b) => b.value - a.value);
+
+            // Separar novamente os rótulos e dados
+            const sortedBusinessMipsLabels = combinedBusinessMips.map(item => item.label);
+            const sortedBusinessMipsData = combinedBusinessMips.map(item => item.value);
             const businessMipsCtx = document.getElementById('businessMipsChart').getContext('2d');
             
             new Chart(businessMipsCtx, {
                 type: 'bar',
                 data: {
-                    labels: businessMipsLabels,
+                    labels: sortedBusinessMipsLabels,
                     datasets: [{
                         label: 'MIPS por Linha de Negócio',
-                        data: businessMipsData,
+                        data: sortedBusinessMipsData,
                         backgroundColor: 'rgba(76, 175, 80, 0.5)',  // Cor verde com 50% de transparência
                         borderColor: 'rgba(76, 175, 80, 1)',  // Cor verde sólida
                         borderWidth: 1,
@@ -487,19 +558,32 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 }
             });
             
-            // Supondo que transformed_data seja a saída da função transform_data() e que ela esteja disponível aqui.
+            // ALTERACAO PARA ORDENACAO - 28.09
             const monitorData = transformed_data.business_lines_monitor;
 
-
-            // Separação dos rótulos e valores
-            const monitorLabels = Object.keys(monitorData);  // Pega os monitores
-            const datasetVol = [];  // Dataset para Volumetria
-            const datasetMips = [];  // Dataset para MIPS
-
-            monitorLabels.forEach(monitor => {
-                datasetVol.push(monitorData[monitor].vol);
-                datasetMips.push(monitorData[monitor].mips);
+            // Combine labels and data
+            const combinedData = Object.keys(monitorData).map(monitor => {
+                return {
+                    label: monitor,
+                    vol: monitorData[monitor].vol,
+                    mips: monitorData[monitor].mips
+                };
             });
+            
+            // Sort combined data by vol in descending order
+            combinedData.sort((a, b) => {
+                if (Array.isArray(b.vol) && Array.isArray(a.vol)) {
+                    const sumA = Object.values(a.vol).reduce((acc, curr) => acc + curr, 0);
+                    const sumB = Object.values(b.vol).reduce((acc, curr) => acc + curr, 0);
+                    return sumB - sumA;
+                }
+                return b.vol - a.vol;
+            });
+            
+            // Extract sorted labels and data
+            const monitorLabels = combinedData.map(item => item.label);
+            const datasetVol = combinedData.map(item => item.vol);
+            const datasetMips = combinedData.map(item => item.mips);
 
             // Preparação dos dados para Chart.js
             const businessLinesMonitorData = Object.keys(transformed_data.business_lines);
