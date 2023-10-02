@@ -17,10 +17,10 @@ def to_float(value):
         return 0.0
 
 def create_random_data():
-    trans_ids = [f"B{random.randint(10, 1500)}" for _ in range(1800)] # Aumentar a quantidade
+    trans_ids = [f"B{random.randint(10, 1500)}" for _ in range(180)] # Aumentar a quantidade
     trans_ids.append("B000")  # Adiciona "B000" ao final da lista
-    prog_ids = [f"X{random.randint(0, 9)}{chr(random.randint(65, 90))}{chr(random.randint(65, 90))}" for _ in range(600)]
-    prog_ids_fake = [f"F{random.randint(0, 9)}{chr(random.randint(65, 90))}{chr(random.randint(65, 90))}" for _ in range(600)]
+    prog_ids = [f"X{random.randint(0, 9)}{chr(random.randint(65, 90))}{chr(random.randint(65, 90))}" for _ in range(60)]
+    prog_ids_fake = [f"F{random.randint(0, 9)}{chr(random.randint(65, 90))}{chr(random.randint(65, 90))}" for _ in range(60)]
     terms = [str(random.randint(10, 99)) for _ in range(20)]
     grupos = [f"G{random.randint(10, 99)}" for _ in range(20)]
     siglas = [f"X{random.randint(10, 99)}" for _ in range(40)]
@@ -259,6 +259,19 @@ def transform_data(data_base):
 
     return transformed_data
 
+# Atualização V3
+def merge_jsons(json1, json2):
+    """
+    Mescla dois JSONs (tratados como dicionários em Python).
+    
+    :param json1: Primeiro JSON como dicionário.
+    :param json2: Segundo JSON como dicionário.
+    :return: JSON mesclado como dicionário.
+    """
+    merged = json1.copy()
+    merged.update(json2)
+    return merged
+
 
 if __name__ == "__main__":
     # O primeiro argumento é o nome do script, então ignoramos ele e pegamos o segundo
@@ -280,6 +293,9 @@ if __name__ == "__main__":
     
     # JSON QUE PRECISA SER ENVIADO PARA PAGINA HTML
     transformed_data = transform_data(random_data)
+    
+    # Atualização V3
+    transformed_data = merge_jsons(transformed_data,random_data)
     print(json.dumps(transformed_data))
 
 

@@ -67,6 +67,92 @@ body {
     border: 1px solid #ccc;
 }
 
+/* Atualização V3 */
+.loader {
+    border: 16px solid #f3f3f3; /* Cor cinza claro */
+    border-top: 16px solid #3498db; /* Cor azul */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Atualização V3 */
+@keyframes spin {
+    0% { transform: rotate(0deg); translate(-50%, -50%); }
+    100% { transform: rotate(360deg); translate(-50%, -50%); }
+}
+
+/* Atualização V3 */
+body, input, button, legend {
+    font-family: 'Roboto', sans-serif; /* Aplicar a fonte Roboto para o corpo e outros elementos */
+}
+
+/* Atualização V3 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+}
+
+/* Atualização V3 */
+.modal-content {
+    background: #fff;
+    width: 60%;
+    max-height: 70vh;
+    margin: 5% auto;
+    padding: 20px;
+    overflow: auto;
+    box-sizing: border-box;
+    border-radius: 8px; /* Cantos arredondados */
+}
+
+/* Atualização V3 */
+legend {
+    font-weight: bold;
+}
+
+.dropdown {
+    position: relative;
+    width: 200px;
+}
+
+.dropdown-header {
+    padding: 10px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.dropdown-options {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    border: 1px solid #ccc;
+    background: #fff;
+    z-index: 1;
+}
+
+.dropdown-options div {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.dropdown-options div:hover {
+    background-color: #e6e6e6;
+}
+
+
 .container {
     margin-top: 30px;
     max-width: 100%;

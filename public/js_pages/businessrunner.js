@@ -9,10 +9,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
             $('#trans-mips-table').DataTable();
         });
 
+
         await get(); // Espera a função assíncrona ser concluída
         // Esconder loader e mostrar conteúdo
 
         async function get() {
+            //Atualização V3
+            showLoadingPopup();
             // Faz uma chamada para a API para obter os dados
             const response2 = await fetch('/front/businessrunner', {
                 method: 'POST',
@@ -22,7 +25,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 body: JSON.stringify({ data: selectedDate})
             });
             const transformed_data = await response2.json();
-
+            hideLoadingPopup();
 
             // Preencher o dashboard de estatísticas gerais
             const generalStatsDiv = document.getElementById('generalStats');
@@ -77,13 +80,16 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 businessDiv.classList.add('business-box');
                 businessDiv.innerHTML = `<h2>${businessLine}</h2>`;
                 
-                // Adicionar transações
                 const transDiv = document.createElement('div');
                 transDiv.innerHTML = 'Transações:';
                 data.trans.forEach(transaction => {
                     const transItem = document.createElement('span');
                     transItem.classList.add('transaction-box');
                     transItem.textContent = transaction;
+                    transItem.onclick = function() {
+                        const transactionDetails = transformed_data[transaction];
+                        showTransactionDetails(transactionDetails);
+                    };
                     transDiv.appendChild(transItem);
                 });
                 businessDiv.appendChild(transDiv);
@@ -769,7 +775,72 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 // });
 
                 // myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
+        
+        // Atualização V3
+        function renderJsonAsForm(obj, element, legends) {
+            for (var key in obj) {
+                var value = obj[key];
+                var fieldSet = document.createElement('fieldset');
+                var legend = document.createElement('legend');
+                legend.innerHTML = key;
+                fieldSet.appendChild(legend);
+        
+                if (Array.isArray(value)) {
+                    var arrayDiv = document.createElement('div');
+                    arrayDiv.className = 'array-container';
+        
+                    value.forEach(function (item, index) {
+                        var itemDiv = document.createElement('div');
+                        itemDiv.className = 'array-item';
+        
+                        // Usar a legenda correspondente do array de legendas, se disponível
+                        var itemLegend = legends && legends[index] ? legends[index] : 'Opção ' + (index + 1);
+        
+                        var labelLegend = document.createElement('label');
+                        labelLegend.innerHTML = itemLegend + ': ';
+        
+                        itemDiv.appendChild(labelLegend);
+        
+                        var itemContent = document.createElement('span');
+                        itemContent.textContent = item;
+                        itemDiv.appendChild(itemContent);
+        
+                        arrayDiv.appendChild(itemDiv);
+                    });
+        
+                    fieldSet.appendChild(arrayDiv);
+                } else if (typeof value === 'object') {
+                    renderJsonAsForm(value, fieldSet);
+                } else {
+                    var input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = value;
+                    fieldSet.appendChild(input);
+                }
+        
+                element.appendChild(fieldSet);
+            }
+        }
 
+        /* Atualização V3 */
+        function showTransactionDetails(details) {
+            const modalContent = document.getElementById('modalContent');
+            modalContent.innerHTML = '';  // Limpar qualquer conteúdo anterior
+            renderJsonAsForm(details, modalContent);
+            document.getElementById('transactionModal').style.display = 'block';
+        }
+        
+        // Função para mostrar o pop-up de carregamento
+        //Atualização V3
+        function showLoadingPopup() {
+            document.getElementById('loadingPopup').style.display = 'block';
+        }
+
+        // Função para ocultar o pop-up de carregamento
+        //Atualização V3
+        function hideLoadingPopup() {
+            document.getElementById('loadingPopup').style.display = 'none';
+        }
 
         function getGreenColor(value) {
             const greenValue = Math.min(255, Math.max(0, value));
@@ -822,3 +893,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
     });
 });
+
+/* Atualização V3 */
+function closeModal() {
+    document.getElementById('transactionModal').style.display = 'none';
+}
