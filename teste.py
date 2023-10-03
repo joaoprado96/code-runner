@@ -1,78 +1,20 @@
-import ibm_db
+import os
 import json
-from datetime import datetime, date
 
-def fetch_data_as_json(conn_str, query, force_columns=None, ignore_columns=None, rename_columns=None):
-    """
-    Fetches data based on the provided query using the IBM_DB connection and returns the result as a JSON object.
-    Groups records by TRANID and organizes the values by APPLID.
-    Allows ignoring certain columns and renaming columns based on the provided dictionary.
-    """
-    if force_columns is None:
-        force_columns = []
-    if ignore_columns is None:
-        ignore_columns = []
-    if rename_columns is None:
-        rename_columns = {}
-    
-    # Estabelecendo a conexão com o banco de dados
-    conn = ibm_db.connect(conn_str, "", "")
-    if not conn:
-        print("Failed to connect to the database.")
-        return
+# Lista para armazenar os conteúdos dos arquivos JSON
+json_list = []
 
-    # Executando a query fornecida
-    stmt = ibm_db.exec_immediate(conn, query)
+# Lista todos os arquivos no diretório atual
+for filename in os.listdir('.'):
+    # Verifica se o arquivo tem a extensão .json
+    if filename.endswith('.json'):
+        # Abre e lê o arquivo JSON
+        with open(filename, 'r', encoding='utf-8') as file:
+            data = json.load(file)
+            json_list.append(data)
 
-    result_dict = {}
-    row = ibm_db.fetch_assoc(stmt)
-    while row:
-        # Convertendo possíveis datetime e date para string e removendo espaços em branco no final de strings
-        for key, value in list(row.items()):
-            if isinstance(value, datetime):
-                row[key] = value.isoformat()
-            elif isinstance(value, date):
-                row[key] = value.isoformat()
-            elif isinstance(value, str):
-                row[key] = value.rstrip()  # Remove espaços em branco no final da string
+# Se você quiser salvar a lista em um novo arquivo JSON:
+with open('combined.json', 'w', encoding='utf-8') as outfile:
+    json.dump(json_list, outfile, ensure_ascii=False, indent=4)
 
-            # Remover colunas ignoradas
-            if key in ignore_columns:
-                del row[key]
-            
-            # Renomear colunas
-            if key in rename_columns:
-                row[rename_columns[key]] = row.pop(key)
-        
-        tranid = row['TRANID']
-        applid = row['APPLID']
-        
-        # Se TRANID não existir, adicione-o
-        if tranid not in result_dict:
-            result_dict[tranid] = {}
-        
-        # Inserir os valores por APPLID
-        for key, value in row.items():
-            if key not in ['TRANID', 'APPLID']:
-                if key not in result_dict[tranid]:
-                    result_dict[tranid][key] = {}
-                result_dict[tranid][key][applid] = value
-
-        row = ibm_db.fetch_assoc(stmt)
-
-    # Verificar se todos os valores de APPLID dentro de uma chave são iguais
-    for tranid, tran_data in result_dict.items():
-        for key, applid_data in list(tran_data.items()):
-            unique_values = set(applid_data.values())
-            if len(unique_values) == 1:
-                result_dict[tranid][key] = next(iter(unique_values))
-
-    # Encerrando a conexão
-    ibm_db.close(conn)
-
-    return json.dumps(result_dict, indent=4)
-
-# Substitua 'YOUR_CONNECTION_STRING' pela sua string de conexão e 'YOUR_QUERY' pela consulta desejada
-conn_str = "YOUR_CONNECTION_STRING"
-query = "YOUR_QUERY"
-print(fetch_data_as_json(conn_str, query))
+print("Processo concluído!")
