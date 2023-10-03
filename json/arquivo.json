@@ -1,0 +1,60 @@
+{
+    "chave1":{
+        // Comentario para teste
+        "c1valor1": 10, // Comentario para teste
+        "c2valor2": 20,
+        "c3valor3": 30,
+        "numeroserie": "50872",
+        "c4valor4": ["opc1","opc2","opc3","opc4","opc5"]
+    },
+    "lista1":["opc1","opc2","opc3","opc4","opc5"],
+    "lista2":[["l2opc1","l2opc2"],["l3opc1","l3opc2"]]
+},
+{
+    "chave2":{
+        // Comentario para teste
+        "c1valor1": 10, // Comentario para teste
+        "c2valor2": 20,
+        "c3valor3": 30,
+        "c4valor4": ["opc1","opc2","opc3","opc4","opc5"]
+    },
+    "lista1":["opc1","opc2","opc3","opc4","opc5"],
+    "lista2":[["l2opc1","l2opc2"],["l3opc1","l3opc2"]]
+}
+{
+    "chave3":{
+        // Comentario para teste
+        "c1valor1": 10, // Comentario para teste
+        "c2valor2": 20,
+        "c3valor3": 30,
+        "c4valor4": ["opc1","opc2","opc3","opc4","opc5"]
+    },
+    "numeroserie": "50875",
+    "lista1":["opc1","opc2","opc3","opc4","opc5"],
+    "lista2":[["l2opc1","l2opc2"],["l3opc1","l3opc2"]]
+}
+{
+    "chave4":{
+        // Comentario para teste
+        "c1valor1": 10, // Comentario para teste
+        "c2valor2": 20,
+        "c3valor3": 30,
+        "c4valor4": ["opc1","opc2","opc3","opc4","opc5"]
+    },
+    "terminais":[{"numeroserie": "50871"},{"numeroserie": "50879"}],
+    "lista1":["opc1","opc2","opc3","opc4","opc5"],
+    "lista2":[["l2opc1","l2opc2"],["l3opc1","l3opc2"]]
+}
+// Comentario aleatorio
+{
+    "chave5":{
+        // Comentario para teste
+        "c1valor1": 10, // Comentario para teste
+        "c2valor2": 20,
+        "c3valor3": 30,
+        "numeroserie": "50879",
+        "c4valor4": ["opc1","opc2","opc3","opc4","opc5"]
+    },
+    "lista1":["opc1","opc2","opc3","opc4","opc5"],
+    "lista2":[["l2opc1","l2opc2"],["l3opc1","l3opc2"]]
+}

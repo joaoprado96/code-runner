@@ -1,0 +1,157 @@
+[
+    {
+        "chave1": {
+            "c1valor1": 10,
+            "c2valor2": 20,
+            "c3valor3": 30,
+            "c4valor4": [
+                "opc1",
+                "opc2",
+                "opc3",
+                "opc4",
+                "opc5"
+            ]
+        },
+        "lista1": [
+            "opc1",
+            "opc2",
+            "opc3",
+            "opc4",
+            "opc5"
+        ],
+        "lista2": [
+            [
+                "l2opc1",
+                "l2opc2"
+            ],
+            [
+                "l3opc1",
+                "l3opc2"
+            ]
+        ]
+    },
+    {
+        "chave2": {
+            "c1valor1": 10,
+            "c2valor2": 20,
+            "c3valor3": 30,
+            "c4valor4": [
+                "opc1",
+                "opc2",
+                "opc3",
+                "opc4",
+                "opc5"
+            ]
+        },
+        "lista1": [
+            "opc1",
+            "opc2",
+            "opc3",
+            "opc4",
+            "opc5"
+        ],
+        "lista2": [
+            [
+                "l2opc1",
+                "l2opc2"
+            ],
+            [
+                "l3opc1",
+                "l3opc2"
+            ]
+        ]
+    },
+    {
+        "chave3": {
+            "c1valor1": 10,
+            "c2valor2": 20,
+            "c3valor3": 30,
+            "c4valor4": [
+                "opc1",
+                "opc2",
+                "opc3",
+                "opc4",
+                "opc5"
+            ]
+        },
+        "lista1": [
+            "opc1",
+            "opc2",
+            "opc3",
+            "opc4",
+            "opc5"
+        ],
+        "lista2": [
+            [
+                "l2opc1",
+                "l2opc2"
+            ],
+            [
+                "l3opc1",
+                "l3opc2"
+            ]
+        ]
+    },
+    {
+        "chave4": {
+            "c1valor1": 10,
+            "c2valor2": 20,
+            "c3valor3": 30,
+            "c4valor4": [
+                "opc1",
+                "opc2",
+                "opc3",
+                "opc4",
+                "opc5"
+            ]
+        },
+        "lista1": [
+            "opc1",
+            "opc2",
+            "opc3",
+            "opc4",
+            "opc5"
+        ],
+        "lista2": [
+            [
+                "l2opc1",
+                "l2opc2"
+            ],
+            [
+                "l3opc1",
+                "l3opc2"
+            ]
+        ]
+    },
+    {
+        "chave5": {
+            "c1valor1": 10,
+            "c2valor2": 20,
+            "c3valor3": 30,
+            "c4valor4": [
+                "opc1",
+                "opc2",
+                "opc3",
+                "opc4",
+                "opc5"
+            ]
+        },
+        "lista1": [
+            "opc1",
+            "opc2",
+            "opc3",
+            "opc4",
+            "opc5"
+        ],
+        "lista2": [
+            [
+                "l2opc1",
+                "l2opc2"
+            ],
+            [
+                "l3opc1",
+                "l3opc2"
+            ]
+        ]
+    }
+]
