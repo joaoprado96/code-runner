@@ -6,7 +6,12 @@ json_list = []
 
 def remove_comments_from_json(json_string):
     lines = json_string.splitlines()
-    cleaned_lines = [line for line in lines if not line.strip().startswith('//')]
+    cleaned_lines = []
+    for line in lines:
+        # Remove tudo a partir de '//' até o final da linha
+        cleaned_line = line.split('//', 1)[0].strip()
+        if cleaned_line:  # Só adiciona a linha se não estiver vazia
+            cleaned_lines.append(cleaned_line)
     return '\n'.join(cleaned_lines)
 
 # Lista todos os arquivos no diretório atual
