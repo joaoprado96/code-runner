@@ -1,8 +1,18 @@
 import pandas as pd
 import json
 
-# Ler o arquivo Excel
-df = pd.read_excel("nome_do_arquivo.xlsx", engine='openpyxl')
+filename = "nome_do_arquivo.xls"
+
+# Verificar a extensão do arquivo
+if filename.endswith(".xls"):
+    engine = "xlrd"
+elif filename.endswith(".xlsx"):
+    engine = "openpyxl"
+else:
+    raise ValueError("Formato de arquivo não suportado")
+
+# Ler o arquivo Excel usando o engine correto
+df = pd.read_excel(filename, engine=engine)
 
 # Pegar os dados da coluna E
 coluna_e = df['E'].tolist()
