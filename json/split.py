@@ -13,10 +13,30 @@ def remove_comments_from_json(json_string):
     """
     lines = json_string.splitlines()
     cleaned_lines = []
+    
+    # Variável para rastrear se estamos dentro de uma string
+    in_string = False
     for line in lines:
-        cleaned_line = line.split('//', 1)[0].rstrip()
+        i = 0
+        while i < len(line):
+            char = line[i]
+            
+            # Se encontrarmos um ", invertemos o estado do in_string
+            if char == '"':
+                in_string = not in_string
+            
+            # Se encontrarmos um // e não estivermos dentro de uma string, cortamos o restante da linha
+            if not in_string and line[i:i+2] == '//':
+                line = line[:i]
+                break
+            
+            i += 1
+        
+        cleaned_line = line.rstrip()
         cleaned_lines.append(cleaned_line)
+    
     return '\n'.join(cleaned_lines)
+
 
 def split_jsons(content):
     """
