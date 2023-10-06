@@ -60,6 +60,35 @@ def agrupar_por_agencia(data):
     
     return resultado
 
+def contar_numeros_por_agencia(data):
+    """
+    Conta o número de numeros_serie distintos para cada agencia.
+
+    Args:
+    - data (dict): O dicionário contendo os registros.
+
+    Returns:
+    - dict: Um dicionário com a agencia como chave e a contagem de numeros_serie distintos como valor.
+    """
+    contagem = {}
+    
+    for registro in data.values():
+        agencia = registro["agencia"]
+        numero_serie = registro["numero_serie"]
+        
+        # Se a agência ainda não estiver no dicionário, adicionamos
+        if agencia not in contagem:
+            contagem[agencia] = set()
+        
+        # Adicionando o numero_serie ao conjunto da agência
+        contagem[agencia].add(numero_serie)
+
+    # Transformando os conjuntos em seus tamanhos
+    for agencia in contagem:
+        contagem[agencia] = len(contagem[agencia])
+    
+    return contagem
+
 # Dados de exemplo
 data = {
     "registro1": {"agencia": "2123", "numero_serie": "75232", "data": "20203020"},
@@ -70,3 +99,4 @@ data = {
 }
 
 print(agrupar_por_agencia(data))
+
