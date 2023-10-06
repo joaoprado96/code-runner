@@ -72,20 +72,27 @@ def contar_numeros_por_agencia(data):
     """
     contagem = {}
     
-    for registro in data.values():
-        agencia = registro["agencia"]
-        numero_serie = registro["numero_serie"]
+    for agencia, registros in data.items():
+        numeros_set = set()  # Conjunto para armazenar números de série únicos
+        for registro in registros:
+            numeros_set.add(registro["numero_serie"])
         
-        # Se a agência ainda não estiver no dicionário, adicionamos
-        if agencia not in contagem:
-            contagem[agencia] = set()
-        
-        # Adicionando o numero_serie ao conjunto da agência
-        contagem[agencia].add(numero_serie)
+        contagem[agencia] = len(numeros_set)  # Atribuindo a contagem ao dicionário
 
-    # Transformando os conjuntos em seus tamanhos
-    for agencia in contagem:
-        contagem[agencia] = len(contagem[agencia])
+    return contagem
+
+# Dados de exemplo
+data = {
+    "2123": [{"numero_serie": "75232", "data": "20203020"},
+             {"numero_serie": "75232", "data": "20203020"},
+             {"numero_serie": "75233", "data": "20203021"}],
+
+    "2124": [{"numero_serie": "75234", "data": "20203022"},
+             {"numero_serie": "75235", "data": "20203023"}]
+}
+
+print(contar_numeros_por_agencia(data))
+
     
     return contagem
 
