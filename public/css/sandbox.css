@@ -1,0 +1,90 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+#menu-lateral {
+    width: 200px;
+    background-color: #343433;
+    color: white;
+    min-height: 100vh;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+#menu-lateral img {
+    width: 120px;       /* Largura especificada */
+    height: auto;       /* Altura é ajustada automaticamente para manter a proporção da imagem */
+    margin: 10px auto;  /* Espaço superior e inferior de 20px e margens automáticas esquerda e direita para centralização */
+    display: block;     /* Torna a imagem um bloco para que as margens automáticas funcionem */
+}
+
+#menu-lateral a {
+    display: block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: white;
+    transition: background-color 0.3s;
+    text-align: center; /* Centraliza o texto horizontalmente */
+}
+
+#menu-lateral a:hover {
+    background-color: #555;
+    text-decoration: underline;
+}
+
+#container {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #f7f7f7;
+}
+
+#menu-superior {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    display: none;
+    justify-content: center;
+}
+
+#menu-superior a {
+    margin: 5px 40px;
+    text-decoration: none;
+    color: white;
+    transition: opacity 0.3s;
+}
+
+#menu-superior a:hover {
+    opacity: 0.8;
+    color: #e44400;
+    background-color: #555;
+}
+
+.chave, button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #e7e7e7;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.chave:hover {
+    background-color: #f0f0f0;
+}
+
+button {
+    margin-top: 10px;
+    background-color: #e44400;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+button:hover {
+    background-color: #933100;
+}
