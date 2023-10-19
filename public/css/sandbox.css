@@ -8,7 +8,7 @@ body {
 
 #menu-lateral {
     width: 200px;
-    background-color: #343433;
+    background-color: #000000;
     color: white;
     min-height: 100vh;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
@@ -31,7 +31,7 @@ body {
 }
 
 #menu-lateral a:hover {
-    background-color: #555;
+    background-color: #ef672d;
     text-decoration: underline;
 }
 
@@ -42,7 +42,7 @@ body {
 }
 
 #menu-superior {
-    background-color: #333;
+    background-color: #000000;
     color: white;
     padding: 20px;
     display: none;
@@ -58,8 +58,8 @@ body {
 
 #menu-superior a:hover {
     opacity: 0.8;
-    color: #e44400;
-    background-color: #555;
+    color: #ffffff;
+    background-color: #ef672d;
 }
 
 .chave, button {
@@ -78,7 +78,7 @@ body {
 
 button {
     margin-top: 10px;
-    background-color: #e44400;
+    background-color: #ef672d;
     color: white;
     border: none;
     cursor: pointer;
