@@ -1,4 +1,6 @@
 let dados; 
+let steps = [];
+
 const datasets = {
     GRBE: {
         CHAVE_GRBE_1: ['OPC1', 'OPC2', 'OPC3'],
@@ -64,6 +66,38 @@ function mostrarConteudo(funcionalidade) {
             <div id="formulario"></div>
             <button onclick="montarJSON()">Preparar Ambiente</button>
         `;
+    } else if (funcionalidade === 'configuracaoManual') {
+        conteudo.innerHTML = '';
+        conteudo.innerHTML = `
+        <div id="configForm">
+            <label>Escolha uma ação: 
+                <select id="actionSelect" onchange="showActionFields()">
+                    <option value="create">Create</option>
+                    <option value="copy">Copy</option>
+                </select>
+            </label>
+            <div id="actionFields"></div>
+            <button onclick="adicionarStep()">Adicionar Step</button>
+        </div>
+    `;
+        for (const chave in steps) {
+            conteudo.innerHTML += `
+                <div>
+                    <input type="checkbox" id="${chave}" onchange="toggleOpcoes('${chave}')">
+                    <label for="${chave}">${chave}</label>
+                    <div id="opcoes-${chave}" style="display: none;">
+                        ${dados[chave].map(opcao => `<label><input type="checkbox" value="${opcao}" onchange="atualizarVisualizacaoJSON()">${opcao}</label>`).join('')}
+                    </div>
+                </div>
+            `;
+        }
+        conteudo.innerHTML += `
+        <div class="json-container">
+            <pre id="visualizacaoJSON"></pre>
+            <button onclick="gerarJSONFinal()">Gerar JSON Final</button>
+        </div>
+    `;
+        atualizarVisualizacaoJSON(); // Adicione esta linha
     }
 }
 
@@ -145,6 +179,131 @@ function montarJSON() {
     }
     
     console.log(JSON.stringify(resultado));
+}
+
+function showActionFields() {
+    const action = document.getElementById('actionSelect').value;
+    const actionFieldsDiv = document.getElementById('actionFields');
+    actionFieldsDiv.innerHTML = '';
+
+    if (action === 'create') {
+        actionFieldsDiv.innerHTML = `
+            To: <input type="text" id="toField"><br>
+            Volser: <input type="text" id="volserField"><br>
+            CNPJ: <input type="text" id="cnpjField"><br>
+            Unit: <input type="text" id="unitField"><br>
+            <!-- Adicione os demais campos aqui conforme especificado -->
+        `;
+    } else if (action === 'copy') {
+        actionFieldsDiv.innerHTML = `
+            From: <input type="text" id="fromField"><br>
+            Member: <input type="text" id="memberField"><br>
+            To: <input type="text" id="toCopyField"><br>
+        `;
+    }
+}
+
+function adicionarStep() {
+    const action = document.getElementById('actionSelect').value;
+
+    if (!validarFormulario(action)) {
+        // Se a validação falhar, interrompemos a execução da função aqui
+        return;
+    }
+
+    let step = {
+        action: action
+    };
+
+    if (action === 'create') {
+        step.to = document.getElementById('toField').value;
+        step.config = {
+            volser: document.getElementById('volserField').value,
+            cnpj: document.getElementById('cnpjField').value,
+            unit: document.getElementById('unitField').value
+            // Adicione os demais campos aqui
+        };
+    } else if (action === 'copy') {
+        step.from = document.getElementById('fromField').value;
+        step.member = document.getElementById('memberField').value;
+        step.to = document.getElementById('toCopyField').value;
+    }
+
+    steps.push(step);
+    atualizarVisualizacaoJSON();
+}
+
+function validarFormulario(action) {
+    if (action === 'create') {
+        if (!document.getElementById('toField').value.trim() ||
+            !document.getElementById('volserField').value.trim() ||
+            !document.getElementById('cnpjField').value.trim() ||
+            !document.getElementById('unitField').value.trim()) {
+            // Há um campo vazio
+            alert('Por favor, preencha todos os campos necessários.');
+            return false;
+        }
+    } else if (action === 'copy') {
+        if (!document.getElementById('fromField').value.trim() ||
+            !document.getElementById('memberField').value.trim() ||
+            !document.getElementById('toCopyField').value.trim()) {
+            // Há um campo vazio
+            alert('Por favor, preencha todos os campos necessários.');
+            return false;
+        }
+    }
+    return true;
+}
+
+function atualizarVisualizacaoJSON() {
+    const visualizacaoJSON = document.getElementById('visualizacaoJSON');
+    
+    if (steps.length === 0) {
+        visualizacaoJSON.innerHTML = "Nenhum step foi adicionado ainda.";
+    } else {
+        let stepsHtml = "";
+        for (let i = 0; i < steps.length; i++) {
+            stepsHtml += `<h3>Step ${i + 1}</h3>`;
+            stepsHtml += renderJsonToForm(steps[i]);
+        }
+        visualizacaoJSON.innerHTML = stepsHtml;
+    }
+}
+
+function renderJsonToForm(jsonObj) {
+    let formHtml = '<div class="json-group">';
+
+    for (const key in jsonObj) {
+        if (jsonObj.hasOwnProperty(key)) {
+            const value = jsonObj[key];
+            
+            if (typeof value === "object" && !Array.isArray(value)) {
+                formHtml += `<h4>${key}</h4>`;
+                formHtml += renderJsonToForm(value);
+            } else {
+                formHtml += `
+                    <div class="form-group">
+                        <label for="${key}">${key}</label>
+                        <input type="text" id="${key}" name="${key}" value="${value}" class="form-input" readonly>
+                    </div>
+                `;
+            }
+        }
+    }
+
+    formHtml += '</div>';
+    return formHtml;
+}
+
+
+function gerarJSONFinal() {
+    const jsonFinal = {};
+
+    steps.forEach((step, index) => {
+        jsonFinal[`STEP${String(index + 1).padStart(2, '0')}`] = step;
+    });
+
+    console.log(jsonFinal);
 }
 
 // Ao carregar a página, mostre a home

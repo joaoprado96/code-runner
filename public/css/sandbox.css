@@ -1,3 +1,4 @@
+/* Estilos base */
 body {
     font-family: Arial, sans-serif;
     background-color: #f7f7f7;
@@ -6,6 +7,33 @@ body {
     display: flex;
 }
 
+button, .chave {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #e7e7e7;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+button {
+    background-color: #ef672d;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #933100;
+}
+
+h3, h4 {
+    margin-top: 0;
+}
+
+/* Menu Lateral */
 #menu-lateral {
     width: 200px;
     background-color: #000000;
@@ -15,10 +43,10 @@ body {
 }
 
 #menu-lateral img {
-    width: 120px;       /* Largura especificada */
-    height: auto;       /* Altura é ajustada automaticamente para manter a proporção da imagem */
-    margin: 10px auto;  /* Espaço superior e inferior de 20px e margens automáticas esquerda e direita para centralização */
-    display: block;     /* Torna a imagem um bloco para que as margens automáticas funcionem */
+    width: 120px;
+    height: auto;
+    margin: 10px auto;
+    display: block;
 }
 
 #menu-lateral a {
@@ -27,7 +55,7 @@ body {
     text-decoration: none;
     color: white;
     transition: background-color 0.3s;
-    text-align: center; /* Centraliza o texto horizontalmente */
+    text-align: center;
 }
 
 #menu-lateral a:hover {
@@ -35,12 +63,7 @@ body {
     text-decoration: underline;
 }
 
-#container {
-    flex-grow: 1;
-    padding: 20px;
-    background-color: #f7f7f7;
-}
-
+/* Menu Superior */
 #menu-superior {
     background-color: #000000;
     color: white;
@@ -58,33 +81,59 @@ body {
 
 #menu-superior a:hover {
     opacity: 0.8;
-    color: #ffffff;
     background-color: #ef672d;
 }
 
-.chave, button {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    padding: 10px;
-    background-color: #fff;
-    border: 1px solid #e7e7e7;
-    border-radius: 4px;
-    transition: background-color 0.3s;
+/* Container Principal */
+#container {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #f7f7f7;
 }
 
+/* Configuração do Formulário */
+#configForm {
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+}
+
+#configForm input, #configForm select, #configForm button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* JSON Visualização */
+.json-container {
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    font-size: 20px;
+}
+
+.json-group .form-input, .form-group .form-input {
+    width: 70%; /* ou a largura desejada */
+    height: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Outras Estilizações */
 .chave:hover {
     background-color: #f0f0f0;
-}
-
-button {
-    margin-top: 10px;
-    background-color: #ef672d;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 8px;
-}
-
-button:hover {
-    background-color: #933100;
 }
