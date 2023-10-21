@@ -10,7 +10,7 @@ class MySQLHandler:
             'database': database
         }
         self.connection = None
-        self.VALID_SQL_TYPES = {"TEXT", "DATETIME", "INT", "VARCHAR(255)", "FLOAT"}  # A lista pode ser estendida conforme necessário
+        self.VALID_SQL_TYPES = {"TEXT", "DATETIME", "INT", "VARCHAR(255)", "FLOAT", "JSON"}  # A lista pode ser estendida conforme necessário
 
     def _connect(self):
         try:
@@ -62,6 +62,8 @@ class MySQLHandler:
         self._validate_structure(table_structure)
         
         if not set(record.keys()) == set(table_structure.keys()):
+            print(set(record.keys()))
+            print(set(table_structure.keys()))
             return False, "Campos do registro não correspondem à estrutura da tabela"
 
         columns = ', '.join([f"`{key}`" for key in record.keys()])
@@ -100,6 +102,26 @@ class MySQLHandler:
         except mysql.connector.Error as e:
             self._disconnect(cursor)
             return False, str(e)
+
+    def delete_record(self, table_name, conditions, table_structure):
+        self._validate_structure(table_structure)
+
+        if not set(conditions.keys()).issubset(table_structure.keys()):
+            return False, "Campos de condição não correspondem à estrutura da tabela"
+
+        condition_str = ' AND '.join([f"`{key}`=%s" for key in conditions.keys()])
+        query = f"DELETE FROM `{table_name}` WHERE {condition_str};"
+
+        cursor = self._connect()
+        try:
+            cursor.execute(query, tuple(conditions.values()))
+            self.connection.commit()
+            self._disconnect(cursor)
+            return True, f"Registro(s) excluído(s) com sucesso na tabela {table_name}"
+        except mysql.connector.Error as e:
+            self._disconnect(cursor)
+            return False, str(e)
+
 
     def get_records(self, table_name, filters=None):
         query = f"SELECT * FROM `{table_name}`"

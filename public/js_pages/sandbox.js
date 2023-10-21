@@ -1,4 +1,5 @@
 let dados; 
+let ambientes;
 let steps = [];
 
 const datasets = {
@@ -25,6 +26,7 @@ function mostrarConteudo(funcionalidade) {
     const menuSuperior = document.getElementById('menu-superior');
     menuSuperior.style.display = 'none'; 
     conteudo.innerHTML = ''; 
+    menuSuperior.innerHTML = ''; 
 
     if (funcionalidade === 'home') {
         conteudo.innerHTML = `
@@ -54,7 +56,7 @@ function mostrarConteudo(funcionalidade) {
                 Pedimos sua paciência e compreensão durante este período, e incentivamos o feedback construtivo para aprimorarmos ainda mais a nossa plataforma.
             </p>
         `;
-    } else if (funcionalidade === 'montarJSON') {
+    } else if (funcionalidade === 'criarambiente') {
         menuSuperior.style.display = 'flex'; 
         menuSuperior.innerHTML = `
             <a href="#" onclick="carregarFormulario('CICS')">CICS</a>
@@ -64,8 +66,17 @@ function mostrarConteudo(funcionalidade) {
         `;
         conteudo.innerHTML = `
             <div id="formulario"></div>
-            <button onclick="montarJSON()">Preparar Ambiente</button>
+            <button onclick="criarambiente()">CRIAR AMBIENTE</button>
         `;
+    } else if (funcionalidade === 'ambientes') {
+        menuSuperior.style.display = 'flex'; 
+        menuSuperior.innerHTML = `
+            <a href="#" onclick="PrepararAmbiente()">PREPARAR</a>
+            <a href="#" onclick="DestruirAmbiente()">DESTRUIR</a>
+            <a href="#" onclick="ConsultarAmbiente()">CONSULTAR</a>
+            <a href="#" onclick="DeletarAmbiente()">DELETAR</a>
+        `;
+        carregarAmbientes();
     } else if (funcionalidade === 'configuracaoManual') {
         conteudo.innerHTML = '';
         conteudo.innerHTML = `
@@ -164,7 +175,7 @@ function toggleOpcoes(chave) {
     }
 }
 
-function montarJSON() {
+function criarambiente() {
     const resultado = {};
 
     for (const chave in dados) {
@@ -177,8 +188,7 @@ function montarJSON() {
             }
         }
     }
-    
-    console.log(JSON.stringify(resultado));
+    criar(resultado)
 }
 
 function showActionFields() {
@@ -304,6 +314,141 @@ function gerarJSONFinal() {
     });
 
     console.log(jsonFinal);
+}
+
+async function get() {
+    let query = 'SELECT * FROM ambientes';
+    
+    const response = await fetch('/get_logs', {
+        headers: {
+        'Content-Type': 'application/json',
+        'SQL-Query': query
+        }
+    });
+    const ambientes = await response.json();
+    return ambientes;
+}
+
+
+async function carregarAmbientes() {
+    const conteudo = document.getElementById('conteudo');
+    conteudo.innerHTML = '';
+    ambientes = await get();
+    
+    let tableHTML = `
+        <br>
+        <table>
+            <thead>
+                <tr>
+                    <th>Identificador</th>
+                    <th>Nome</th>
+                    <th>Versão</th>
+                    <th>Configurações</th>
+                    <th>Ambiente</th>
+                    <th>Criador</th>
+                    <th>Data de Criação</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    ambientes.forEach(ambiente => {
+        tableHTML += `
+            <tr onclick="linhaSelecionada(this)">
+                <td>${ambiente.identificador}</td>
+                <td>${ambiente.nome}</td>
+                <td>${ambiente.versao}</td>
+                <td>${ambiente.configuracoes}</td>
+                <td>${ambiente.ambiente}</td>
+                <td>${ambiente.criador}</td>
+                <td>${new Date(ambiente.data_criacao).toLocaleString()}</td>
+                <td>${ambiente.status}</td>
+            </tr>
+        `;
+    });
+
+    tableHTML += `
+            </tbody>
+        </table>
+    `;
+
+    conteudo.innerHTML = tableHTML;
+}
+
+function linhaSelecionada(linha) {
+    const linhas = document.querySelectorAll('tbody tr');
+    linhas.forEach(l => {
+        if (l === linha) {
+            l.classList.add('selected');
+        } else {
+            l.classList.remove('selected');
+        }
+    });
+}
+
+function getIdentificador() {
+    const linhaSelecionada = document.querySelector('.selected');
+    if (!linhaSelecionada) {
+        return 'Nenhuma linha selecionada!';
+    }
+    
+    const primeiraCelula = linhaSelecionada.querySelector('td');
+    return primeiraCelula ? primeiraCelula.textContent : 'Sem identificador';
+}
+
+function PrepararAmbiente() {
+    const dados = getIdentificador();
+    alert('Preparar Formulário: ' + dados);
+    // Restante do código para PrepararAmbiente...
+    mostrarConteudo('ambientes')
+}
+
+function DestruirAmbiente() {
+    const dados = getIdentificador();
+    alert('Destruir Formulário: ' + dados);
+    // Restante do código para DestruirAmbiente...
+    mostrarConteudo('ambientes')
+}
+
+function ConsultarAmbiente() {
+    const dados = getIdentificador();
+    alert('Consultar Formulário: ' + dados);
+    // Restante do código para ConsultarAmbiente...
+    mostrarConteudo('ambientes')
+}
+
+function DeletarAmbiente() {
+    console.log("eNTROU")
+    const dados = getIdentificador();
+    deletar(dados);
+}
+
+async function criar(dados) {    
+    const response = await fetch('/codes/ambiente_criar', {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({dados})
+    });
+    const ambientes = await response.json();
+    alert(`Você sera redirecionado para pagina de ambientes, seu identificador é: ${ambientes['identificador']}`);
+    mostrarConteudo('ambientes');
+    return ambientes;
+}
+
+async function deletar(dados) {    
+    const response = await fetch('/codes/ambiente_deletar', {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({identificador: dados})
+    });
+    const ambientes = await response.json();
+    mostrarConteudo('ambientes');
+    return ambientes;
 }
 
 // Ao carregar a página, mostre a home

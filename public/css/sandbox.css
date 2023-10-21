@@ -60,7 +60,6 @@ h3, h4 {
 
 #menu-lateral a:hover {
     background-color: #ef672d;
-    text-decoration: underline;
 }
 
 /* Menu Superior */
@@ -136,4 +135,29 @@ h3, h4 {
 /* Outras Estilizações */
 .chave:hover {
     background-color: #f0f0f0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow-y: auto;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+thead th, tbody td {
+    color: #000000;
+    letter-spacing: 1px;
+    padding: 15px 20px;
+    border-bottom: solid 4px #E4E4E4;  /* Cor de destaque para o bordo inferior */
+    text-transform: uppercase;
+    text-align: center;
+}
+
+tbody tr:hover {
+    background-color: #bebebe;
+
+}
+
+tbody tr.selected {
+    background-color: #ef672d;
 }

@@ -43,80 +43,45 @@ app.post('/codes/:scriptName', (req, res) => {
     const scriptName = req.params.scriptName;
     const diretorio = path.join(__dirname, 'codes', `${scriptName}.py`);
     if (!fs.existsSync(diretorio)) {
-        res.status(404).send({message:`CodeRunner: Code não encontrado em ${scriptName}`});
+        res.status(404).send({message: `CodeRunner: codes não encontrado em ${scriptName}`});
         return;
     }
 
-    let numScripts = req.headers['num-scripts']; // Lê o valor do cabeçalho 'num-scripts'
-    if (!numScripts) numScripts = 1; // Se não houver cabeçalho 'num-scripts', apenas um script será iniciado
-
-    // Verifica se numScripts é maior que 100
-    if (numScripts > 100) {
-        res.status(400).send({message: `CodeRunner: O número máximo de scripts é 100`});
-        return;
-    }
     const options = {
         mode: 'text',
         pythonOptions: ['-u'], // get print results in real-time
         args: [JSON.stringify(req.body)]
     };
 
-    // Array para guardar promessas de finalização dos scripts
-    let scriptPromises = [];
+    let pyShell = new PythonShell(path.join('codes', `${scriptName}.py`), options);
+    let scriptOutput = null; // Variável para armazenar a saída do script
 
-    for(let i = 0; i < numScripts; i++) {
-        let pyShell = new PythonShell(path.join('codes', `${scriptName}.py`), options);
-        let scriptId = `${scriptName}${i}`; // Identificador do script
-        runningScripts[scriptId] = pyShell;
+    pyShell.on('message', (message) => {
+        // 'message' é a saída do script Python
+        console.log(`[${scriptName}] ${message}`);
 
-        let scriptOutput = null; // Variável para armazenar a saída do script
+        // Tenta parsear a mensagem como JSON
+        try {
+            let jsonMessage = JSON.parse(message);
+            // Se a mensagem puder ser parseada como JSON, salva na variável scriptOutput
+            scriptOutput = jsonMessage;
+        } catch (err) {
+            // Se a mensagem não puder ser parseada como JSON, não faz nada
+            scriptOutput = { resposta: 'Script não devolveu um JSON' };
+        }
+    });
 
-        pyShell.on('message', (message) => {
-            // 'message' é a saída do script Python
-            console.log(`[${scriptId}] ${message}`);
-        
-            // Tenta parsear a mensagem como JSON
-            try {
-                let jsonMessage = JSON.parse(message);
-                // Se a mensagem puder ser parseada como JSON, salva na variável scriptOutput
-                scriptOutput = jsonMessage;
-            } catch (err) {
-                // Se a mensagem não puder ser parseada como JSON, não faz nada
-                scriptOutput = '{"resposta":"Script não devolveu um JSON"}'
-            }
-        });
-        
-        let scriptPromise = new Promise((resolve, reject) => {
-            pyShell.end((err, code, signal) => {
-                if (err) {
-                    console.log(`[${scriptId}] CodeRunner: Erro na execução do script ${scriptName}.py. Nome do erro: ${err.name}`);
-                    console.log(`[${scriptId}] CodeRunner: Logs de erro (stack trace):\n${err.stack}`);
-                    reject(err);
-                } else {
-                    console.log(`[${scriptId}] Code Runner: O script ${scriptName}.py finalizou com Exit Code: ${code} Exit Signal: ${signal}`);
-                    resolve({scriptOutput});
-                }
-                delete runningScripts[scriptId];
-            });
-        });
+    pyShell.end((err, code, signal) => {
+        if (err) {
+            console.log(`[${scriptName}] CodeRunner: Erro na execução do script ${scriptName}.py. Nome do erro: ${err.name}`);
+            console.log(`[${scriptName}] CodeRunner: Logs de erro (stack trace):\n${err.stack}`);
+            res.status(500).send({ message: `CodeRunner: Erro ao executar o script ${scriptName}.py`, error: err });
+            return;
+        }
 
-        scriptPromises.push(scriptPromise);
-    }
-
-    const aguardar = req.headers['aguardar']; // Lê o valor do cabeçalho 'aguardar'
-
-    // Se 'aguardar' estiver definido como 'sim', espera a conclusão dos scripts
-    if(aguardar === 'sim') {
-        Promise.all(scriptPromises)
-        .then(results => {
-            res.send({ message: `CodeRunner: Os scripts ${scriptName}.py foram concluídos` ,results: results });
-        })
-        .catch(err => {
-            res.status(500).send({ message: `CodeRunner: Erro ao executar os scripts ${scriptName}.py`, error: err });
-        });
-    } else {
-        res.send({message: `CodeRunner: Os (${numScripts}) scripts ${scriptName}.py foram iniciados`});
-    }
+        console.log(`[${scriptName}] Code Runner: O script ${scriptName}.py finalizou com Exit Code: ${code} Exit Signal: ${signal}`);
+        res.send(scriptOutput);
+    });
 });
 
 app.post('/codes/regressivo/:scriptName', (req, res) => {
