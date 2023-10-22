@@ -390,7 +390,7 @@ function linhaSelecionada(linha) {
 function getIdentificador() {
     const linhaSelecionada = document.querySelector('.selected');
     if (!linhaSelecionada) {
-        return 'Nenhuma linha selecionada!';
+        return false;
     }
     
     const primeiraCelula = linhaSelecionada.querySelector('td');
@@ -399,28 +399,45 @@ function getIdentificador() {
 
 function PrepararAmbiente() {
     const dados = getIdentificador();
-    alert('Preparar Formulário: ' + dados);
+    if (dados === false) {
+        alert('Selecione uma opção ...');
+        return
+    }
+    alert('Preparando ambiente no MAINFRAME');
+    preparar(dados);
     // Restante do código para PrepararAmbiente...
-    mostrarConteudo('ambientes')
+    mostrarConteudo('ambientes');
 }
 
 function DestruirAmbiente() {
     const dados = getIdentificador();
-    alert('Destruir Formulário: ' + dados);
+    if (dados === false) {
+        alert('Selecione uma opção ...');
+        return
+    }
+    alert('Destruindo ambiente no MAINFRAME');
+    destruir(dados);
     // Restante do código para DestruirAmbiente...
-    mostrarConteudo('ambientes')
+    mostrarConteudo('ambientes');
 }
 
 function ConsultarAmbiente() {
     const dados = getIdentificador();
+    if (dados === false) {
+        alert('Selecione uma opção ...');
+        return
+    }
     alert('Consultar Formulário: ' + dados);
     // Restante do código para ConsultarAmbiente...
-    mostrarConteudo('ambientes')
+    mostrarConteudo('ambientes');
 }
 
 function DeletarAmbiente() {
-    console.log("eNTROU")
     const dados = getIdentificador();
+    if (dados === false) {
+        alert('Selecione uma opção ...');
+        return
+    }
     deletar(dados);
 }
 
@@ -438,6 +455,32 @@ async function criar(dados) {
     return ambientes;
 }
 
+async function preparar(dados) {    
+    const response = await fetch('/codes/ambiente_preparar', {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({identificador: dados})
+    });
+    const resposta = await response.json();
+    mostrarConteudo('ambientes');
+    return resposta;
+}
+
+async function destruir(dados) {    
+    const response = await fetch('/codes/ambiente_destruir', {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({identificador: dados})
+    });
+    const resposta = await response.json();
+    mostrarConteudo('ambientes');
+    return resposta;
+}
+
 async function deletar(dados) {    
     const response = await fetch('/codes/ambiente_deletar', {
         method: 'POST',
@@ -446,9 +489,9 @@ async function deletar(dados) {
         },
         body: JSON.stringify({identificador: dados})
     });
-    const ambientes = await response.json();
+    const resposta = await response.json();
     mostrarConteudo('ambientes');
-    return ambientes;
+    return resposta;
 }
 
 // Ao carregar a página, mostre a home
