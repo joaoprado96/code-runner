@@ -1,113 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Code Runer - GRBE</title>
-    <link rel="icon" href="img/coderunner.PNG" type="image/png">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #f0f0f0;
-        }
-        img.logo {
-            width: 350px;
-            height: auto;
-            margin-bottom: 30px;
-        }
-        .button-row {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-        .button {
-            background-color: #F94904;
-            color: white;
-            padding: 10px 20px;
-            margin: 0 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-            width: 200px;
-        }
-        .button:before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background-color: rgba(255, 255, 255, 0.5);
-            opacity: 0;
-            transform: scale(0.1);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-        .button:hover:before,
-        .button:focus:before {
-            opacity: 1;
-            transform: scale(1);
-        }
-        .button:active:before {
-            opacity: 0;
-            transform: scale(0);
-            transition: none;
-        }
-        @keyframes pulsate {
-            0% {
-                box-shadow: 0 0 0 0 rgba(249, 73, 4, 0.4);
-            }
-            70% {
-                box-shadow: 0 0 0 10px rgba(249, 73, 4, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(249, 73, 4, 0);
-            }
-        }
-        .button.pulsate {
-            animation: pulsate 2s infinite;
-        }
-    </style>
+    <title>Sandbox</title>
+    <link rel="icon" href="img/sandboxsvg.svg" type="image/svg">
+    <link rel="stylesheet" type="text/css" href="css/home.css">
 </head>
 
 <body>
-    <img src="img/coderunner.PNG" alt="Logo" class="logo">
-    
-    <div class="button-row">
-        <button class="button" onclick="window.location.href='smtester.html'">SMTESTER</button>
-        <button class="button" onclick="window.location.href='versionrunner.html'">VERSION RUNNER</button>
-        <button class="button" onclick="window.location.href='jobruner.html'">JOB RUNER</button>
+    <img src="img/sandboxsvg.svg" alt="Logo" class="logo">
+    <div class="login-container">
+        <form id="loginForm">
+            <input type="text" id="username" name="RACF" class="login-input" placeholder="RACF" oninput="this.value = this.value.toUpperCase()" required>
+            <input type="password" id="password" name="SENHA" class="login-input" placeholder="SENHA" required>
+            <input type="submit" class="login-button" value="Entrar">
+        </form>
+        
     </div>
     
-    <div class="button-row">
-        <button class="button" onclick="window.location.href='regressiverunner.html'">REGRESSIVE RUNNER</button>
-        <button class="button" onclick="window.location.href='viewregressive.html'">VIEWER REGRESSIVE</button>
-        <button class="button" onclick="window.location.href='viewregressive.html'">DATABASE REGRESSIVE</button>
-    </div>
 
-    <div class="button-row">
-        <button class="button" onclick="window.location.href='page.html'">SYSOUT RUNNER</button>
-        <button class="button" onclick="window.location.href='page.html'">MONITOR RUNNER</button>
-        <button class="button" onclick="window.location.href='page.html'">SYSOUT RUNNER</button>
-    </div>
-
-    <script>
-        var buttons = document.querySelectorAll('.button');
-        buttons.forEach(function(button) {
-            button.addEventListener('mousedown', function() {
-                this.classList.add('pulsate');
-            });
-            button.addEventListener('mouseup', function() {
-                this.classList.remove('pulsate');
-            });
-        });
-    </script>
+    <script src="js_pages/home.js"></script>
 </body>
 </html>

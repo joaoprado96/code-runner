@@ -2,6 +2,16 @@ let dados;
 let ambientes;
 let steps = [];
 
+var RACF = localStorage.getItem('RACF');
+var SENHA = localStorage.getItem('SENHA');
+
+if (!RACF || !SENHA) {
+    window.location.href = "home.html";
+}
+
+console.log(RACF);
+console.log(SENHA);
+
 const datasets = {
     GRBE: {
         CHAVE_GRBE_1: ['OPC1', 'OPC2', 'OPC3'],
@@ -440,6 +450,12 @@ function DeletarAmbiente() {
     }
     deletar(dados);
 }
+
+function Sair() {
+    localStorage.clear();
+    window.location.href = "home.html";
+}
+
 
 async function criar(dados) {    
     const response = await fetch('/codes/ambiente_criar', {
