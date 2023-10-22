@@ -88,7 +88,7 @@ function mostrarConteudo(funcionalidade) {
                 </select>
             </label>
             <div id="actionFields"></div>
-            <button onclick="adicionarStep()">Adicionar Step</button>
+            <button onclick="adicionarStep()">ADICIONAR STEP</button>
         </div>
     `;
         for (const chave in steps) {
@@ -105,7 +105,7 @@ function mostrarConteudo(funcionalidade) {
         conteudo.innerHTML += `
         <div class="json-container">
             <pre id="visualizacaoJSON"></pre>
-            <button onclick="gerarJSONFinal()">Gerar JSON Final</button>
+            <button onclick="gerarJSONFinal()">RODAR CONFIGURAÇÕES</button>
         </div>
     `;
         atualizarVisualizacaoJSON(); // Adicione esta linha
@@ -206,9 +206,9 @@ function showActionFields() {
         `;
     } else if (action === 'copy') {
         actionFieldsDiv.innerHTML = `
-            From: <input type="text" id="fromField"><br>
-            Member: <input type="text" id="memberField"><br>
-            To: <input type="text" id="toCopyField"><br>
+            From: <input type="text" id="fromField" value="aaaaa"><br>
+            Member: <input type="text" id="memberField" value="aaaaa"><br>
+            To: <input type="text" id="toCopyField" value="aaaaa"><br>
         `;
     }
 }
@@ -282,6 +282,7 @@ function atualizarVisualizacaoJSON() {
 
 function renderJsonToForm(jsonObj) {
     let formHtml = '<div class="json-group">';
+    formHtml += '<div class="form-group">';
 
     for (const key in jsonObj) {
         if (jsonObj.hasOwnProperty(key)) {
@@ -292,16 +293,15 @@ function renderJsonToForm(jsonObj) {
                 formHtml += renderJsonToForm(value);
             } else {
                 formHtml += `
-                    <div class="form-group">
                         <label for="${key}">${key}</label>
                         <input type="text" id="${key}" name="${key}" value="${value}" class="form-input" readonly>
-                    </div>
                 `;
             }
         }
     }
 
-    formHtml += '</div>';
+    formHtml += '</div></div>';
+    console.log(formHtml)
     return formHtml;
 }
 
