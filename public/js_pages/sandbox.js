@@ -1,6 +1,7 @@
 let dados; 
 let ambientes;
 let logs_ambientes;
+let ambiente;
 let steps = [];
 
 var RACF = localStorage.getItem('RACF');
@@ -9,28 +10,6 @@ var SENHA = localStorage.getItem('SENHA');
 if (!RACF || !SENHA) {
     window.location.href = "home.html";
 }
-
-console.log(RACF);
-console.log(SENHA);
-
-const datasets = {
-    GRBE: {
-        CHAVE_GRBE_1: ['OPC1', 'OPC2', 'OPC3'],
-        CHAVE_GRBE_2: ['OPC1', 'OPC2']
-    },
-    IMS: {
-        CHAVE_IMS_1: ['OPC1', 'OPC2', 'OPC3', 'OPC4'],
-        CHAVE_IMS_2: ['OPC1', 'OPC2']
-    },
-    CICS: {
-        CHAVE_CICS_1: ['OPC1', 'OPC2', 'OPC3', 'OPC4', 'OPC5'],
-        CHAVE_CICS_2: ['OPC1', 'OPC2']
-    },
-    BATCH: {
-        CHAVE_BATCH_1: ['OPC1', 'OPC2', 'OPC3'],
-        CHAVE_BATCH_2: ['OPC1', 'OPC2', 'OPC3', 'OPC4']
-    }
-};
 
 function mostrarConteudo(funcionalidade) {
     const conteudo = document.getElementById('conteudo');
@@ -76,6 +55,14 @@ function mostrarConteudo(funcionalidade) {
             <a href="#" onclick="ListarOpcoesAmbiente('BATCH')">BATCH</a>
         `;
         conteudo.innerHTML = `
+            <div id="criaForm">
+                <label for="nome">NOME</label>
+                <input type="text" id="nome" name="nome"><br>
+                <label for="configuracao">CONFIGURAÇÃO</label>
+                <input type="text" id="configuracao" name="configuracao"><br>
+                <label for="versao">VERSÃO</label>
+                <input type="number" id="versao" name="versao"><br>
+            </div>
             <div id="formulario"></div>
             <button onclick="criarambiente()">CRIAR AMBIENTE</button>
         `;
@@ -127,15 +114,19 @@ function mostrarConteudo(funcionalidade) {
 
 async function ListarOpcoesAmbiente(opcao) {
     if (opcao === 'CICS'){
+        ambiente = 'CICS';
         dados = await listar_cics();
     }
     else if (opcao === 'GRBE') {
+        ambiente = 'GRBE';
         dados = await listar_grbe();
     }
     else if (opcao === 'IMS') {
+        ambiente = 'IMS';
         dados = await listar_ims();
     }
     else if (opcao === 'BATCH') {
+        ambiente = 'BATCH';
         dados = await listar_batch();
     }
     inicializarFormulario(dados);
@@ -266,8 +257,6 @@ function toggleOpcoes(chave) {
         checkboxesOpcoes.forEach(checkbox => checkbox.checked = false);
     }
 }
-
-
 
 function criarambiente() {
     const resultado = {};
@@ -450,7 +439,7 @@ async function carregarAmbientes() {
             <thead>
                 <tr>
                     <th>Identificador</th>
-                    <th></th>
+                    <th>Nome</th>
                     <th>Versão</th>
                     <th>Configurações</th>
                     <th>Ambiente</th>
@@ -597,12 +586,15 @@ function Sair() {
 
 
 async function criar(dados) {    
+    const nome = document.getElementById('nome').value;
+    const configuracao = document.getElementById('configuracao').value;
+    const versao = document.getElementById('versao').value;   
     const response = await fetch('/codes/ambiente_criar', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({data: dados, usuario: RACF, senha: SENHA})
+        body: JSON.stringify({data: dados, usuario: RACF, senha: SENHA, nome: nome, configuracao: configuracao, versao: versao, ambiente: ambiente})
     });
     const ambientes = await response.json();
     alert(`Você sera redirecionado para pagina de ambientes, seu identificador é: ${ambientes['identificador']}`);

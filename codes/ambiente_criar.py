@@ -11,9 +11,17 @@ def gerar_identificador_unico():
 def main():
     body = sys.argv[1]
     data = json.loads(body)
-    usuario = data['usuario']
-    senha   = data['senha']
-    
+    try:
+        usuario         = data['usuario']
+        senha           = data['senha']
+        nome            = data['nome']
+        versao          = data['versao']
+        configuracao    = data['configuracao']
+        ambiente        = data['ambiente']
+
+    except:
+        return
+        
     id_unico = gerar_identificador_unico()
     sql = MySQLHandler(host='localhost',user='root',password='12121212',database='coderunner')
     table_name= 'ambientes'
@@ -44,10 +52,10 @@ def main():
 
     dado = {
         'identificador':id_unico,
-        'nome':'INCLUSAO DE TESTE',
-        'versao':1,
-        'configuracoes':'MONITOR ATIVO',
-        'ambiente':'GRBE',
+        'nome':nome,
+        'versao':versao,
+        'configuracoes':configuracao,
+        'ambiente':ambiente,
         'criador':usuario,
         'data_criacao':datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         'ultima_modificacao':datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
