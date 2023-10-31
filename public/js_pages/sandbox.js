@@ -69,10 +69,10 @@ function mostrarConteudo(funcionalidade) {
     } else if (funcionalidade === 'criarambiente') {
         menuSuperior.style.display = 'flex'; 
         menuSuperior.innerHTML = `
-            <a href="#" onclick="carregarFormulario('CICS')">CICS</a>
-            <a href="#" onclick="carregarFormulario('GRBE')">GRBE</a>
-            <a href="#" onclick="carregarFormulario('IMS')">IMS</a>
-            <a href="#" onclick="carregarFormulario('BATCH')">BATCH</a>
+            <a href="#" onclick="ListarOpcoesAmbiente('CICS')">CICS</a>
+            <a href="#" onclick="ListarOpcoesAmbiente('GRBE')">GRBE</a>
+            <a href="#" onclick="ListarOpcoesAmbiente('IMS')">IMS</a>
+            <a href="#" onclick="ListarOpcoesAmbiente('BATCH')">BATCH</a>
         `;
         conteudo.innerHTML = `
             <div id="formulario"></div>
@@ -122,9 +122,62 @@ function mostrarConteudo(funcionalidade) {
     }
 }
 
-function carregarFormulario(opcao) {
-    dados = datasets[opcao];
+async function ListarOpcoesAmbiente(opcao) {
+    if (opcao === 'CICS'){
+        dados = await listar_cics();
+    }
+    else if (opcao === 'GRBE') {
+        dados = await listar_grbe();
+    }
+    else if (opcao === 'IMS') {
+        dados = await listar_ims();
+    }
+    else if (opcao === 'BATCH') {
+        dados = await listar_batch();
+    }
     inicializarFormulario(dados);
+}
+
+async function listar_cics() {    
+    const response = await fetch('/codes/ambiente_cics', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+    const lista_json = await response.json();
+    return lista_json;
+}
+async function listar_grbe() {
+    const response = await fetch('/codes/ambiente_grbe', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            },
+        });
+        const lista_json = await response.json();
+        return lista_json;
+}
+async function listar_ims(){
+    const response = await fetch('/codes/ambiente_ims', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            },
+        });
+        const lista_json = await response.json();
+        return lista_json;
+}
+
+async function listar_batch(){
+    const response = await fetch('/codes/ambiente_batch', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            },
+        });
+        const lista_json = await response.json();
+        return lista_json;
 }
 
 function inicializarFormulario(dados) {
@@ -143,6 +196,7 @@ function inicializarFormulario(dados) {
         const labelChave = document.createElement('label');
         labelChave.htmlFor = chave;
         labelChave.textContent = chave;
+        labelChave.ondblclick = () => marcarDesmarcarOpcoes(chave);
 
         divChave.appendChild(checkboxChave);
         divChave.appendChild(labelChave);
@@ -150,9 +204,11 @@ function inicializarFormulario(dados) {
         const divOpcoes = document.createElement('div');
         divOpcoes.id = 'opcoes-' + chave;
         divOpcoes.style.marginLeft = '20px';
-        divOpcoes.style.display = 'none'; 
+        divOpcoes.style.display = 'none';
 
-        dados[chave].forEach(opcao => {
+        const opcoesPorColuna = Math.ceil(dados[chave].length / 4);
+
+        dados[chave].forEach((opcao, index) => {
             const checkboxOpcao = document.createElement('input');
             checkboxOpcao.type = 'checkbox';
             checkboxOpcao.id = opcao + '-' + chave;
@@ -162,14 +218,33 @@ function inicializarFormulario(dados) {
             labelOpcao.htmlFor = opcao + '-' + chave;
             labelOpcao.textContent = opcao;
 
-            divOpcoes.appendChild(checkboxOpcao);
-            divOpcoes.appendChild(labelOpcao);
-            divOpcoes.appendChild(document.createElement('br'));
+            const divOpcao = document.createElement('div');
+            divOpcao.style.display = 'inline-block';
+            divOpcao.style.width = '25%'; // Ajustado para 4 colunas
+
+            if ((index + 1) % opcoesPorColuna === 0) {
+                divOpcao.style.clear = 'both';
+            }
+
+            divOpcao.appendChild(checkboxOpcao);
+            divOpcao.appendChild(labelOpcao);
+
+            divOpcoes.appendChild(divOpcao);
         });
 
         formulario.appendChild(divChave);
         formulario.appendChild(divOpcoes);
     }
+}
+
+function marcarDesmarcarOpcoes(chave) {
+    const divOpcoes = document.getElementById('opcoes-' + chave);
+    const checkboxes = divOpcoes.querySelectorAll('input[type="checkbox"]');
+    const todosMarcados = Array.from(checkboxes).every(checkbox => checkbox.checked);
+
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = !todosMarcados;
+    });
 }
 
 function toggleOpcoes(chave) {
@@ -185,6 +260,8 @@ function toggleOpcoes(chave) {
     }
 }
 
+
+
 function criarambiente() {
     const resultado = {};
 
@@ -198,7 +275,7 @@ function criarambiente() {
             }
         }
     }
-    criar(resultado)
+    criar(resultado);
 }
 
 function showActionFields() {
@@ -311,7 +388,7 @@ function renderJsonToForm(jsonObj) {
     }
 
     formHtml += '</div></div>';
-    console.log(formHtml)
+    console.log(formHtml);
     return formHtml;
 }
 
@@ -324,6 +401,7 @@ function gerarJSONFinal() {
     });
 
     console.log(jsonFinal);
+    alert("Clique em OK para copiar o JSON");
 }
 
 async function get() {
@@ -461,7 +539,7 @@ async function criar(dados) {
     const response = await fetch('/codes/ambiente_criar', {
         method: 'POST',
         headers: {
-        'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
         },
         body: JSON.stringify({dados})
     });
