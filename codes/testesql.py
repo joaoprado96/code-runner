@@ -25,29 +25,37 @@ TABELA = {
     'status':'TEXT',
     'script':'JSON'
 }
-# deletar = sql.delete_table(table_name='ambientes')
-# # print(deletar)
 
-# criar = sql.create_table(table_name='ambientes',json_structure=TABELA)
-# print(criar)
+TABELA_LOGS = {
+    'identificador':'TEXT',
+    'executor':'TEXT',
+    'ultima_modificacao':'DATETIME',
+    'acao_executada':'TEXT',
+    'resultado':'TEXT'
+}
+deletar = sql.delete_table(table_name='logs_ambientes')
+print(deletar)
 
-for i in range(30):
-    dado = {
-        'identificador':gerar_identificador_unico(),
-        'nome':'TRANSACAO 071',
-        'versao':1,
-        'configuracoes':'MONITOR ATIVO',
-        'ambiente':'GRBE',
-        'criador':'JVSPPNX',
-        'data_criacao':datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        'ultima_modificacao':datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        'data_destrucao': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        'ultima_acao':'CRIACAO',
-        'status':'CRIADO',
-        'script':'{"JOAO":"JOAO"}',
-    }
-    inserir = sql.insert_record(table_name='ambientes',record=dado,table_structure=TABELA)
-    print(inserir)
+criar = sql.create_table(table_name='logs_ambientes',json_structure=TABELA_LOGS)
+print(criar)
+
+# for i in range(30):
+#     dado = {
+#         'identificador':gerar_identificador_unico(),
+#         'nome':'TRANSACAO 071',
+#         'versao':1,
+#         'configuracoes':'MONITOR ATIVO',
+#         'ambiente':'GRBE',
+#         'criador':'JVSPPNX',
+#         'data_criacao':datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+#         'ultima_modificacao':datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+#         'data_destrucao': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+#         'ultima_acao':'CRIACAO',
+#         'status':'CRIADO',
+#         'script':'{"JOAO":"JOAO"}',
+#     }
+#     inserir = sql.insert_record(table_name='ambientes',record=dado,table_structure=TABELA)
+#     print(inserir)
 
 # consulta = sql.get_records(table_name='teste1')
 # print(consulta)

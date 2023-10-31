@@ -36,7 +36,8 @@ h3, h4 {
 
 /* Menu Lateral */
 #menu-lateral {
-    width: 225px;
+    width: 235px;
+    min-width: 235px;
     background-color: #000000;
     color: white;
     min-height: 100vh;

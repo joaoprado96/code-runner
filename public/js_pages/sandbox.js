@@ -1,5 +1,6 @@
 let dados; 
 let ambientes;
+let logs_ambientes;
 let steps = [];
 
 var RACF = localStorage.getItem('RACF');
@@ -87,6 +88,8 @@ function mostrarConteudo(funcionalidade) {
             <a href="#" onclick="DeletarAmbiente()">DELETAR</a>
         `;
         carregarAmbientes();
+    } else if (funcionalidade === 'LogsDeAmbiente') {
+        carregarLogsDeAmbientes();
     } else if (funcionalidade === 'configuracaoManual') {
         conteudo.innerHTML = '';
         conteudo.innerHTML = `
@@ -143,7 +146,8 @@ async function listar_cics() {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-        }
+        },
+        body: JSON.stringify({usuario: RACF, senha: SENHA})
     });
     const lista_json = await response.json();
     return lista_json;
@@ -154,6 +158,7 @@ async function listar_grbe() {
         headers: {
             'Content-Type': 'application/json',
             },
+            body: JSON.stringify({usuario: RACF, senha: SENHA})
         });
         const lista_json = await response.json();
         return lista_json;
@@ -164,6 +169,7 @@ async function listar_ims(){
         headers: {
             'Content-Type': 'application/json',
             },
+            body: JSON.stringify({usuario: RACF, senha: SENHA})
         });
         const lista_json = await response.json();
         return lista_json;
@@ -175,6 +181,7 @@ async function listar_batch(){
         headers: {
             'Content-Type': 'application/json',
             },
+            body: JSON.stringify({usuario: RACF, senha: SENHA})
         });
         const lista_json = await response.json();
         return lista_json;
@@ -417,6 +424,20 @@ async function get() {
     return ambientes;
 }
 
+async function getlogs() {
+    let query = 'SELECT * FROM logs_ambientes';
+    
+    const response = await fetch('/get_logs', {
+        headers: {
+        'Content-Type': 'application/json',
+        'SQL-Query': query
+        }
+    });
+    const logs_ambientes = await response.json();
+    return logs_ambientes;
+}
+
+
 
 async function carregarAmbientes() {
     const conteudo = document.getElementById('conteudo');
@@ -429,7 +450,7 @@ async function carregarAmbientes() {
             <thead>
                 <tr>
                     <th>Identificador</th>
-                    <th>Nome</th>
+                    <th></th>
                     <th>Versão</th>
                     <th>Configurações</th>
                     <th>Ambiente</th>
@@ -452,6 +473,46 @@ async function carregarAmbientes() {
                 <td>${ambiente.criador}</td>
                 <td>${new Date(ambiente.data_criacao).toLocaleString()}</td>
                 <td>${ambiente.status}</td>
+            </tr>
+        `;
+    });
+
+    tableHTML += `
+            </tbody>
+        </table>
+    `;
+
+    conteudo.innerHTML = tableHTML;
+}
+
+async function carregarLogsDeAmbientes() {
+    const conteudo = document.getElementById('conteudo');
+    conteudo.innerHTML = '';
+    logs_ambientes = await getlogs();
+    
+    let tableHTML = `
+        <br>
+        <table>
+            <thead>
+                <tr>
+                    <th>Identificador</th>
+                    <th>Executor</th>
+                    <th>Horário</th>
+                    <th>Ação Executada</th>
+                    <th>Resultado</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    logs_ambientes.forEach(log => {
+        tableHTML += `
+            <tr onclick="linhaSelecionada(this)">
+                <td>${log.identificador}</td>
+                <td>${log.executor}</td>
+                <td>${new Date(log.ultima_modificacao).toLocaleString()}</td>
+                <td>${log.acao_executada}</td>
+                <td>${log.resultado}</td>
             </tr>
         `;
     });
@@ -541,7 +602,7 @@ async function criar(dados) {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({dados})
+        body: JSON.stringify({data: dados, usuario: RACF, senha: SENHA})
     });
     const ambientes = await response.json();
     alert(`Você sera redirecionado para pagina de ambientes, seu identificador é: ${ambientes['identificador']}`);
@@ -555,7 +616,7 @@ async function preparar(dados) {
         headers: {
         'Content-Type': 'application/json',
         },
-        body: JSON.stringify({identificador: dados})
+        body: JSON.stringify({identificador: dados, usuario: RACF, senha: SENHA})
     });
     const resposta = await response.json();
     mostrarConteudo('ambientes');
@@ -568,7 +629,7 @@ async function destruir(dados) {
         headers: {
         'Content-Type': 'application/json',
         },
-        body: JSON.stringify({identificador: dados})
+        body: JSON.stringify({identificador: dados, usuario: RACF, senha: SENHA})
     });
     const resposta = await response.json();
     mostrarConteudo('ambientes');
@@ -581,7 +642,7 @@ async function deletar(dados) {
         headers: {
         'Content-Type': 'application/json',
         },
-        body: JSON.stringify({identificador: dados})
+        body: JSON.stringify({identificador: dados, usuario: RACF, senha: SENHA})
     });
     const resposta = await response.json();
     mostrarConteudo('ambientes');

@@ -11,9 +11,13 @@ def gerar_identificador_unico():
 def main():
     body = sys.argv[1]
     data = json.loads(body)
+    usuario  = data['usuario']
+    senha    = data['senha']
     id_unico = data['identificador']
+
     sql = MySQLHandler(host='localhost',user='root',password='12121212',database='coderunner')
     table_name= 'ambientes'
+    table_name_logs= 'logs_ambientes'
 
     TABELA = {
         'identificador':'TEXT',
@@ -28,6 +32,14 @@ def main():
         'ultima_acao':'TEXT',
         'status':'TEXT',
         'script':'JSON'
+    }
+
+    TABELA_LOGS = {
+    'identificador':'TEXT',
+    'executor':'TEXT',
+    'ultima_modificacao':'DATETIME',
+    'acao_executada':'TEXT',
+    'resultado':'TEXT'
     }
 
     filtro = {
@@ -46,11 +58,35 @@ def main():
         # Rodar função do ZOSMF que roda o script de criação.
 
         resposta= {"result": result[0], "mensagem":"Sucesso na criação no Mainframe", "identificador": id_unico}
+
+        dado_log ={
+        'identificador':id_unico,
+        'executor':usuario,
+        'ultima_modificacao':datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        'acao_executada':'Preparou o ambiente',
+        'resultado':f'Resultado: {result[0]}, Mensagem: {result[1]}'
+        }
+
+        # Inserindo registo na tabela de logs!
+        inserir = sql.insert_record(table_name=table_name_logs,record=dado_log,table_structure=TABELA_LOGS)
+
         print(json.dumps(resposta))
         return
 
     else:
         resposta= {"result": result[0], "mensagem":result[1], "identificador": id_unico}
+
+        dado_log ={
+        'identificador':id_unico,
+        'executor':usuario,
+        'ultima_modificacao':datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        'acao_executada':'Falha ao preparar o ambiente',
+        'resultado':f'Resultado: {result[0]}, Mensagem: {result[1]}'
+        }
+
+        # Inserindo registo na tabela de logs!
+        inserir = sql.insert_record(table_name=table_name_logs,record=dado_log,table_structure=TABELA_LOGS)
+
         print(json.dumps(resposta))
         return
 
