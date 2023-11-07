@@ -5,6 +5,8 @@ const { PythonShell } = require('python-shell');
 const fs = require('fs');
 const path = require('path');
 const mysql = require('mysql2');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
 // Configurações de conexão com o banco de dados
 const dbConfig = {
@@ -37,6 +39,35 @@ app.use(bodyParser.json());
 
 // Definição de array para salvar os scripts que estão roda ndo
 let runningScripts = {};
+
+// Adicione uma nova rota para lidar com o upload
+app.post('/upload', upload.single('pythonFile'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ message: 'Nenhum arquivo foi enviado.' });
+    }
+
+    const targetDirectory = req.body.targetDirectory;
+    const tempPath = req.file.path;
+    const targetPath = path.join(__dirname, targetDirectory, req.file.originalname);
+
+    // Copia o arquivo para o diretório correto, substituindo-o se já existir
+    fs.copyFile(tempPath, targetPath, (err) => {
+        // Apaga o arquivo temporário
+        fs.unlink(tempPath, (unlinkErr) => {
+            if (unlinkErr) {
+                console.error(`Error removing temporary file: ${unlinkErr}`);
+                // Não retorne aqui; mesmo que a exclusão do temporário falhe, o processo principal foi um sucesso
+            }
+        });
+
+        if (err) {
+            console.error(`Error copying file: ${err}`);
+            return res.status(500).json({ message: 'Erro ao mover o arquivo.' });
+        }
+        
+        res.status(200).json({ message: 'Arquivo enviado e substituído com sucesso!' });
+    });
+});
 
 app.post('/codes/:scriptName', (req, res) => {
     // Os dados do formulário estão no req.body
