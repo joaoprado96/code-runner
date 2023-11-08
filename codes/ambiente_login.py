@@ -4,6 +4,7 @@ import random
 import string
 from funcoesmysql import *
 
+
 def gerar_identificador_unico():
     caracteres = string.ascii_uppercase + string.digits
     return ''.join(random.choice(caracteres) for _ in range(8))
