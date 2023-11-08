@@ -1,0 +1,17 @@
+# Use a base image with a Linux distribution of your choice
+FROM ubuntu:latest
+
+# Install necessary dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Rust using the official installer script
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+# Add Rust binaries to PATH
+ENV PATH="/root/.cargo/bin:${PATH}"
+
+# Set the default working directory
+WORKDIR /workspace
