@@ -23,10 +23,9 @@ def decrypt_message(encrypted_message, key):
 # Exemplo de uso
 key = generate_key()  # Guarde essa chave em um arquivo ou variável de ambiente
 
-print(key)
 # Imagine que você guarda a chave em um arquivo para uso posterior
-with open("secret.key", "wb") as key_file:
-    key_file.write(key)
+with open("secret.py", "w") as key_file:
+    key_file.write(f"CHAVE_CRIPTOGRAFADA = {str(key)}")
 
 # Criptografa a senha
 senha = "minha_senha_super_secreta"
