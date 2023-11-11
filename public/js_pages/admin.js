@@ -69,21 +69,66 @@ function mostrarConteudo(funcionalidade) {
         listarArquivos();
     } else if (funcionalidade === 'listarTabelas') {
         listarTabelas();
+    } else if (funcionalidade === 'executarQuery') {
+        conteudo.innerHTML = `
+            <h2>Executar Query SQL</h2>
+            <textarea id="sqlQuery" rows="4" class="form-control" placeholder="Escreva sua query SQL aqui..."></textarea>
+            <button onclick="executarQuery()" class="btn btn-primary">Executar</button>
+            <div id="queryResult" class="mt-3"></div>
+        `;
+    } else if (funcionalidade === 'executarPython') {
+        conteudo.innerHTML = `
+            <h2>Executar Código Python</h2>
+            <input type="text" id="postRoute" class="form-control mb-2" placeholder="Digite a rota">
+            <textarea id="jsonInput" class="form-control mb-2" rows="4" placeholder="Digite o JSON aqui..."></textarea>
+            <button onclick="executarPython()" class="btn btn-primary">Executar</button>
+            <div id="postResponse" class="mt-3"></div>
+        `;
     }
 }
 
-
-async function get() {
-    let query = 'SELECT * FROM ambientes';
-    
-    const response = await fetch('/get_logs', {
-        headers: {
-        'Content-Type': 'application/json',
-        'SQL-Query': query
+function executarQuery() {
+    const query = document.getElementById('sqlQuery').value;
+    fetch('/get_logs', {
+        method: 'GET',
+        headers: { 
+            'Content-Type': 'application/json',
+            'SQL-Query': query
         }
+    })
+    .then(response => response.json())
+    .then(data => {
+        const resultElement = document.getElementById('queryResult');
+        resultElement.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+    })
+    .catch(error => {
+        console.error('Erro ao executar query:', error);
+        document.getElementById('queryResult').innerText = 'Erro ao executar query.';
     });
-    const ambientes = await response.json();
-    return ambientes;
+}
+
+function executarPython() {
+    const rota = document.getElementById('postRoute').value;
+    const jsonInput = document.getElementById('jsonInput').value;
+
+    try {
+        const jsonData = JSON.parse(jsonInput);
+        fetch(rota, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(jsonData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('postResponse').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+        })
+        .catch(error => {
+            console.error('Erro ao enviar POST:', error);
+            document.getElementById('postResponse').innerText = 'Erro ao enviar POST.';
+        });
+    } catch (e) {
+        document.getElementById('postResponse').innerText = 'JSON inválido.';
+    }
 }
 
 function Sair() {

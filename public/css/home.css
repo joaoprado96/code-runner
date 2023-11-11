@@ -52,3 +52,22 @@ img.logo {
 .login-button:hover {
     background-color: #932c00
 }
+
+.config-button-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.config-button {
+    padding: 10px 15px;
+    background-color: #0f0f0f;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.config-button:hover {
+    background-color: #ef672d;
+}
