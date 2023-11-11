@@ -67,6 +67,8 @@ function mostrarConteudo(funcionalidade) {
         });
     } else if(funcionalidade === 'listarArquivos') {
         listarArquivos();
+    } else if (funcionalidade === 'listarTabelas') {
+        listarTabelas();
     }
 }
 
@@ -148,6 +150,38 @@ function toggleSublista(id) {
         }
     }
 }
+
+async function listarTabelas() {
+    try {
+        const response = await fetch('/list-tables');
+        const tabelas = await response.json();
+
+        let html = '';
+        let tabelaAtual = '';
+        tabelas.forEach(({ TABLE_NAME, COLUMN_NAME }) => {
+            if (tabelaAtual !== TABLE_NAME) {
+                if (tabelaAtual !== '') {
+                    html += '</ul>';
+                    html +='<br>'
+                }
+                html += `<h3><i class="fas fa-table"></i> ${TABLE_NAME}</h3><ul class="list-group">`;
+                tabelaAtual = TABLE_NAME;
+            }
+            
+            html += `<li class="list-group-item"><i class="fas fa-key"></i> ${COLUMN_NAME}</li>`;
+        });
+
+        if (tabelaAtual !== '') {
+            html += '</ul>';
+        }
+
+        document.getElementById('conteudo').innerHTML = html;
+    } catch (error) {
+        console.error('Erro ao listar tabelas:', error);
+        document.getElementById('conteudo').innerHTML = '<p>Ocorreu um erro ao listar as tabelas.</p>';
+    }
+}
+
 
 // Ao carregar a página, mostre a home
 window.onload = function() {

@@ -298,6 +298,27 @@ app.get('/regressive/:arquivo', (req, res) => {
     });
 });
 
+app.get('/list-tables', (req, res) => {
+    const connection = mysql.createConnection(dbConfig);
+
+    const query = `
+        SELECT TABLE_NAME, COLUMN_NAME 
+        FROM INFORMATION_SCHEMA.COLUMNS 
+        WHERE TABLE_SCHEMA = 'coderunner' 
+        ORDER BY TABLE_NAME, ORDINAL_POSITION`;
+
+    connection.query(query, (error, results) => {
+        if (error) {
+            console.error('Erro ao obter as tabelas:', error);
+            res.status(500).json({ message: 'Erro ao obter as tabelas' });
+        } else {
+            res.json(results);
+        }
+
+        connection.end();
+    });
+});
+
 app.get('/get_logs', (req, res) => {
     // Criação da conexão com o banco de dados
     const connection = mysql.createConnection(dbConfig);
