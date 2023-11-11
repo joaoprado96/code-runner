@@ -40,6 +40,44 @@ app.use(bodyParser.json());
 // Definição de array para salvar os scripts que estão roda ndo
 let runningScripts = {};
 
+const allowedFolders = ['public', 'codes', 'front'];
+
+function listFiles(dir, fileList = [], baseDir = '') {
+    fs.readdirSync(dir).forEach(file => {
+        // Ignora arquivos e diretórios que não devem ser listados
+        if (file.startsWith('.git') || file === '__pycache__') {
+            return;
+        }
+        const filePath = path.join(dir, file);
+        const stats = fs.statSync(filePath);
+        const relativePath = path.relative(baseDir, filePath);
+
+        if (fs.statSync(filePath).isDirectory()) {
+            if (allowedFolders.includes(relativePath.split(path.sep)[0])) {
+                listFiles(filePath, fileList, baseDir);
+            }
+        } else {
+            fileList.push({
+                path: path.normalize(relativePath),
+                lastModified: stats.mtime.toISOString()
+            });
+        }
+    });
+
+    return fileList;
+}
+
+app.get('/list-files', (req, res) => {
+    try {
+        const baseDir = __dirname; // Ponto de partida para a listagem
+        const files = listFiles(baseDir, [], baseDir);
+        res.status(200).json(files);
+    } catch (err) {
+        console.error(`Error listing files: ${err}`);
+        res.status(500).json({ message: 'Erro ao listar arquivos.' });
+    }
+});
+
 // Adicione uma nova rota para lidar com o upload
 app.post('/upload', upload.single('pythonFile'), (req, res) => {
     if (!req.file) {

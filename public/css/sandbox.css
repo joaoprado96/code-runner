@@ -1,3 +1,27 @@
+:root {
+    --primary: #ff7f50; /* Cor laranja para o esquema primário */
+    --secondary: #a72d00; /* Altere se desejar uma cor secundária diferente */
+    --standard: white;
+    /* Você pode adicionar mais substituições conforme necessário */
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+}
+.list-group-item-primary {
+    background-color: var(--primary); /* Cor laranja */
+    color: var(--standard); /* Texto branco para melhor contraste */
+}
+/* Se desejar, também pode personalizar os itens de lista regulares */
+.list-group-item {
+    border-color: var(--standard); /* Borda laranja */
+}
 /* Estilos base */
 body {
     font-family: Arial, sans-serif;
