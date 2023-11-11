@@ -182,7 +182,6 @@ async function listarTabelas() {
     }
 }
 
-
 // Ao carregar a página, mostre a home
 window.onload = function() {
     mostrarConteudo('home');
