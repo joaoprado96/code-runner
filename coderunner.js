@@ -78,6 +78,48 @@ app.get('/list-files', (req, res) => {
     }
 });
 
+app.get('/list-tables', (req, res) => {
+    const connection = mysql.createConnection(dbConfig);
+
+    const query = `
+        SELECT TABLE_NAME, COLUMN_NAME 
+        FROM INFORMATION_SCHEMA.COLUMNS 
+        WHERE TABLE_SCHEMA = 'coderunner' 
+        ORDER BY TABLE_NAME, ORDINAL_POSITION`;
+
+    connection.query(query, (error, results) => {
+        if (error) {
+            console.error('Erro ao obter as tabelas:', error);
+            res.status(500).json({ message: 'Erro ao obter as tabelas' });
+        } else {
+            res.json(results);
+        }
+
+        connection.end();
+    });
+});
+
+app.get('/get_logs', (req, res) => {
+    // Criação da conexão com o banco de dados
+    const connection = mysql.createConnection(dbConfig);
+
+    // Extrai a consulta SQL do cabeçalho
+    const query = req.header('SQL-Query');
+
+    // Execução da consulta
+    connection.query(query, (error, results) => {
+        if (error) {
+            console.error('Erro ao obter os registros da base de dados:', error);
+            res.status(500).json({ message: 'Erro ao obter os registros da base de dados' });
+        } else {
+            res.json(results);
+        }
+
+        // Fechamento da conexão com o banco de dados
+        connection.end();
+    });
+});
+
 // Adicione uma nova rota para lidar com o upload
 app.post('/upload', upload.single('pythonFile'), (req, res) => {
     if (!req.file) {
@@ -296,134 +338,6 @@ app.get('/regressive/:arquivo', (req, res) => {
             res.send(data);
         }
     });
-});
-
-app.get('/list-tables', (req, res) => {
-    const connection = mysql.createConnection(dbConfig);
-
-    const query = `
-        SELECT TABLE_NAME, COLUMN_NAME 
-        FROM INFORMATION_SCHEMA.COLUMNS 
-        WHERE TABLE_SCHEMA = 'coderunner' 
-        ORDER BY TABLE_NAME, ORDINAL_POSITION`;
-
-    connection.query(query, (error, results) => {
-        if (error) {
-            console.error('Erro ao obter as tabelas:', error);
-            res.status(500).json({ message: 'Erro ao obter as tabelas' });
-        } else {
-            res.json(results);
-        }
-
-        connection.end();
-    });
-});
-
-app.get('/get_logs', (req, res) => {
-    // Criação da conexão com o banco de dados
-    const connection = mysql.createConnection(dbConfig);
-
-    // Extrai a consulta SQL do cabeçalho
-    const query = req.header('SQL-Query');
-
-    // Execução da consulta
-    connection.query(query, (error, results) => {
-        if (error) {
-            console.error('Erro ao obter os registros da base de dados:', error);
-            res.status(500).json({ message: 'Erro ao obter os registros da base de dados' });
-        } else {
-            res.json(results);
-        }
-
-        // Fechamento da conexão com o banco de dados
-        connection.end();
-    });
-});
-
-app.get('/get_estatistica', (req, res) => {
-    var text = `
-1bcdefgHhhhhijjjjpptttf8888888899999999333333334444444466666666yyyyyyyyqxxppioooooooobbbbbbbb!!!!!!@@##$$$$$$$$&NNNNNNNNBBBB00GGGGGGÇÇÇÇTTQZMMMMMMMMSSWWRRCCmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-2acdefgHhhhhijjjjpptttf8888888899999999333333334444444466666666yyyyyyyyqxxppioooooooobbbbbbbb!!!!!!@@##$$$$$$$$&NNNNNNNNBBBB00GGGGGGÇÇÇÇTTQZMMMMMMMMSSWWRRCCmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-3dcdefgHhhhhijjjjpptttf8888888899999999333333334444444466666666yyyyyyyyqxxppioooooooobbbbbbbb!!!!!!@@##$$$$$$$$&NNNNNNNNBBBB00GGGGGGÇÇÇÇTTQZMMMMMMMMSSWWRRCCmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-4ecdefgHhhhhijjjjpptttf8888888899999999333333334444444466666666yyyyyyyyqxxppioooooooobbbbbbbb!!!!!!@@##$$$$$$$$&NNNNNNNNBBBB00GGGGGGÇÇÇÇTTQZMMMMMMMMSSWWRRCCmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-`;  
-    res.json(text);
-});
-
-app.post('/estatistica', async (req, res) => {
-    const baseURL = 'https://zosmfbd.itau:1600/zosmf/restfiles/ds/';
-
-    // Certifique-se de que o corpo da requisição tem 'usuario', 'senha' e 'datasets'
-    if (!req.body.usuario || !req.body.senha || !req.body.datasets || !Array.isArray(req.body.datasets)) {
-        return res.status(400).send({ message: 'Campos "usuario", "senha", e "datasets" são obrigatórios e "datasets" deve ser uma lista.' });
-    }
-
-    var text = `
-1bcdefgHhhhhijjjjpptttf8888888899999999333333334444444466666666yyyyyyyyqxxppioooooooobbbbbbbb!!!!!!@@##$$$$$$$$&NNNNNNNNBBBB00GGGGGGÇÇÇÇTTQZMMMMMMMMSSWWRRCCmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-2acdefgHhhhhijjjjpptttf8888888899999999333333334444444466666666yyyyyyyyqxxppioooooooobbbbbbbb!!!!!!@@##$$$$$$$$&NNNNNNNNBBBB00GGGGGGÇÇÇÇTTQZMMMMMMMMSSWWRRCCmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-3dcdefgHhhhhijjjjpptttf8888888899999999333333334444444466666666yyyyyyyyqxxppioooooooobbbbbbbb!!!!!!@@##$$$$$$$$&NNNNNNNNBBBB00GGGGGGÇÇÇÇTTQZMMMMMMMMSSWWRRCCmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-4ecdefgHhhhhijjjjpptttf8888888899999999333333334444444466666666yyyyyyyyqxxppioooooooobbbbbbbb!!!!!!@@##$$$$$$$$&NNNNNNNNBBBB00GGGGGGÇÇÇÇTTQZMMMMMMMMSSWWRRCCmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-`;  
-        res.json(text);
-
-    return
-    // Codificar nome de usuário e senha em base64
-    const credentials = Buffer.from(`${req.body.usuario}:${req.body.senha}`).toString('base64');
-
-    const results = [];
-
-    for (let dataset of req.body.datasets) {
-        const fullURL = baseURL + dataset;
-        try {
-            const response = await axios.get(fullURL, {
-                headers: {
-                    'Accept': 'application/json',
-                    'Authorization': `Basic ${credentials}`
-                }
-            });
-
-            results.push(response.data);
-        } catch (error) {
-            results.push({ dataset: dataset, error: `Erro ao buscar dados: ${error.message}` });
-        }
-    }
-
-    res.json(results);
-});
-
-
-app.get('/codes/:scriptName', (req, res) => {
-    const scriptName = req.params.scriptName;
-
-    if (!runningScripts[scriptName]) {
-        res.status(404).send({message: `CodeRunner: O script ${scriptName}.py não está rodando`});
-        return;
-    }
-
-    res.send({message: `CodeRunner: ${scriptName} está executando`});
-});
-
-
-app.delete('/codes/:scriptName', (req, res) => {
-    const scriptName = req.params.scriptName;
-    let scriptFound = false;
-
-    // Loop através de todos os scripts em execução
-    for (let scriptId in runningScripts) {
-        // Verifique se o scriptId começa com scriptName
-        if (scriptId.startsWith(scriptName)) {
-            runningScripts[scriptId].childProcess.kill('SIGINT'); // interrompe o processo Python
-            delete runningScripts[scriptId];
-            scriptFound = true;
-        }
-    }
-
-    if (!scriptFound) {
-        res.status(404).send({message: `CodeRunner: Nenhuma execução do script ${scriptName} encontrada`});
-        return;
-    }
-
-    res.send({message: `CodeRunner: Todas as execuções do script ${scriptName} foram interrompidas`});
 });
 
 app.use('/page', express.static('public'));
