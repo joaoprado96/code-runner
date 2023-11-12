@@ -29,16 +29,17 @@ function mostrarConteudo(funcionalidade) {
         `;
     } else if (funcionalidade === 'upload') {
         conteudo.innerHTML = `
+        <h2>Carregar Arquivo Temporário</h2>
         <div class="container">
             <div class="row">
-                <div class="col-md-6 offset-md-3">
+                <div class="col-md-12">
                     <form id="uploadForm" enctype="multipart/form-data" method="post">
                         <div class="form-group">
-                            <label for="pythonFile">Arquivo (Python, html, css, javaScipt):</label>
-                            <input type="file" class="form-control-file" name="pythonFile" id="pythonFile" accept=".py" required>
+                            <label for="pythonFile"><strong>Arquivo</strong> (.py, .html, .css, .js):</label>
+                            <input type="file" class="form-control-file" name="pythonFile" id="pythonFile" accept=".py,.js,.css,.html"  required>
                         </div>
                         <div class="form-group">
-                            <label for="targetDirectory">Pasta de Destino:</label>
+                            <label for="targetDirectory"><strong>Pasta de Destino</strong></label>
                             <select name="targetDirectory" class="form-control" id="targetDirectory" required>
                                 <option value="codes">codes</option>
                                 <option value="front">front</option>
@@ -166,7 +167,7 @@ async function listarArquivos() {
 }
 
 function gerarHtmlEstrutura(estrutura, nivel = 0) {
-    let html = '<ul class="list-group" style="padding-left:' + (nivel * 20) + 'px">';
+    let html = '        <h2>Estrutura de Arquivos</h2><ul class="list-group" style="padding-left:' + (nivel * 20) + 'px">';
     for (const nome in estrutura) {
         if (typeof estrutura[nome] === 'object' && !estrutura[nome].caminho) {
             const idSublista = 'sublista-' + Math.random().toString(36).substr(2, 9);
@@ -201,7 +202,7 @@ async function listarTabelas() {
         const response = await fetch('/list-tables');
         const tabelas = await response.json();
 
-        let html = '';
+        let html = '<h2>Tabelas existentes na base</h2>';
         let tabelaAtual = '';
         tabelas.forEach(({ TABLE_NAME, COLUMN_NAME }) => {
             if (tabelaAtual !== TABLE_NAME) {

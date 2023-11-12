@@ -33,8 +33,11 @@ TABELA_LOGS = {
     'acao_executada':'TEXT',
     'resultado':'TEXT'
 }
-deletar = sql.delete_table(table_name='logs_ambientes')
-print(deletar)
+# deletar = sql.delete_table(table_name='logs_ambientes')
+# print(deletar)
+
+criar = sql.create_table(table_name='ambientes',json_structure=TABELA)
+print(criar)
 
 criar = sql.create_table(table_name='logs_ambientes',json_structure=TABELA_LOGS)
 print(criar)
