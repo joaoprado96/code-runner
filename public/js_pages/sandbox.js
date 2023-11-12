@@ -183,30 +183,49 @@ function inicializarFormulario(dados) {
     formulario.innerHTML = ''; // Limpa o conteúdo anterior
 
     for (const chave in dados) {
+        // Criação da seção da chave
         const divChave = document.createElement('div');
         divChave.className = 'chave';
 
+        // Checkbox para a chave
         const checkboxChave = document.createElement('input');
         checkboxChave.type = 'checkbox';
         checkboxChave.id = chave;
         checkboxChave.onchange = () => toggleOpcoes(chave);
 
+        // Label para a chave
         const labelChave = document.createElement('label');
         labelChave.htmlFor = chave;
         labelChave.textContent = chave;
-        labelChave.ondblclick = () => marcarDesmarcarOpcoes(chave);
 
+        // Adiciona o checkbox e label da chave ao div
         divChave.appendChild(checkboxChave);
         divChave.appendChild(labelChave);
 
+        // Campo de filtro para cada chave
+        const filtroInput = document.createElement('input');
+        filtroInput.type = 'text';
+        filtroInput.placeholder = 'Filtrar...';
+        // Dentro de inicializarFormulario, ao criar o filtroInput
+        filtroInput.className = `filtro-input filtro-${chave}`; // Adiciona as classes ao campo de filtro
+        filtroInput.onkeypress = (e) => {
+            if (e.key === 'Enter') {
+                filtrarOpcoes(chave, filtroInput.value);
+            }
+        };
+
+        // Adiciona o campo de filtro ao div da chave
+        divChave.appendChild(filtroInput);
+
+        // Div para as opções da chave
         const divOpcoes = document.createElement('div');
         divOpcoes.id = 'opcoes-' + chave;
+        divOpcoes.className = 'opcoes';
+        divOpcoes.style.display = 'none'; // Inicialmente oculto
         divOpcoes.style.marginLeft = '20px';
-        divOpcoes.style.display = 'none';
 
-        const opcoesPorColuna = Math.ceil(dados[chave].length / 4);
-
-        dados[chave].forEach((opcao, index) => {
+        // Adiciona as opções
+        dados[chave].forEach(opcao => {
             const checkboxOpcao = document.createElement('input');
             checkboxOpcao.type = 'checkbox';
             checkboxOpcao.id = opcao + '-' + chave;
@@ -217,46 +236,76 @@ function inicializarFormulario(dados) {
             labelOpcao.textContent = opcao;
 
             const divOpcao = document.createElement('div');
-            divOpcao.style.display = 'inline-block';
-            divOpcao.style.width = '25%'; // Ajustado para 4 colunas
-
-            if ((index + 1) % opcoesPorColuna === 0) {
-                divOpcao.style.clear = 'both';
-            }
-
             divOpcao.appendChild(checkboxOpcao);
             divOpcao.appendChild(labelOpcao);
 
             divOpcoes.appendChild(divOpcao);
         });
 
+        // Adiciona o div da chave e das opções ao formulário
         formulario.appendChild(divChave);
         formulario.appendChild(divOpcoes);
     }
 }
 
-function marcarDesmarcarOpcoes(chave) {
+function toggleOpcoes(chave) {
     const divOpcoes = document.getElementById('opcoes-' + chave);
-    const checkboxes = divOpcoes.querySelectorAll('input[type="checkbox"]');
-    const todosMarcados = Array.from(checkboxes).every(checkbox => checkbox.checked);
+    const checkboxChave = document.getElementById(chave);
+    const filtroInput = document.querySelector(`.filtro-${chave}`);
 
-    checkboxes.forEach(checkbox => {
-        checkbox.checked = !todosMarcados;
+    // Verifica se o filtroInput existe antes de tentar acessar seu valor
+    const filtro = filtroInput ? filtroInput.value : '';
+
+    if (checkboxChave.checked) {
+        // Se a chave está marcada e há algo no filtro, mostra as opções
+        if (filtro !== '') {
+            divOpcoes.style.display = '';
+            filtrarOpcoes(chave, filtro); // Aplica a filtragem atual
+        } else {
+            // Se não houver filtro, mantém as opções ocultas
+            divOpcoes.style.display = 'none';
+        }
+    } else {
+        // Se a chave está desmarcada, esconde as opções e desmarca todas
+        divOpcoes.style.display = 'none';
+        desmarcarTodasOpcoes(chave);
+    }
+}
+
+function desmarcarTodasOpcoes(chave) {
+    const divOpcoes = document.getElementById('opcoes-' + chave);
+    const checkboxesOpcoes = divOpcoes.querySelectorAll('input[type=checkbox]');
+
+    checkboxesOpcoes.forEach(checkbox => {
+        checkbox.checked = false;
     });
 }
 
-function toggleOpcoes(chave) {
-    const checkboxChave = document.getElementById(chave);
-    const divOpcoes = document.getElementById('opcoes-' + chave);
 
-    if (checkboxChave.checked) {
-        divOpcoes.style.display = 'block';
-    } else {
-        divOpcoes.style.display = 'none';
-        const checkboxesOpcoes = divOpcoes.querySelectorAll('input[type="checkbox"]');
-        checkboxesOpcoes.forEach(checkbox => checkbox.checked = false);
-    }
+function filtrarOpcoes(chave, filtro) {
+    const divOpcoes = document.getElementById('opcoes-' + chave);
+    const opcoes = divOpcoes.querySelectorAll('div');
+
+    let deveExibirTodas = filtro === '*';
+
+    opcoes.forEach(div => {
+        if (deveExibirTodas) {
+            // Se o filtro for *, exibe todas as opções
+            div.style.display = '';
+        } else {
+            // Caso contrário, aplica a lógica de filtragem normal
+            const opcao = div.querySelector('input').value;
+            if (opcao.toLowerCase().includes(filtro.toLowerCase())) {
+                div.style.display = '';
+            } else {
+                div.style.display = 'none';
+            }
+        }
+    });
+
+    divOpcoes.style.display = deveExibirTodas || filtro !== '' ? '' : 'none';
 }
+
 
 function criarambiente() {
     const resultado = {};

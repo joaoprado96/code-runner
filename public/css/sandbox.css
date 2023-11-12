@@ -18,6 +18,23 @@ body {
     display: flex;
 }
 
+/* Estilos para o campo de filtro */
+.filtro-input {
+    margin-left: 30px; /* Adiciona espaço à esquerda */
+    width: 150px;
+    border: 1px solid #ccc; /* Borda leve e sutil */
+    border-radius: 15px; /* Bordas arredondadas */
+    padding: 5px 10px; /* Espaço interno para texto */
+    font-size: 16px; /* Tamanho da fonte */
+    outline: none; /* Remove o contorno ao focar */
+}
+
+.filtro-input:focus {
+    border-color: var(--primary); /* Cor da borda ao focar */
+    box-shadow: 0 0 5px var(--secondary); /* Sombra sutil ao focar */
+}
+
+
 .btn-primary {
     background-color: var(--primary);
     border-color: var(--primary);
@@ -168,7 +185,7 @@ h3, h4 {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: var(--standard3);
-    font-size: 20px;
+    font-size: 16px;
 }
 
 .json-group .form-input, .form-group .form-input {
@@ -178,7 +195,7 @@ h3, h4 {
     margin-right: auto;
     border: 1px solid var(--standard3);
     border-radius: 5px;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 /* Outras Estilizações */
