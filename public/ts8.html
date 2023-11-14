@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualização de Rotinas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .rotina {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .rotina-header {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .arquivo {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rotinas</h1>
+    <div id="rotinas-container"></div>
+
+    <script>
+        // Seu JSON aqui
+        const data = {
+                    "ROTINA01": {
+                        "LISTA DE ARQUIVOS": [
+                            "Nome do arquivo 1",
+                            "Nome do arquivo 2"
+                        ],
+                        "ARQUIVOS": {
+                            "ARQUIVO1": {
+                                "ROTINA": "ROTINA01",
+                                "EXEC_TS2": "Sim",
+                                "EXEC_TS6": "Sim",
+                                "EXEC_TS8": "Nao",
+                                "EXEC_TT7": "Nao",
+                                "ULTIMO_PROCESSAMENTO": "123456789012",
+                                "ARQUIVO_TS2": "123",
+                                "ARQUIVO_TS6": "456",
+                                "ARQUIVO_TS8": "789",
+                                "ARQUIVO_TT7": "012",
+                                "MOTOR": "XYZ",
+                                "E_S": "123",
+                                "NOME_DO_ARQUIVO": "Nome do arquivo 1",
+                                "INCLUDE": "INCLUDE1"
+                            },
+                            "ARQUIVO2": {
+                                "ROTINA": "ROTINA01",
+                                "EXEC_TS2": "Nao",
+                                "EXEC_TS6": "Sim",
+                                "EXEC_TS8": "Nao",
+                                "EXEC_TT7": "Sim",
+                                "ULTIMO_PROCESSAMENTO": "123456789012",
+                                "ARQUIVO_TS2": "123",
+                                "ARQUIVO_TS6": "456",
+                                "ARQUIVO_TS8": "789",
+                                "ARQUIVO_TT7": "012",
+                                "MOTOR": "XYZ",
+                                "E_S": "123",
+                                "NOME_DO_ARQUIVO": "Nome do arquivo 2",
+                                "INCLUDE": "INCLUDE2"
+                            }
+                        }
+                    },
+                    "ROTINA02": {
+                        "LISTA DE ARQUIVOS": [
+                            "Nome do arquivo 3"
+                        ],
+                        "ARQUIVOS": {
+                            "ARQUIVO1": {
+                                "ROTINA": "ROTINA02",
+                                "EXEC_TS2": "Sim",
+                                "EXEC_TS6": "Nao",
+                                "EXEC_TS8": "Nao",
+                                "EXEC_TT7": "Sim",
+                                "ULTIMO_PROCESSAMENTO": "123456789012",
+                                "ARQUIVO_TS2": "123",
+                                "ARQUIVO_TS6": "456",
+                                "ARQUIVO_TS8": "789",
+                                "ARQUIVO_TT7": "012",
+                                "MOTOR": "XYZ",
+                                "E_S": "123",
+                                "NOME_DO_ARQUIVO": "Nome do arquivo 3",
+                                "INCLUDE": "INCLUDE3"
+                            }
+                        }
+                    }
+        };
+
+        const container = document.getElementById('rotinas-container');
+
+        for (const rotinaKey in data) {
+            const rotina = data[rotinaKey];
+            const rotinaDiv = document.createElement('div');
+            rotinaDiv.classList.add('rotina');
+
+            const header = document.createElement('div');
+            header.classList.add('rotina-header');
+            header.textContent = rotinaKey;
+            rotinaDiv.appendChild(header);
+
+            const listaArquivos = document.createElement('ul');
+            for (const nomeArquivo of rotina['LISTA DE ARQUIVOS']) {
+                const item = document.createElement('li');
+                item.textContent = nomeArquivo;
+                listaArquivos.appendChild(item);
+            }
+            rotinaDiv.appendChild(listaArquivos);
+
+            for (const arquivoKey in rotina['ARQUIVOS']) {
+                const arquivo = rotina['ARQUIVOS'][arquivoKey];
+                const arquivoDiv = document.createElement('div');
+                arquivoDiv.classList.add('arquivo');
+
+                for (const prop in arquivo) {
+                    const p = document.createElement('p');
+                    p.textContent = `${prop}: ${arquivo[prop]}`;
+                    arquivoDiv.appendChild(p);
+                }
+
+                rotinaDiv.appendChild(arquivoDiv);
+            }
+
+            container.appendChild(rotinaDiv);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="img/sandboxsvg.svg" type="image/svg">
+    <title>Sandox - Batch</title>
+    <link rel="stylesheet" href="https://unpkg.com/vue-select@3.11.2/dist/vue-select.css">
+    <link rel="stylesheet" href="https://unpkg.com/vue-virtual-scroller/dist/vue-virtual-scroller.css">
+    <link rel="stylesheet" href="css/tt7.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Menu Lateral -->
+        <div class="sidebar">
+            <img src="img/sandboxsvg.svg">
+            <a href="#" @click="setActivePage('home')">HOME</a>
+            <a href="#" @click="setActivePage('rotinas')">ROTINAS</a>
+            <!-- Adicione mais links aqui -->
+        </div>
+
+        <!-- Conteúdo Principal -->
+        <div class="content">
+            <transition name="fade">
+                <div v-if="activePage === 'home'" key="home">
+                    <h1>Bem-vindo ao Dashboard</h1>
+                    <!-- Conteúdo da Home -->
+                </div>
+                <div v-if="activePage === 'rotinas'" key="rotinas">
+                    <h1>ROTINAS</h1>
+                    <div class="rotinas-selector">
+                        <h2>SELECIONE:</h2>
+                        <v-select multiple :options="todasRotinas" v-model="rotinasSelecionadas"></v-select>
+                    </div>
+                    <br>
+                    <button @click="fetchRotinas">CARREGAR</button>
+                    <div v-for="(rotina, rotinaKey) in rotinas" :key="rotinaKey">
+                        <h2>{{ rotinaKey }}</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nome do Arquivo</th>
+                                    <th v-for="campo in campos" :key="campo">{{ campo }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(arquivo, arquivoKey) in rotina['ARQUIVOS']" :key="arquivoKey">
+                                    <td>{{ arquivo['NOME_DO_ARQUIVO'] }}</td>
+                                    <td v-for="campo in campos" :key="campo">{{ arquivo[campo] }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </transition>
+
+
+        </div>
+    </div>
+    <!-- Virtualizaçao do Vue -->
+    <script src="https://unpkg.com/vue-virtual-scroller"></script>
+    <!-- Inclua o Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- Inclua o vue-select -->
+    <script src="https://unpkg.com/vue-select@3.11.2/dist/vue-select.js"></script>
+    <!-- Inclua o Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script src="js_pages/tt7.js"></script>
+</body>
+</html>

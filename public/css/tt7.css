@@ -1,0 +1,94 @@
+:root {
+    --primary:   #ff8522; /* Cor laranja para o esquema primário */
+    --secondary: #a72d00; /* Altere se desejar uma cor secundária diferente */
+    --standard:  #ffffff;
+    --standard2: #000000;
+    --standard3: #f7f7f7;
+    --standard4: #bebebe;
+    --standard5: #c4c4c4;
+    /* Você pode adicionar mais substituições conforme necessário */
+}
+/* Estilos Gerais */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    height: 100vh; /* Adicionado para garantir que o body ocupe a altura total da janela */
+}
+
+#app {
+    display: flex;
+    height: 100%;
+}
+
+/* Menu Lateral */
+.sidebar {
+    width: 200px;
+    background-color: var(--standard2);
+    padding: 20px;
+    color: var(--standard);
+}
+
+.sidebar a {
+    color: var(--standard);
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    transition: background-color 0.3s;
+}
+
+.sidebar a:hover {
+    background-color: var(--primary);
+}
+
+/* Conteúdo Principal */
+.content {
+    flex-grow: 1; /* Isso permite que o conteúdo se expanda e preencha o espaço restante */
+    padding: 20px;
+    overflow-y: auto; /* Adiciona rolagem se o conteúdo for muito longo */
+}
+
+/* Estilos da Tabela */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+/* Efeitos de Transição */
+.fade-enter-active, .fade-leave-active {
+    transition: opacity 0.1s;
+}
+.fade-enter, .fade-leave-to {
+    opacity: 0;
+}
+
+button {
+    background-color: var(--primary); /* Cor de fundo verde */
+    color: var(--standard);
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px; /* Bordas arredondadas */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s; /* Transição suave para cor e transformação */
+}
+
+button:hover {
+    background-color: var(--secondary); /* Cor de fundo um pouco mais escura quando passa o mouse */
+    transform: scale(1.05); /* Ligeiramente maior ao passar o mouse */
+}
+
+button:active {
+    transform: scale(0.95); /* Ligeiramente menor ao clicar */
+}
