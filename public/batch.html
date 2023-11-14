@@ -7,7 +7,7 @@
     <title>Sandox - Batch</title>
     <link rel="stylesheet" href="https://unpkg.com/vue-select@3.11.2/dist/vue-select.css">
     <link rel="stylesheet" href="https://unpkg.com/vue-virtual-scroller/dist/vue-virtual-scroller.css">
-    <link rel="stylesheet" href="css/tt7.css">
+    <link rel="stylesheet" href="css/batch.css">
 </head>
 <body>
     <div id="app">
@@ -28,13 +28,15 @@
             <div v-if="activePage === 'rotinas'" key="rotinas">
                 <h2>ROTINAS</h2>
                 <div class="rotinas-selector">
-                    <h3>SELECIONE:</h3>
+                    <h3>&nbsp;&nbsp;&nbsp;&nbsp;SELECIONE:</h3>
                     <v-select multiple :options="todasRotinas" v-model="rotinasSelecionadas"></v-select>
                 </div>
                 <br>
-                <button @click="fetchRotinas">CARREGAR</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;<button @click="fetchRotinas">CARREGAR</button>
+                <br>
                 <div v-for="(rotina, rotinaKey) in rotinas" :key="rotinaKey">
-                    <h2>{{ rotinaKey }}</h2>
+                    <br>
+                    <h4>{{ rotinaKey }}</h4>
                     <table>
                         <thead>
                             <tr>
@@ -63,6 +65,6 @@
     <!-- Inclua o Axios -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-    <script src="js_pages/tt7.js"></script>
+    <script src="js_pages/batch.js"></script>
 </body>
 </html>

@@ -16,13 +16,15 @@ new Vue({
     methods: {
         // Método existente para buscar rotinas
         fetchRotinas: function() {
-            axios.post('/codes/rotinas')
-                .then(response => {
-                    this.rotinas = response.data;
-                })
-                .catch(error => {
-                    console.error("Houve um erro na requisição: ", error);
-                });
+            axios.post('/codes/rotinas', {
+                rotinasSelecionadas: this.rotinasSelecionadas
+            })
+            .then(response => {
+                this.rotinas = response.data;
+            })
+            .catch(error => {
+                console.error("Houve um erro na requisição: ", error);
+            });
         },
         // Novo método para definir a página ativa
         setActivePage: function(page) {

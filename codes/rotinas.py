@@ -1,4 +1,5 @@
 import json
+import sys
 class RotinaProcessor:
     def __init__(self):
         # Configuração dos tamanhos de cada campo
@@ -57,16 +58,30 @@ class RotinaProcessor:
     def get_json(self):
         return self.rotinas
 
-# Conteúdo de exemplo do arquivo
-file_content = """
+
+def main():
+    # O primeiro argumento é o nome do script, então ignoramos ele e pegamos o segundo
+    body = sys.argv[1]
+
+    # Transforma a string JSON em um objeto Python
+    data = json.loads(body)
+    print(data) # Recebe a lista das rotinas:
+    rotinas_selecionadas = data['rotinasSelecionadas']
+
+    for item in rotinas_selecionadas:
+        print(item)
+
+    # Fazer o GET do arquivo do Mainframe.
+    file_content = """
 ROTINA01  X   X          123456789012 123 456 789 012 XYZ 123 Nome do arquivo 1                              INCLUDE1
 ROTINA01      X       X  123456789012 123 456 789 012 XYZ 123 Nome do arquivo 2                              INCLUDE2
 ROTINA02  X           X  123456789012 123 456 789 012 XYZ 123 Nome do arquivo 3                              INCLUDE3
 """
+    processor = RotinaProcessor()
+    processor.process_file_content(file_content)
+    rotinas_json = processor.get_json()
+    print(json.dumps(rotinas_json))
+
+main()
 
 
-# Uso da classe
-processor = RotinaProcessor()
-processor.process_file_content(file_content)
-rotinas_json = processor.get_json()
-print(json.dumps(rotinas_json))
