@@ -21,39 +21,36 @@
 
         <!-- Conteúdo Principal -->
         <div class="content">
-            <transition name="fade">
-                <div v-if="activePage === 'home'" key="home">
-                    <h1>Bem-vindo ao Dashboard</h1>
-                    <!-- Conteúdo da Home -->
+            <div v-if="activePage === 'home'" key="home">
+                <h2>Bem-vindo ao Sandbox Batch</h2>
+                <!-- Conteúdo da Home -->
+            </div>
+            <div v-if="activePage === 'rotinas'" key="rotinas">
+                <h2>ROTINAS</h2>
+                <div class="rotinas-selector">
+                    <h3>SELECIONE:</h3>
+                    <v-select multiple :options="todasRotinas" v-model="rotinasSelecionadas"></v-select>
                 </div>
-                <div v-if="activePage === 'rotinas'" key="rotinas">
-                    <h1>ROTINAS</h1>
-                    <div class="rotinas-selector">
-                        <h2>SELECIONE:</h2>
-                        <v-select multiple :options="todasRotinas" v-model="rotinasSelecionadas"></v-select>
-                    </div>
-                    <br>
-                    <button @click="fetchRotinas">CARREGAR</button>
-                    <div v-for="(rotina, rotinaKey) in rotinas" :key="rotinaKey">
-                        <h2>{{ rotinaKey }}</h2>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Nome do Arquivo</th>
-                                    <th v-for="campo in campos" :key="campo">{{ campo }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(arquivo, arquivoKey) in rotina['ARQUIVOS']" :key="arquivoKey">
-                                    <td>{{ arquivo['NOME_DO_ARQUIVO'] }}</td>
-                                    <td v-for="campo in campos" :key="campo">{{ arquivo[campo] }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <br>
+                <button @click="fetchRotinas">CARREGAR</button>
+                <div v-for="(rotina, rotinaKey) in rotinas" :key="rotinaKey">
+                    <h2>{{ rotinaKey }}</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nome do Arquivo</th>
+                                <th v-for="campo in campos" :key="campo">{{ campo }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(arquivo, arquivoKey) in rotina['ARQUIVOS']" :key="arquivoKey">
+                                <td>{{ arquivo['NOME_DO_ARQUIVO'] }}</td>
+                                <td v-for="campo in campos" :key="campo">{{ arquivo[campo] }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </transition>
-
+            </div>
 
         </div>
     </div>
