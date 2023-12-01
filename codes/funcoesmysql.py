@@ -10,7 +10,7 @@ class MySQLHandler:
             'database': database
         }
         self.connection = None
-        self.VALID_SQL_TYPES = {"TEXT", "DATETIME", "INT", "VARCHAR(255)", "FLOAT", "JSON"}  # A lista pode ser estendida conforme necessário
+        self.VALID_SQL_TYPES = {"TEXT","DATE", "DATETIME", "INT", "VARCHAR(255)", "FLOAT", "JSON"}  # A lista pode ser estendida conforme necessário
 
     def _connect(self):
         try:

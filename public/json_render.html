@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Visualizador JSON</title>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- JSONViewer CSS -->
+    <link rel="stylesheet" href="https://rawgit.com/abodelot/jquery.json-viewer/master/json-viewer/jquery.json-viewer.css">
+    <!-- JSONViewer JS -->
+    <script src="https://rawgit.com/abodelot/jquery.json-viewer/master/json-viewer/jquery.json-viewer.js"></script>
+    <style>
+        #json-renderer {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="json-renderer"></div>
+
+<script>
+    $(document).ready(function() {
+        var json = {
+            "nome": "João",
+            "idade": 30,
+            "hobbies": ["futebol", "cinema"],
+            "endereco": {
+                "rua": "Rua dos Bobos",
+                "numero": 0
+            }
+        };
+
+        $("#json-renderer").jsonViewer(json);
+    });
+</script>
+
+</body>
+</html>
