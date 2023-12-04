@@ -19,6 +19,11 @@ def remover_chave_valor(json_data, chave):
 
 def resultado_aleatorio():
     return random.choice([True, False])
+
+
+def descricao():
+    return random.choice(['Gateway Mainframe', 'SI2'])
+
 def gerar_json_aleatorio():
     agencia = str(random.randint(9000, 9999))
     numeroserie = str(random.randint(10000, 99999))
@@ -31,7 +36,7 @@ def gerar_json_aleatorio():
         'instituicao': '004341',
         'numeroserie': numeroserie,
         'monitor': 'SP0' + str(random.randint(1, 9)),
-        'descricao': 'Descrição ' + str(random.randint(1, 100)),
+        'descricao': '',
         'servidor': 'Servidor ' + str(random.randint(1, 50)),
         'criador': 'Criador ' + chr(random.randint(65, 90)), # Letras A-Z
         'tipo_terminal': tipo_terminal,
@@ -74,19 +79,23 @@ TABELA_DISTRIBUIDA = {
     'em_uso':'TEXT'
 }
 
+deletar = sql.delete_table('terminais_prod_aplicacao')
+print(deletar)
+criar = sql.create_table(table_name='terminais_prod_aplicacao',json_structure=TABELA_APLICACAO)
+print(criar)
 
-# criar = sql.create_table(table_name='terminais_prod_aplicacao',json_structure=TABELA_APLICACAO)
-# print(criar)
+deletar = sql.delete_table('terminais_prod_distribuida')
+print(deletar)
+criar = sql.create_table(table_name='terminais_prod_distribuida',json_structure=TABELA_DISTRIBUIDA)
+print(criar)
 
-# criar = sql.create_table(table_name='terminais_prod_distribuida',json_structure=TABELA_DISTRIBUIDA)
-# print(criar)
 
-
-for i in range(0,30000):
+for i in range(0,1000):
     dado = gerar_json_aleatorio()
     inserir = sql.insert_record(table_name='terminais_prod_aplicacao',record=dado,table_structure=TABELA_APLICACAO)
     if resultado_aleatorio():
-        dado['em_uso'] = "Sim"
+        dado['descricao']   = descricao()
+        dado['em_uso']      = "Sim"
         dado=remover_chave_valor(dado,'ultima_atualizacao_x0')
         inserir = sql.insert_record(table_name='terminais_prod_distribuida',record=dado,table_structure=TABELA_DISTRIBUIDA)
 
