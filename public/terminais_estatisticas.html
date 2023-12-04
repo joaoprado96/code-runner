@@ -17,29 +17,34 @@
         </div>
     </div>
     <!-- Adicione esta parte no corpo do seu HTML -->
-    <div class="container">
-        <div id="estatisticasDescricao" class="estatisticas-section">
+
+    <div class="container">   
+        <div class="container">
             <h2>estatísticas gerais</h2>
-            <!-- Os dados serão inseridos aqui -->
+            <div class="row align-items-center" style="min-height: 100px;"> <!-- Ajuste a altura mínima conforme necessário -->
+                <div class="col-md-5">
+                    <div class="grafico-wrapper">
+                        <canvas id="graficoContainer"></canvas>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div id="estatisticasDescricao" class="estatisticas-section">
+                    <!-- Os dados serão inseridos aqui -->
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="container mt-4">
-        <h2>estatísticas dos terminais por monitores</h2>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>descrição</th>
-                    <th>monitor</th>
-                    <th>quantidade</th>
-                </tr>
-            </thead>
-            <tbody id="tabelaEstatisticas">
-                <!-- Os dados da tabela serão inseridos aqui -->
-            </tbody>
-        </table>
+    <br>
+    <div class="container">   
+        <h2>estatísticas por monitor</h2>
+        <div id="estatisticasContainer" class="estatisticas-container">
+            <!-- Os cards com gráficos serão inseridos aqui pela função JavaScript -->
+        </div>
     </div>
     
     <div id="footer-placeholder"></div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="script/terminais_estatisticas.js"></script>

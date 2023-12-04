@@ -57,20 +57,54 @@ function fetchEstatisticasV2() {
 }
 
 
-
 function displayEstatisticas(data) {
     const estatisticasDescricao = document.getElementById('estatisticasDescricao');
+    const graficoContainer = document.getElementById('graficoContainer');
 
     // Verifica se 'data' é um array
     if (Array.isArray(data)) {
         // Calcula o total somando as quantidades de todos os itens
         const totalQuantidade = data.reduce((total, item) => total + item.quantidade, 0);
 
+        // Prepara os dados para o gráfico
+        const labels = data.map(item => item.descricao);
+        const quantidades = data.map(item => item.quantidade);
+        const cores = data.map((_, i) => `hsl(30, ${90 + i * 5}%, ${50 + i * 10}%)`); // Diferentes tons de laranja
+
+        // Cria o gráfico de pizza
+        const graficoData = {
+            labels: labels,
+            datasets: [{
+                label: 'terminais',
+                data: quantidades,
+                backgroundColor: cores,
+            }]
+        };
+
+        const config = {
+            type: 'pie',
+            data: graficoData,
+            options: {}
+        };
+
+        new Chart(graficoContainer, config);
+
+        // Limpa a descrição anterior e adiciona os novos dados em forma de cards
+        estatisticasDescricao.innerHTML = '<div class="row">'; // Inicia uma nova linha para os cards
         data.forEach(item => {
-            // Calcula a porcentagem para cada item
-            const porcentagem = (item.quantidade / totalQuantidade * 100).toFixed(2); // Arredonda para 2 casas decimais
-            estatisticasDescricao.innerHTML += `<p>${item.descricao}: ${item.quantidade} (${porcentagem}%)</p>`;
+            const porcentagem = (item.quantidade / totalQuantidade * 100).toFixed(2);
+            estatisticasDescricao.innerHTML += `
+                <div class="col-md-6 mb-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title"><strong>${item.descricao}</strong></h6>
+                            <p class="card-text">terminais: ${item.quantidade} (${porcentagem}%)</p>
+                        </div>
+                    </div>
+                    <br>
+                </div>`;
         });
+        estatisticasDescricao.innerHTML += '</div>'; // Fecha a linha dos cards
     } else {
         estatisticasDescricao.innerHTML = '<p>Nenhum dado encontrado para descrição.</p>';
     }
@@ -85,47 +119,68 @@ function displayEstatisticasV2(dados) {
         return a.monitor.localeCompare(b.monitor);
     });
 
-    const tabelaEstatisticas = document.getElementById('tabelaEstatisticas');
-    const totalPorMonitor = {};
+    const estatisticasContainer = document.getElementById('estatisticasContainer');
+    estatisticasContainer.innerHTML = ''; // Limpa conteúdo anterior
 
-    // Calcula a soma total para cada monitor
+    let dadosPorMonitor = {};
+    
+    // Agrupa os dados por monitor
     dados.forEach(item => {
-        if (!totalPorMonitor[item.monitor]) {
-            totalPorMonitor[item.monitor] = 0;
+        if (!dadosPorMonitor[item.monitor]) {
+            dadosPorMonitor[item.monitor] = [];
         }
-        totalPorMonitor[item.monitor] += item.quantidade;
+        dadosPorMonitor[item.monitor].push(item);
     });
 
-    let monitorAtual = '';
+    // Cria um card e gráfico para cada monitor
+    for (let monitor in dadosPorMonitor) {
+        let monitorData = dadosPorMonitor[monitor];
+        let labels = monitorData.map(item => item.descricao);
+        let quantidades = monitorData.map(item => item.quantidade);
+        const cores = monitorData.map((_, i) => `hsl(30, ${90 + i * 5}%, ${50 + i * 10}%)`); // Diferentes tons de laranja
 
-    // Preenche a tabela com os dados
-    dados.forEach(item => {
-        if (item.monitor !== monitorAtual) {
-            if (monitorAtual !== '') {
-                // Adiciona o total do monitor anterior
-                tabelaEstatisticas.innerHTML += `<tr class="total-monitor">
-                                                    <td>Total (${monitorAtual})</td>
-                                                    <td></td>
-                                                    <td>${totalPorMonitor[monitorAtual]}</td>
-                                                </tr>`;
-            }
-            monitorAtual = item.monitor;
-        }
+        // Cria um novo elemento div para o card
+        let cardDiv = document.createElement('div');
+        cardDiv.className = 'card mb-4';
+        let canvasId = 'grafico-' + monitor;
 
-        tabelaEstatisticas.innerHTML += `<tr>
-                                            <td>${item.descricao}</td>
-                                            <td>${item.monitor}</td>
-                                            <td>${item.quantidade}</td>
-                                         </tr>`;
-    });
+        // Conteúdo do card
+        cardDiv.innerHTML = `
+            <div class="card-body">
+                <h4 class="card-title"><strong>${monitor}</strong></h4>
+                <canvas id="${canvasId}"></canvas>
+                <div class="estatisticas-texto"></div>
+            </div>`;
 
-    // Adiciona o total para o último monitor
-    if (monitorAtual !== '') {
-        tabelaEstatisticas.innerHTML += `<tr class="total-monitor">
-                                            <td>Total (${monitorAtual})</td>
-                                            <td></td>
-                                            <td>${totalPorMonitor[monitorAtual]}</td>
-                                        </tr>`;
+        estatisticasContainer.appendChild(cardDiv);
+
+        // Configuração do gráfico
+        let graficoData = {
+            labels: labels,
+            datasets: [{
+                label: `${monitor}`,
+                data: quantidades,
+                backgroundColor: cores,
+            }]
+        };
+
+        let config = {
+            type: 'pie',
+            data: graficoData,
+            options: {}
+        };
+
+        // Renderiza o gráfico
+        new Chart(document.getElementById(canvasId), config);
+
+        // Adiciona os dados em texto no card
+        let estatisticasTextoDiv = cardDiv.querySelector('.estatisticas-texto');
+        let estatisticasTexto = '';
+        monitorData.forEach(item => {
+            estatisticasTexto += `<p>${item.descricao}: ${item.quantidade}</p>`;
+        });
+
+        estatisticasTextoDiv.innerHTML = estatisticasTexto;
     }
 }
 
