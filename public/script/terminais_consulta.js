@@ -53,23 +53,6 @@ function onGridReady(params) {
     });
 }
 
-
-// function onGridReady(params) {
-//     // JSON de exemplo
-//     var data = [
-//         { indentificador: "Alice", agencia: 9020, numeroserie: 50225 , tipoterminal: 71, monitor: "BF01", descricao: "Teste numero 1"},
-//         { indentificador: "Alice", agencia: 9020, numeroserie: 50225 , tipoterminal: 71, monitor: "BF01", descricao: "Teste numero 1"},
-//         { indentificador: "Alice", agencia: 9020, numeroserie: 50225 , tipoterminal: 71, monitor: "BF01", descricao: "Teste numero 1"},
-//         // Adicione mais objetos conforme necessário
-//     ];
-
-//     // Correção 3: Atualizar a definição de colunas e dados usando o novo método recomendado
-//     params.api.setGridOption('columnDefs', Object.keys(data[0]).map(key => {
-//         return { field: key, sortable: true, filter: true };
-//     }));
-//     params.api.setGridOption('rowData', data);
-// }
-
 const gridOptions = {
     defaultColDef: {
         flex: 1,

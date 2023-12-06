@@ -1,0 +1,13 @@
+Prezados(as) da IBM,
+
+Estou entrando em contato para solicitar apoio técnico e análise de uma situação específica que estamos enfrentando em nosso ambiente produtivo. A questão envolve um fluxo transacional específico, que normalmente fica desativado, mas precisa ser ativado ocasionalmente.
+
+Cada vez que ativamos este fluxo, observamos um aumento significativo no número de interações em todas as partições do sistema. Este aumento é uniforme em todas as partições. No entanto, identificamos uma questão particular em uma das partições, que apresenta um comportamento anômalo. Esta partição específica exibe um consumo de CPU quase 100%, apesar de, em termos de iterações e volumetria de dados, estar alinhada com as demais.
+
+Além disso, notamos que o tempo de I/O nesta partição afetada é duas vezes maior em comparação com as outras, o que suspeitamos ser a causa raiz do problema. Curiosamente, todas as partições utilizam a mesma controladora de Storage (Disco), o que torna a divergência de comportamento ainda mais intrigante.
+
+Gostaríamos de solicitar assistência para investigar esta questão. Agradeceríamos orientações sobre quais tipos de documentação e dados seriam necessários coletar no momento do problema, para facilitar a análise e o suporte de sua equipe.
+
+Agradecemos antecipadamente a atenção e aguardamos orientações sobre os próximos passos.
+
+Atenciosamente,
