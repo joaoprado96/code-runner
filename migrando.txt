@@ -1,0 +1,128 @@
+npm install -g @angular/cli
+ng new minha-aplicacao-angular
+cd minha-aplicacao-angular
+
+npm install bootstrap jquery ag-grid-community --save
+
+agular.json
+"styles": [
+  "src/styles.css",
+  "node_modules/bootstrap/dist/css/bootstrap.min.css",
+  "node_modules/ag-grid-community/dist/styles/ag-grid.css",
+  "node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css"
+],
+"scripts": [
+  "node_modules/jquery/dist/jquery.min.js",
+  "node_modules/bootstrap/dist/js/bootstrap.min.js"
+]
+
+Converter HTML para o Template Angular
+No arquivo consulta-terminais.component.html, cole o HTML, removendo as tags <html>, <head>, <body>, e os scripts, já que serão gerenciados pelo Angular.
+
+
+MOdificar o consulta-terminais.component.ts
+
+import { Component, OnInit } from '@angular/core';
+import { GridApi, GridOptions, ColDef } from 'ag-grid-community';
+
+@Component({
+  selector: 'app-consulta-terminais',
+  templateUrl: './consulta-terminais.component.html',
+  styleUrls: ['./consulta-terminais.component.css']
+})
+export class ConsultaTerminaisComponent implements OnInit {
+
+  public gridOptions: GridOptions;
+  private gridApi!: GridApi;
+
+  constructor() {
+    this.gridOptions = {
+      defaultColDef: {
+        flex: 1,
+        minWidth: 100,
+        resizable: true,
+      },
+      columnDefs: [],
+      pagination: true,
+      paginationPageSize: 1000,
+      paginationPageSizeSelector: [500, 1000, 2000, 5000, 10000],
+      onGridReady: this.onGridReady.bind(this),
+    };
+  }
+
+  ngOnInit(): void {
+    // Este é um bom lugar para inicializar dados, se necessário
+  }
+
+  onGridReady(params: any): void {
+    this.gridApi = params.api;
+
+    // Aqui você pode buscar dados de um serviço, por exemplo.
+    // Por enquanto, vamos usar dados estáticos.
+    var data = [
+        { identificador: "Terminal 1", agencia: 9020, numeroserie: 50225 , tipoterminal: 71, monitor: "BF01", descricao: "Teste numero 1"},
+        { identificador: "Terminal 2", agencia: 9030, numeroserie: 50226 , tipoterminal: 72, monitor: "BF02", descricao: "Teste numero 2"},
+        // ... mais dados
+    ];
+
+    const columnDefs: ColDef[] = Object.keys(data[0]).map(key => {
+        return { field: key, sortable: true, filter: true };
+    });
+
+    this.gridApi.setGridOptions({ columnDefs: columnDefs, rowData: data });
+  }
+}
+
+
+import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { GridApi, GridOptions, ColDef } from 'ag-grid-community';
+
+@Component({
+  selector: 'app-consulta-terminais',
+  templateUrl: './consulta-terminais.component.html',
+  styleUrls: ['./consulta-terminais.component.css']
+})
+export class ConsultaTerminaisComponent implements OnInit {
+
+  public gridOptions: GridOptions;
+  private gridApi!: GridApi;
+
+  constructor(private http: HttpClient) {
+    this.gridOptions = {
+      defaultColDef: {
+        flex: 1,
+        minWidth: 100,
+        resizable: true,
+      },
+      columnDefs: [],
+      pagination: true,
+      paginationPageSize: 1000,
+      paginationPageSizeSelector: [500, 1000, 2000, 5000, 10000],
+      onGridReady: this.onGridReady.bind(this),
+    };
+  }
+
+  ngOnInit(): void {
+  }
+
+  onGridReady(params: any): void {
+    this.gridApi = params.api;
+    this.fetchData();
+  }
+
+  private fetchData(): void {
+    const apiUrl = 'https://suaapi.com/endpoint'; // Substitua pela URL da sua API
+    const requestData = { /* seu objeto de requisição */ };
+
+    this.http.post<any[]>(apiUrl, requestData).subscribe(data => {
+      const columnDefs: ColDef[] = Object.keys(data[0]).map(key => {
+        return { field: key, sortable: true, filter: true };
+      });
+
+      this.gridApi.setGridOptions({ columnDefs: columnDefs, rowData: data });
+    }, error => {
+      console.error('Erro ao buscar dados:', error);
+    });
+  }
+}
