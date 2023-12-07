@@ -1,3 +1,36 @@
 npm install chart.js ng2-charts
 npm install primeng primeicons
 
+import { Component, OnInit } from '@angular/core';
+// importe o ApiService se estiver recebendo os dados de uma API
+
+@Component({
+  // metadata do componente...
+})
+export class SeuComponenteComponent implements OnInit {
+  dadosPorMonitor: any = {};
+
+  ngOnInit() {
+    this.processarDados([
+      { descricao: 'Gateway Mainframe', monitor: 'SP01', quantidade: 3000000 },
+      { descricao: 'SI2', monitor: 'SP01', quantidade: 3000000 },
+      { descricao: 'Disponiveis', monitor: 'SP01', quantidade: 3000000 },
+      { descricao: 'Gateway Mainframe', monitor: 'SP02', quantidade: 3000000 },
+      { descricao: 'SI2', monitor: 'SP02', quantidade: 3000000 },
+      { descricao: 'Disponiveis', monitor: 'SP02', quantidade: 3000000 }
+      // mais dados...
+    ]);
+  }
+
+  processarDados(dados: any[]) {
+    dados.forEach(dado => {
+      if (!this.dadosPorMonitor[dado.monitor]) {
+        this.dadosPorMonitor[dado.monitor] = [];
+      }
+      this.dadosPorMonitor[dado.monitor].push({
+        name: dado.descricao,
+        value: dado.quantidade
+      });
+    });
+  }
+}
