@@ -1,0 +1,3 @@
+npm install chart.js ng2-charts
+npm install primeng primeicons
+
