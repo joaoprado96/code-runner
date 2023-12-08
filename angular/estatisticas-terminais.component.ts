@@ -91,7 +91,6 @@ export class EstatisticasTerminaisComponent implements OnInit {
   }
   private prepareStackedBarData(data: any[]): StackedBarSeries[] {
     const result: { [key: string]: StackedBarSeries } = {};
-    let totalSum = 0;
 
     data.forEach(item => {
       if (!result[item.monitor]) {
@@ -101,20 +100,23 @@ export class EstatisticasTerminaisComponent implements OnInit {
         name: item.descricao,
         value: item.quantidade
       });
-      totalSum += item.quantidade;
     });
 
-    const totalRestante = this.TOTAL_FIXO - totalSum;
-    if (totalRestante > 0) {
-      result['Total Restante'] = {
-        name: 'Total Restante',
-        series: [{ name: 'Restante', value: totalRestante }]
-      };
+    // Adiciona o total restante para cada monitor
+    for (const monitor in result) {
+      const totalSum = result[monitor].series.reduce((sum, current) => sum + current.value, 0);
+      const totalRestante = this.TOTAL_FIXO_POR_MONITOR - totalSum;
+
+      if (totalRestante > 0) {
+        result[monitor].series.push({
+          name: 'Restante',
+          value: totalRestante
+        });
+      }
     }
 
     return Object.values(result);
   }
-
   getMonitors(): string[] {
     return Object.keys(this.dadosPorMonitor);
   }
