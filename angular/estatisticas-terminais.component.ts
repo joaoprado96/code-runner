@@ -37,11 +37,18 @@ export class EstatisticasTerminaisComponent implements OnInit {
   }
 
   private formatBarChartData(data: any[]): any[] {
-    return data.map(item => ({
+    // Mapeia os dados para o formato desejado
+    const formattedData = data.map(item => ({
       name: item.monitor,
       value: item.QuantidadeDisponiveis
     }));
+  
+    // Ordena os dados por nome do monitor em ordem alfabética
+    formattedData.sort((a, b) => a.name.localeCompare(b.name));
+  
+    return formattedData;
   }
+  
   
   private groupDataByMonitor(data: any[]): { [monitor: string]: any[] } {
     const groupedData: { [monitor: string]: any[] } = {};
