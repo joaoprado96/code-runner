@@ -35,6 +35,21 @@
     </ngx-charts-pie-chart>
  </div>
 
+<!-- Gráfico de Barras Combinado -->
+<div class="chart-container">
+  <h3>Quantidade por Monitor e Descrição</h3>
+  <ngx-charts-bar-vertical
+    [results]="combinedData"
+    [xAxis]="true"
+    [yAxis]="true"
+    [legend]="true"
+    [animations]="true"
+    [tooltipDisabled]="false"
+    (select)="onSelect($event)">
+  </ngx-charts-bar-vertical>
+</div>
+
+
  <h3>Quantidade Disponíveis por Monitor</h3>
  <div class="chart-container">
     <ngx-charts-bar-vertical

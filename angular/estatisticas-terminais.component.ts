@@ -73,7 +73,22 @@ export class EstatisticasTerminaisComponent implements OnInit {
     return sortedGroupedData;
   }
   
-
+  private combineDataForBarChart(data: any[]): any[] {
+    const combinedData: any[] = [];
+  
+    data.forEach(item => {
+      combinedData.push({ 
+        name: item.monitor + ' - ' + item.descricao, 
+        value: item.quantidade 
+      });
+    });
+  
+    // Ordenar por nome do monitor e descrição
+    combinedData.sort((a, b) => a.name.localeCompare(b.name));
+  
+    return combinedData;
+  }
+  
   getMonitors(): string[] {
     return Object.keys(this.dadosPorMonitor);
   }
