@@ -45,14 +45,27 @@ export class EstatisticasTerminaisComponent implements OnInit {
   
   private groupDataByMonitor(data: any[]): { [monitor: string]: any[] } {
     const groupedData: { [monitor: string]: any[] } = {};
+  
+    // Agrupar os dados por monitor
     data.forEach(item => {
       if (!groupedData[item.monitor]) {
         groupedData[item.monitor] = [];
       }
       groupedData[item.monitor].push({ name: item.descricao, value: item.quantidade });
     });
-    return groupedData;
+  
+    // Ordenar as chaves (monitores) por ordem alfabética
+    const sortedMonitors = Object.keys(groupedData).sort();
+  
+    // Criar um novo objeto com os monitores ordenados
+    const sortedGroupedData: { [monitor: string]: any[] } = {};
+    sortedMonitors.forEach(monitor => {
+      sortedGroupedData[monitor] = groupedData[monitor];
+    });
+  
+    return sortedGroupedData;
   }
+  
 
   getMonitors(): string[] {
     return Object.keys(this.dadosPorMonitor);
