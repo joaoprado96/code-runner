@@ -87,6 +87,22 @@ export class EstatisticasTerminaisComponent implements OnInit {
     combinedData.sort((a, b) => a.name.localeCompare(b.name));
   
     return combinedData;
+
+  }
+    private prepareStackedBarData(data: any[]): any[] {
+    const result = {};
+
+    data.forEach(item => {
+      if (!result[item.monitor]) {
+        result[item.monitor] = { name: item.monitor, series: [] };
+      }
+      result[item.monitor].series.push({
+        name: item.descricao,
+        value: item.quantidade
+      });
+    });
+
+    return Object.values(result);
   }
   
   getMonitors(): string[] {

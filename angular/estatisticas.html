@@ -49,6 +49,20 @@
   </ngx-charts-bar-vertical>
 </div>
 
+<!-- Gráfico de Barras Empilhadas -->
+<div class="chart-container">
+  <h3>Quantidade por Monitor (Empilhado)</h3>
+  <ngx-charts-bar-vertical-stacked
+    [results]="stackedBarData"
+    [xAxis]="true"
+    [yAxis]="true"
+    [legend]="true"
+    [animations]="true"
+    [tooltipDisabled]="false"
+    (select)="onSelect($event)">
+  </ngx-charts-bar-vertical-stacked>
+</div>
+
 
  <h3>Quantidade Disponíveis por Monitor</h3>
  <div class="chart-container">
