@@ -89,8 +89,9 @@ export class EstatisticasTerminaisComponent implements OnInit {
     return combinedData;
 
   }
-    private prepareStackedBarData(data: any[]): any[] {
-    const result = {};
+  private prepareStackedBarData(data: any[]): StackedBarSeries[] {
+    const result: { [key: string]: StackedBarSeries } = {};
+    let totalSum = 0;
 
     data.forEach(item => {
       if (!result[item.monitor]) {
@@ -100,11 +101,20 @@ export class EstatisticasTerminaisComponent implements OnInit {
         name: item.descricao,
         value: item.quantidade
       });
+      totalSum += item.quantidade;
     });
+
+    const totalRestante = this.TOTAL_FIXO - totalSum;
+    if (totalRestante > 0) {
+      result['Total Restante'] = {
+        name: 'Total Restante',
+        series: [{ name: 'Restante', value: totalRestante }]
+      };
+    }
 
     return Object.values(result);
   }
-  
+
   getMonitors(): string[] {
     return Object.keys(this.dadosPorMonitor);
   }
