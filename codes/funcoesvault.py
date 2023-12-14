@@ -61,9 +61,9 @@ class VaultCertificateManager:
             raise
 
 # Exemplo de uso
-vault_url = 'http://your-vault-server:8200'
-vault_token = 'your-vault-token'
-secret_path = 'path/to/your/secret'
+vault_url = 'http://localhost:8200'
+vault_token = 'hvs.bW516ctdcC15aVeMegQ1LfsW'
+secret_path = 'secret/myapp/database'
 vault_folder = 'vault'
 
 manager = VaultCertificateManager(vault_url, vault_token, secret_path, vault_folder)
