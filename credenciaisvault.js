@@ -1,5 +1,42 @@
 npm install axios fs-extra
 
+
+// Nome do parâmetro a ser buscado na URL
+const nomeDoParametro = 'meuParametro';
+
+// Função para obter o valor do parâmetro da URL
+function obterParametroDaUrl(nome) {
+    var url = new URL(window.location.href);
+    return url.searchParams.get(nome);
+}
+
+// Função para remover o parâmetro da URL
+function removerParametroDaUrl(nome) {
+    var url = new URL(window.location.href);
+    url.searchParams.delete(nome);
+    window.history.pushState({}, '', url);
+}
+
+// Verificar e armazenar o parâmetro na primeira execução
+function verificarEArmazenarParametro() {
+    var valorDoParametro = obterParametroDaUrl(nomeDoParametro);
+
+    if (valorDoParametro !== null) {
+        localStorage.setItem(nomeDoParametro, valorDoParametro);
+        removerParametroDaUrl(nomeDoParametro);
+    }
+}
+
+// Chama a função quando a página é carregada
+verificarEArmazenarParametro();
+
+// Para acessar o valor armazenado, você pode usar
+// var valorArmazenado = localStorage.getItem(nomeDoParametro);
+
+
+
+
+
 const axios = require('axios');
 const fs = require('fs-extra');
 const path = require('path');
