@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Regressive Test Runner</title>
-    <link rel="stylesheet" type="text/css" href="css/regressiverunner.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regressive Runner</title>
+    <link rel="stylesheet" href="css/regressiverunner.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"/>
 </head>
 <body>
+    <div id="navbar-placeholder"></div>
     <div id="top-bar">
-        <img src="img/regressiverunner.PNG" alt="Logo" class="logo">
-        <h1>REGRESSIVE RUNNER</h1>
-        <input type="text" id="usuario" placeholder="Usuário">
-        <input type="password" id="senha" placeholder="Senha">
         <select id="versao" onchange="buildTable()">
             <option value="TODAS">TODAS</option>
             <option value="Base">Base</option>
@@ -159,7 +159,8 @@
         </tbody>
     </table>
 
-    <script src="js_files/regressiverunner.js"></script>
+    <script src="js_pages/regressiverunner.js"></script>
+    <script src="js_pages/navbar.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
 </body>
 </html>

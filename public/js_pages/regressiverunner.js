@@ -1,5 +1,7 @@
 let registrosOriginais = []; // Armazena os registros originais sem filtro
-
+document.addEventListener('DOMContentLoaded', function() {
+    criarNavbar();
+});
 // Função para fazer uma requisição assíncrona para obter os registros da tabela
 async function getRegistros() {
     const versao = document.getElementById('versao').value;
