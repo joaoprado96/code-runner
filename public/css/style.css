@@ -6,8 +6,8 @@
     --standard:  #ffffffff;
     --standard2: #000000;
     --standard3: #333333;
-    --standard4: #E0E0E0;
-    --standard5: #c4c4c4;
+    --standard4: #f3f3f3;
+    --standard5: #f5f5f5;
     --navbar-height: 60px; /* Definir a altura do navbar */
     /* Você pode adicionar mais substituições conforme necessário */
 }
@@ -109,23 +109,27 @@ body {
 }
 
 button, .chave {
-    margin: 10px 0;
-    padding: 10px;
+    text-transform: uppercase;
+    padding: 5px 5px;
     background-color: var(--standard3);
     border: 1px solid var(--standard3);
     border-radius: 4px;
     transition: background-color 0.3s;
-    font-size: 16px;
 }
 
-button {
+button, .btn-primary {
+    margin: 30px 85%;
+    font-size: 14px;
+    text-transform: uppercase;
     background-color: var(--primary);
     color: var(--standard);
     border: none;
     cursor: pointer;
     border-radius: 8px;
-    width: 100%;
+    height: auto;
+    width: auto;
 }
+
 
 button:hover {
     background-color:var(--secondary);
@@ -261,16 +265,13 @@ table {
     width: 100%;
     border-collapse: collapse;
     overflow-y: auto;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
 thead th, tbody td {
     color: var(--standard);
     letter-spacing: 1px;
     padding: 15px 20px;
-    border-bottom: solid 4px var(--standard3);  /* Cor de destaque para o bordo inferior */
-    text-transform: uppercase;
-    text-align: center;
+    border-bottom: solid 1px var(--standard4);  /* Cor de destaque para o bordo inferior */
 }
 
 tbody tr:hover {
@@ -553,4 +554,42 @@ h3 {
 .config-button:hover {
     background-color: #ef672d;
     color: var(--standard);
+}
+
+.log-card {
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    margin-left: 5%;
+    margin-right: 5%;
+    padding: 30px 30px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    border-radius: 20px;
+}
+
+.jsoneditor {
+    border: 0;
+    font-family: "Poppins", sans-serif;
+}
+
+.jsoneditor .jsoneditor-tree {
+    background-color: #f9f9f9;
+}
+
+.jsoneditor .jsoneditor-menu {
+    display: none; /* Esconde a barra de menu */
+}
+
+.jsoneditor .jsoneditor-search {
+    border-color: #d3d3d3;
+}
+
+.jsoneditor .jsoneditor-value.jsoneditor-string {
+    color: #5a5a5a; /* Cor mais suave para strings */
+}
+
+.jsoneditor-popover, .jsoneditor-schema-error, div.jsoneditor td, div.jsoneditor textarea, div.jsoneditor th, div.jsoneditor-field, div.jsoneditor-value, pre.jsoneditor-preview {
+    font-family: "Poppins", sans-serif;
+    font-size: 8pt;
+    color: #1a1a1a;
 }

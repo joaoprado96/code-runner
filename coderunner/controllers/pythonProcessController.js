@@ -1,6 +1,7 @@
 // controllers/pythonProcessController.js
 const find = require('find-process');
 const exec = require('child_process').exec;
+const ps = require('ps-node');
 const os = require('os');
 
 // Função para obter o uso de memória de um processo pelo PID
@@ -20,6 +21,7 @@ const getMemoryUsage = (pid) => {
             if (err || stderr) {
                 reject(err || stderr);
             } else {
+                console.log(stdout)
                 let memoryUsage = 0;
                 if (os.platform() === 'win32') {
                     // Processar a saída do comando do Windows
@@ -52,5 +54,24 @@ const getPythonProcesses = async (req, res) => {
         res.status(500).json({ message: 'Erro ao buscar processos Python.' });
     }
 };
+// Função para encerrar um processo
+const killProcess = (req, res) => {
+    const pid = req.params.pid; // Obter o PID do processo da URL
 
-module.exports = { getPythonProcesses };
+    ps.kill(pid, err => {
+        if (err) {
+            if (err.code === 'ESRCH') {
+                res.status(404).json({ message: `Processo com PID ${pid} não encontrado.` });
+            } else {
+                res.status(500).json({ message: `Erro ao encerrar o processo com PID ${pid}: ${err.message}` });
+            }
+        } else {
+            res.json({ message: `Processo com PID ${pid} encerrado com sucesso.` });
+        }
+    });
+};
+
+module.exports = { 
+    getPythonProcesses, 
+    killProcess
+};

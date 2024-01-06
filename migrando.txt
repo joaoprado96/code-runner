@@ -1,6 +1,10 @@
 npm install systeminformation
 npm install find-process
 npm install ps-node
+npm install winston
+npm install uuid
+
+
 
 
 

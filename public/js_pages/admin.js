@@ -228,6 +228,8 @@ function mostrarConteudo(funcionalidade) {
         mostrarUsoDeMemoria();
     } else if (funcionalidade === 'processosPython') {
         mostrarProcessosPython();
+    } else if (funcionalidade === 'mostrarLogs') {
+    mostrarLogs();
     }
 }
 
@@ -430,7 +432,7 @@ function mostrarProcessosPython() {
             } else {
                 html += '<div class="conteudo"><ul>';
                 processos.forEach(processo => {
-                    html += `<li><strong>PID:</strong> ${processo.pid} - <strong>Comando:</strong> ${processo.cmd} - <strong>Memória:</strong> ${processo.memoryUsage} KB</li>`;
+                    html += `<li><div><strong>PID:</strong> ${processo.pid} - <strong>Comando:</strong> ${processo.cmd} - <strong>Memória:</strong> ${processo.memoryUsage} KB </div><button onclick="encerrarProcesso(${processo.pid})">Encerrar</button></li>`;
                     memoriaTotal += processo.memoryUsage;
                 });
                 html += '</ul>';
@@ -438,12 +440,79 @@ function mostrarProcessosPython() {
                 html += `<p><strong>Memória Total Usada:</strong> ${memoriaTotal} KB</p></div>`;
             }
 
+
             conteudo.innerHTML = html;
         })
         .catch(error => {
             console.error('Erro ao buscar processos Python:', error);
             document.getElementById('conteudo').innerHTML = '<p>Ocorreu um erro ao buscar processos Python.</p>';
         });
+}
+function mostrarLogs() {
+    const numLogs = 10; // Defina o número de logs que deseja buscar
+    fetch(`/logger?numLogs=${numLogs}`)
+    .then(response => response.json())
+    .then(logs => {
+        const conteudo = document.getElementById('conteudo');
+        // Limpa o conteúdo antes de adicionar novos logs
+        conteudo.innerHTML = '<div class="conteudo"><h2>Últimas LOGS de execução</h2></div>';
+
+        logs.forEach(log => {
+            const logContainer = document.createElement('div');
+            logContainer.className = 'log-card';
+            conteudo.appendChild(logContainer);
+            const options = {
+                mode: 'view',
+                search: false,
+            };
+
+            // Verifique se o log.body é uma string e tente parseá-la
+            if (typeof log.body === 'string') {
+                try {
+                    log.body = JSON.parse(log.body);
+                } catch (e) {
+                    // Se ocorrer um erro no parse, mantenha como string
+                    // Isso pode acontecer se o body não for um JSON válido
+                }
+            }
+
+            // Se log for uma string de JSON escapada, parseie para um objeto JavaScript
+            if (typeof log === 'string') {
+                try {
+                    log = JSON.parse(log);
+                } catch (e) {
+                    // Se não for um JSON válido, imprima o erro no console
+                    console.error('Erro ao parsear log:', e);
+                }
+            }
+
+            // Inicialize o JSONEditor com o log parseado ou string original
+            const editor = new JSONEditor(logContainer, options);
+            editor.set(log);
+        });
+    })
+    .catch(error => {
+        console.error('Erro ao buscar logs:', error);
+    });
+}
+
+function encerrarProcesso(pid) {
+    fetch(`/python-process/${pid}`, {
+        method: 'DELETE'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Erro: ${response.statusText}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert(data.message);
+        mostrarProcessosPython(); // Atualizar a lista após encerrar um processo
+    })
+    .catch(error => {
+        alert(error.message);
+    });
 }
 
 

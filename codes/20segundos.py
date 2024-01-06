@@ -6,9 +6,8 @@ import time
 
 def main():
     # O primeiro argumento é o nome do script, então ignoramos ele e pegamos o segundo
-
     print("Iniciando a execução do script.")
-    for i in range(3):
+    for i in range(20):
         print(f"Segundo {i + 1}")
         time.sleep(1)
 
