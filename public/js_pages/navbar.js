@@ -1,4 +1,32 @@
+// Nome do parâmetro a ser buscado na URL
+const nomeDoParametro = 'token';
+
+// Função para obter o valor do parâmetro da URL
+function obterParametroDaUrl(nome) {
+    var url = new URL(window.location.href);
+    return url.searchParams.get(nome);
+}
+
+// Função para remover o parâmetro da URL
+function removerParametroDaUrl(nome) {
+    var url = new URL(window.location.href);
+    url.searchParams.delete(nome);
+    window.history.pushState({}, '', url);
+}
+
+// Verificar e armazenar o parâmetro na primeira execução
+function verificarEArmazenarParametro() {
+    var valorDoParametro = obterParametroDaUrl(nomeDoParametro);
+
+    if (valorDoParametro !== null) {
+        localStorage.setItem(nomeDoParametro, valorDoParametro);
+        removerParametroDaUrl(nomeDoParametro);
+    }
+}
+
 function criarNavbar() {
+    // Verificar e armazenar o token antes de criar a navbar
+    verificarEArmazenarParametro();
     var navbarHTML = `
     <nav class="nav">
         <i class="uil uil-bars navOpenBtn"></i>

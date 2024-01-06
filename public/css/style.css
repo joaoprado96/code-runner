@@ -11,25 +11,7 @@
     --navbar-height: 60px; /* Definir a altura do navbar */
     /* Você pode adicionar mais substituições conforme necessário */
 }
-/* Laranja Principal (Logo):
-#FF6F00 (Vibrante, chama atenção, energia)
 
-Azul (Contraste / Destaque):
-#004DFF (Profissionalismo, confiança, tecnologia)
-
-Cinza Escuro (Texto / Elementos Gráficos):
-#333333 (Sofisticação, neutralidade, equilíbrio)
-
-Cinza Claro (Fundo / Elementos Secundários):
-#E0E0E0 (Suavidade, modernidade, limpeza)
-
-Branco (Fundo / Espaço Negativo):
-#FFFFFF (Pureza, simplicidade, abertura) */
-* {
-    margin: 0;
-    box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
-  }
 body {
     font-family: "Poppins", sans-serif;
     margin: 0;

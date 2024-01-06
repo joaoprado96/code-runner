@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Monitores Transacionais</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/monitores.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+            <div class="page">
+                <div class="conteudo">
+                    <br><br>
+                    <h2>Monitores Transacionais</h2>
+                    <br>
+                    <div class="filters">
+                        <input type="text" id="filterName" placeholder="Filtrar por nome...">
+                        <select id="filterParticao">
+                            <option value="">Partição</option>
+                            <option value="SECA">SECA</option>
+                            <option value="SGCA">SGCA</option>
+                        </select>
+                        <select id="filterAmbiente">
+                            <option value="">Ambiente</option>
+                            <option value="Desenvolvimento">Desenvolvimento</option>
+                            <option value="Homologação">Homologação</option>
+                        </select>
+                    </div>
+
+                
+                    <div id="cardsContainer" class="cards-grid"></div>
+                </div>
+            </div>
+    <script src="js_pages/monitores.js"></script>
+    <script src="js_pages/navbar.js"></script>
+</body>
+</html>

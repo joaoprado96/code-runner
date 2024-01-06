@@ -1,3 +1,599 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+
+:root {
+    --primary:   #FF6F00; /* Cor laranja para o esquema primário */
+    --secondary: #004DFF; /* Altere se desejar uma cor secundária diferente */
+    --standard:  #ffffffff;
+    --standard2: #000000;
+    --standard3: #333333;
+    --standard4: #f3f3f3;
+    --standard5: #f5f5f5;
+    --navbar-height: 60px; /* Definir a altura do navbar */
+    /* Você pode adicionar mais substituições conforme necessário */
+}
+/* Laranja Principal (Logo):
+#FF6F00 (Vibrante, chama atenção, energia)
+
+Azul (Contraste / Destaque):
+#004DFF (Profissionalismo, confiança, tecnologia)
+
+Cinza Escuro (Texto / Elementos Gráficos):
+#333333 (Sofisticação, neutralidade, equilíbrio)
+
+Cinza Claro (Fundo / Elementos Secundários):
+#E0E0E0 (Suavidade, modernidade, limpeza)
+
+Branco (Fundo / Espaço Negativo):
+#FFFFFF (Pureza, simplicidade, abertura) */
+* {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+body {
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
+    color: var(--standard3);
+    background-color: var(--standard);
+}
+
+.page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.container {
+    font-family: "Poppins", sans-serif;
+    margin-top: var(--navbar-height);
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    max-width: 1368px;
+    background-color: var(--standard);
+}
+
+.conteudo {
+    font-size: 14px;
+    padding: 20px 20px;
+    text-align: justify;
+    font-family: "Poppins", sans-serif;
+    width: 100%;
+    max-width: auto;
+    background-color: var(--standard);
+}
+
+
+/* Estilos para o campo de filtro */
+.filtro-input {
+    margin-left: 30px; /* Adiciona espaço à esquerda */
+    width: 150px;
+    border: 1px solid #ccc; /* Borda leve e sutil */
+    border-radius: 15px; /* Bordas arredondadas */
+    padding: 5px 10px; /* Espaço interno para texto */
+    font-size: 16px; /* Tamanho da fonte */
+    outline: none; /* Remove o contorno ao focar */
+}
+
+.filtro-input:focus {
+    border-color: var(--primary); /* Cor da borda ao focar */
+    box-shadow: 0 0 5px var(--secondary); /* Sombra sutil ao focar */
+}
+
+
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+}
+.list-group-item-primary {
+    background-color: var(--primary); /* Cor laranja */
+    color: var(--standard); /* Texto branco para melhor contraste */
+}
+/* Se desejar, também pode personalizar os itens de lista regulares */
+.list-group-item {
+    border-color: var(--standard); /* Borda laranja */
+}
+
+button, .chave {
+    text-transform: uppercase;
+    padding: 5px 5px;
+    background-color: var(--standard3);
+    border: 1px solid var(--standard3);
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+button, .btn-primary {
+    margin: 30px 85%;
+    font-size: 14px;
+    text-transform: uppercase;
+    background-color: var(--primary);
+    color: var(--standard);
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    height: auto;
+    width: auto;
+}
+
+
+button:hover {
+    background-color:var(--secondary);
+}
+
+h3, h4 {
+    margin-top: 0;
+}
+
+/* Menu Lateral */
+#menu-lateral {
+    margin-top: 20px;
+    border-left: 2px solid var(--primary); /* Adiciona uma borda à esquerda */
+    border-right: 2px solid var(--primary); /* Mantém a borda à direita */
+    width: 235px;
+    min-width: 235px;
+    background-color: var(--standard); /* Cor de fundo do menu */
+    color: var(--standard3); /* Cor do texto no menu */
+    min-height: 100vh; /* Altura mínima para ocupar a altura total da janela de visualização */
+    padding: 10px; /* Adiciona um pouco de espaço interno para melhorar a aparência */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Adiciona uma sombra sutil para dar profundidade */
+}
+
+/* Estilização adicional para os links dentro do menu */
+#menu-lateral a {
+    display: block;
+    font-size: 14px;
+    color: var(--primary); /* Cor dos links */
+    padding: 8px 16px; /* Espaçamento interno para os links */
+    text-decoration: none; /* Remove o sublinhado dos links */
+    font-weight: bold; /* Torna o texto dos links em negrito */
+    transition: background-color 0.3s; /* Transição suave para o hover */
+}
+
+#menu-lateral a:hover {
+    background-color: var(--primary); /* Cor de fundo ao passar o mouse */
+    color: white; /* Cor do texto ao passar o mouse */
+}
+
+/* Menu Superior */
+#menu-superior {
+    background-color: var(--standard);
+    color: var(--standard);
+    padding: 20px;
+    display: none;
+    justify-content: center;
+}
+
+#menu-superior a {
+    margin: 5px 40px;
+    text-decoration: none;
+    color: var(--standard);
+    transition: opacity 0.3s;
+}
+
+#menu-superior a:hover {
+    opacity: 0.8;
+    background-color: var(--primary);
+}
+
+/* Container Principal */
+#container {
+    flex-grow: 1;
+    padding: 0px;
+}
+
+/* Configuração do Formulário */
+#configForm {
+    width: 90%;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid var(--standard3);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: var(--standard3);
+}
+
+#configForm input, #configForm select, #configForm button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid var(--standard5);
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#criaForm {
+    width: 97%;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid var(--standard5);
+    border-radius: 8px;
+    background-color: var(--standard3);
+}
+
+#criaForm input, #criaForm select, #criaForm button {
+    width: 98%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid var(--standard5);
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* JSON Visualização */
+.json-container {
+    width: 90%;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid var(--standard3);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: var(--standard3);
+    font-size: 16px;
+}
+
+.json-group .form-input, .form-group .form-input {
+    width: 70%; /* ou a largura desejada */
+    height: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid var(--standard3);
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Outras Estilizações */
+.chave:hover {
+    background-color: var(--standard3);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow-y: auto;
+}
+
+thead th, tbody td {
+    color: var(--standard);
+    letter-spacing: 1px;
+    padding: 15px 20px;
+    border-bottom: solid 1px var(--standard4);  /* Cor de destaque para o bordo inferior */
+}
+
+tbody tr:hover {
+    background-color: var(--standard4);
+
+}
+
+tbody tr.selected {
+    background-color: var(--primary);
+}
+ h2 {
+    font-size: 24px;
+    color: var(--standard3);
+    margin: 0px 0px;
+    background-color: var(--standard);
+    letter-spacing: 2px;
+    padding: 15px 20px;
+    border-bottom: solid 7px var(--primary);;  /* Cor de destaque para o bordo inferior */
+    text-transform: uppercase;
+    text-align: center;
+}
+
+h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: var(--standard3);
+    margin: 0px 0px;
+    background-color: var(--standard);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-align: left;
+}
+
+.form-control {
+    margin-left: 30px;
+    width: 94%;
+    
+}
+
+.nav {
+    position: fixed;
+    height: var(--navbar-height);
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 15px 60px;
+    background: var(--standard);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+  .nav,
+  .nav .nav-links {
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+  }
+  .nav {
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+    justify-items: center;
+  }
+  a {
+    color: var(--primary);;
+    text-decoration: none;
+  }
+  .nav .logo {
+    font-size: 22px;
+    font-weight: 500;
+  }
+  .nav .nav-links {
+    column-gap: 20px;
+    list-style: none;
+    display: contents;
+  }
+  .nav .nav-links a {
+    transition: all 0.2s linear;
+  }
+  .nav.openSearch .nav-links a {
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  .nav .nav-links a:hover {
+      background-color: var(--standard); /* Cor de fundo ao passar o mouse */
+      color: var(--primary);; /* Cor do texto ao passar o mouse */
+      padding: 10px 15px; /* Ajuste o padding conforme necessário */
+      border-radius: 5px; /* Adiciona bordas arredondadas */
+      transition: all 0.3s ease; /* Suaviza a transição das propriedades */
+    }
+
+.logo:hover {
+        background-color: var(--standard); /* Cor de fundo ao passar o mouse */
+        color: var(--primary);; /* Cor do texto ao passar o mouse */
+        border-radius: 5px; /* Adiciona bordas arredondadas */
+        transition: all 0.3s ease; /* Suaviza a transição das propriedades */
+      }
+  
+  .nav .search-icon {
+    z-index: 1000;
+    color: var(--primary);;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  .nav .search-box {
+    position: absolute;
+    right: 250px;
+    height: 45px;
+    max-width: 555px;
+    width: 100%;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s linear;
+  }
+  .nav.openSearch .search-box {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .search-box .search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    left: 15px;
+    color: var(--primary);
+    transform: translateY(-50%);
+  }
+  .search-box input {
+    height: 100%;
+    width: 100%;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    background-color: var(--standard);
+    padding: 0 15px 0 45px;
+  }
+  
+  .nav .navOpenBtn,
+  .nav .navCloseBtn {
+    display: none;
+  }
+  
+  /* responsive */
+  @media screen and (max-width: 1160px) {
+    .nav {
+      padding: 15px 100px;
+    }
+    .nav .search-box {
+      right: 150px;
+    }
+  }
+  @media screen and (max-width: 950px) {
+    .nav {
+      padding: 15px 50px;
+    }
+    .nav .search-box {
+      right: 100px;
+      max-width: 400px;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    .nav .navOpenBtn,
+    .nav .navCloseBtn {
+      display: block;
+    }
+    .nav {
+      padding: 15px 20px;
+    }
+    .nav .nav-links {
+      position: fixed;
+      top: 0;
+      left: -100%;
+      height: 100%;
+      max-width: 280px;
+      width: 100%;
+      padding-top: 100px;
+      row-gap: 30px;
+      flex-direction: column;
+      background-color: var(--standard);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      transition: all 0.4s ease;
+      z-index: 100;
+    }
+    .nav.openNav .nav-links {
+      left: 0;
+    }
+    .nav .navOpenBtn {
+      color: var(--primary);;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .nav .navCloseBtn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: var(--primary);;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .nav .search-box {
+      top: calc(100% + 10px);
+      max-width: calc(100% - 20px);
+      right: 50%;
+      transform: translateX(50%);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+  }
+  
+  .user-icon-container {
+      position: relative;
+      cursor: pointer;
+  }
+  
+  .user-icon {
+      width: 35px; /* ou qualquer outro tamanho */
+      height: 35px;
+      border-radius: 50%; /* torna a imagem redonda */
+  }
+  
+  .user-submenu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background-color: var(--standard);
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      display: none;
+  }
+  
+  .user-submenu a {
+      display: block;
+      padding: 10px 15px;
+      text-decoration: none;
+      color: #333;
+      border-bottom: 1px solid #eee;
+  }
+  
+  .user-submenu a:hover {
+      background-color: #f5f5f5;
+  }
+  
+  .user-submenu a:last-child {
+      border-bottom: none;
+  }
+  
+  /* Mostrar o submenu quando o ícone do usuário é clicado (JavaScript pode ser necessário) */
+  .user-icon-container:hover .user-submenu {
+      display: block;
+  }
+  
+  .full-screen-logo {
+    position: fixed; /* Fixa o background na tela */
+    top: 0;
+    left: 0;
+    width: 100vw; /* Largura total da janela de visualização */
+    height: 100vh; /* Altura total da janela de visualização */
+    background-image: url('./icons/logo2.png'); /* Caminho para o logo */
+    background-size: cover; /* Faz o background cobrir toda a área disponível */
+    background-position: center; /* Centraliza o logo */
+    z-index: -1; /* Coloca o fundo atrás do conteúdo da página */
+}
+
+.config-button-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.config-button {
+    padding: 10px 15px;
+    background-color: var(--standard);
+    color: var(--primary);
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.config-button:hover {
+    background-color: #ef672d;
+    color: var(--standard);
+}
+
+.log-card {
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    margin-left: 5%;
+    margin-right: 5%;
+    padding: 30px 30px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    border-radius: 20px;
+}
+
+.jsoneditor {
+    border: 0;
+    font-family: "Poppins", sans-serif;
+}
+
+.jsoneditor .jsoneditor-tree {
+    background-color: #f9f9f9;
+}
+
+.jsoneditor .jsoneditor-menu {
+    display: none; /* Esconde a barra de menu */
+}
+
+.jsoneditor .jsoneditor-search {
+    border-color: #d3d3d3;
+}
+
+.jsoneditor .jsoneditor-value.jsoneditor-string {
+    color: #5a5a5a; /* Cor mais suave para strings */
+}
+
+.jsoneditor-popover, .jsoneditor-schema-error, div.jsoneditor td, div.jsoneditor textarea, div.jsoneditor th, div.jsoneditor-field, div.jsoneditor-value, pre.jsoneditor-preview {
+    font-family: "Poppins", sans-serif;
+    font-size: 8pt;
+    color: #1a1a1a;
+}
+
 /* Reset de estilos */
 * {
     box-sizing: border-box;
