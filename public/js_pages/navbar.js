@@ -2,14 +2,15 @@ function criarNavbar() {
     var navbarHTML = `
     <nav class="nav">
         <i class="uil uil-bars navOpenBtn"></i>
-        <a href="#" class="logo">Code Runner</a>
+        <img src="css/icons/logo6.png" alt="Usuário" class="user-icon">
+        <a href="#" class="logo">coderunner</a>
 
         <ul class="nav-links">
             <i class="uil uil-times navCloseBtn"></i>
-            <li><a href="/home">home</a></li>
-            <li><a href="/estabelecimentos">estabelecimentos</a></li>
-            <li><a href="/informacoes">informacoes</a></li>
-            <li><a href="/contato">contato</a></li>
+            <li><a href="/page/home">home</a></li>
+            <li><a href="/page/admin">panel</a></li>
+            <li><a href="/page/regressiverunner">regressive</a></li>
+            <li><a href="/page/versionrunner">version</a></li>
 
         </ul>
 
@@ -20,13 +21,10 @@ function criarNavbar() {
         </div>
 
         <div class="user-icon-container">
-            <img src="icons/icon-usuariorx.png" alt="Usuário" class="user-icon">
+            <img src="css/icons/userxx.png" alt="Usuário" class="user-icon">
             <div class="user-submenu">
-            <a href="/login">login</a>
-                <a href="/usuario">novo usuário</a>
-                <a href="/perfil">minha conta</a>
-                <a href="/destaques">destaques</a>
-                <a href="/cadastro">cadastro</a>
+            <a href="/page/home">...</a>
+
             </div>
         </div>
     </nav>

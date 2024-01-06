@@ -1,19 +1,18 @@
-import datetime
 import sys
 from funcoesmysql import *
 
 def main():
+    # Recebendo o objeto JSON do Code Runner
     body = sys.argv[1]
     data = json.loads(body)
+
+    # Processamento para montar JSON
     
     jsonresposta= {
-        "EM DESENVOLVIMENTO": ['OPÇÕES SÃO FICTICIAS'],
-        "MI.SANDBOX.CICS.TESTE1":['ARQUIVO1', 'ARQUIVO2', 'ARQUIVO3', 'ARQUIVO4','ARQUIVO1', 'ARQUIVO2', 'ARQUIVO3', 'ARQUIVO4','ARQUIVO1', 'ARQUIVO2', 'ARQUIVO3', 'ARQUIVO4','ARQUIVO1', 'ARQUIVO2', 'ARQUIVO3', 'ARQUIVO4','ARQUIVO1', 'ARQUIVO2', 'ARQUIVO3', 'ARQUIVO4','ARQUIVO1', 'ARQUIVO2', 'ARQUIVO3', 'ARQUIVO4','ARQUIVO1', 'ARQUIVO2', 'ARQUIVO3', 'ARQUIVO4','ARQUIVO1', 'ARQUIVO2', 'ARQUIVO3', 'ARQUIVO4','ARQUIVO1', 'ARQUIVO2', 'ARQUIVO3', 'ARQUIVO4','ARQUIVO1', 'ARQUIVO2', 'ARQUIVO3', 'ARQUIVO4','ARQUIVO1', 'ARQUIVO2', 'ARQUIVO3', 'ARQUIVO4','ARQUIVO1', 'ARQUIVO2', 'ARQUIVO3', 'ARQUIVO4'],
-        "MI.SANDBOX.CICS.TESTE2":['ARQUIVO1', 'ARQUIVO2', 'ARQUIVO3', 'ARQUIVO4'],
-        "MI.SANDBOX.CICS.TESTE3":['ARQUIVO1', 'ARQUIVO2', 'ARQUIVO3', 'ARQUIVO4'],
-        "MI.SANDBOX.CICS.TESTE4":['ARQUIVO1', 'ARQUIVO2', 'ARQUIVO3', 'ARQUIVO4']
+        "retorno": "Exemplo de retorno",
     }
 
+    # Devolvendo resposta para Code Runner
     print(json.dumps(jsonresposta))
 
 main()
