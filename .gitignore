@@ -3,3 +3,4 @@ codes/__pycache__/globais.cpython-310.pyc
 *.log
 .log
 logs/combined.log
+logs/combined.log
