@@ -1,7 +1,11 @@
 // Framework para a aplicação Code Runer
 require('dotenv').config();
+const crypto = require('crypto');
+
+// Gerando informações uteis de ambiente
 process.env.BASEDIR = __dirname
 process.env.NODE_ENV = 'production'
+process.env.JWT_SECRET_KEY = crypto.randomBytes(256).toString('hex');
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -12,9 +16,10 @@ const mysql = require('mysql2');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
 const memoryRoutes = require('./coderunner/routes/memoryRoutes');
-const pythonProcessRoutes = require('./coderunner/routes/pythonProcessRoutes');
+const pythonProcessRoutes = require('./coderunner/routes/authorizationRoutes');
 const codesRoutes = require('./coderunner/routes/codesRoutes');
 const loggerRoutes = require('./coderunner/routes/loggerRoutes');
+const authorizationRoutes = require('./coderunner/routes/authorizationRoutes');
 const loggingMiddleware = require('./coderunner/middlewares/loggingMiddleware');
 
 // Configurações de conexão com o banco de dados
@@ -43,6 +48,7 @@ app.use('',memoryRoutes);
 app.use('',pythonProcessRoutes);
 app.use('',codesRoutes);
 app.use('',loggerRoutes);
+app.use('',authorizationRoutes);
 
 //(NEW) Middleware para adicionar extensão .html às URLs
 app.use((req, res, next) => {

@@ -69,9 +69,21 @@ const ExecutaPythonScript = async (req, res) => {
           delete runningScripts[scriptId];
         });
       });
-  
       scriptPromises.push(scriptPromise);
     }
+    
+    Promise.all(scriptPromises).then(results => {
+        if (numScripts === 1) {
+            // Se apenas um script foi iniciado, retorna a saída do script
+            res.send(results[0]);
+        } else {
+            // Se múltiplos scripts foram iniciados, retorna uma mensagem geral
+            res.send({ message: `${numScripts} scripts foram iniciados` });
+        }
+    }).catch(err => {
+        res.status(500).send({ error: 'Erro ao executar scripts' });
+    });
+
   }
 
   module.exports = {

@@ -271,9 +271,10 @@ function executarPython() {
 
     try {
         const jsonData = JSON.parse(jsonInput);
+        var token = localStorage.getItem('token');
         fetch(rota, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json','num-scripts':1 ,'authorization': token, 'path': '/page/admin.html'},
             body: JSON.stringify(jsonData)
         })
         .then(response => response.json())
