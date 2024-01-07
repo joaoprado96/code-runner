@@ -373,3 +373,7 @@
 {"duration":1920,"level":"info","message":"Requisição finalizada: GET /python-processes - Status Code: 200 - 1920ms","requestId":"e476091f-7794-43a7-bbe5-933acb7689c4","statusCode":200,"timestamp":"2024-01-07 00:18:42"}
 {"duration":4021,"level":"info","message":"Requisição finalizada: POST /codes/20segundos - Status Code: 200 - 4021ms","requestId":"1ad3cec6-87df-4ced-819e-eb45de09f599","statusCode":200,"timestamp":"2024-01-07 00:18:42"}
 {"duration":4015,"level":"info","message":"Requisição finalizada: POST /codes/20segundos - Status Code: 200 - 4015ms","requestId":"1195d609-98ca-4d3c-8877-0b326e9cc420","statusCode":200,"timestamp":"2024-01-07 00:18:42"}
+{"body":"{}","ip":"::1","level":"info","message":"Iniciando requisição: GET /python-processes","requestId":"8287249f-e3b2-4395-83c0-24bb9ddfc99a","timestamp":"2024-01-07 00:19:57"}
+{"duration":1257,"level":"info","message":"Requisição finalizada: GET /python-processes - Status Code: 200 - 1257ms","requestId":"8287249f-e3b2-4395-83c0-24bb9ddfc99a","statusCode":200,"timestamp":"2024-01-07 00:19:58"}
+{"body":"{}","ip":"::1","level":"info","message":"Iniciando requisição: GET /python-processes","requestId":"a593e700-7ade-426d-bf47-995448b04473","timestamp":"2024-01-07 00:19:58"}
+{"duration":1268,"level":"info","message":"Requisição finalizada: GET /python-processes - Status Code: 200 - 1268ms","requestId":"a593e700-7ade-426d-bf47-995448b04473","statusCode":200,"timestamp":"2024-01-07 00:20:00"}

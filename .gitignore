@@ -1,2 +1,5 @@
 codes/__pycache__/globais.cpython-310.pyc
 **/*.pyc
+*.log
+.log
+logs/combined.log
