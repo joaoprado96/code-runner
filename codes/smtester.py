@@ -2,7 +2,7 @@
 from asyncio import wait_for, open_connection, get_event_loop, sleep
 from codecs import decode,encode
 import sys
-from json import loads
+import json
 from random import randint
 import objgraph
 import gc
@@ -203,13 +203,16 @@ async def transacionar(monitor, porta, timeout, quantidade, agencia, protocolo, 
     #Gera um numero de serie aleatorio e nome da conexao:
     numero_serie = str(randint(50000, 99999))
     nome_conexao = "SMT" + str(numero_serie)
-
+    json_final = {} #JJJ
+    json_final["conexao"] = nome_conexao #JJJ
+    json_final["numero_serie"] = numero_serie #JJJ
     # Abrir conexão com o monitor
     # (NEW)
     reader_main, writer_main =await conecta(monitor, ENDIPS[monitor], porta, timeout)
     await sleep(0.3) #Tempo após abrir conexão
     # Faz comando M da fila (conexao)
     msg = comando_conexao(nome_conexao)
+    json_final["comando_M_conexao"] = msg #JJJ
     await envia_mensagem(writer_main,msg,monitor)
     # (NEW)
     await recebe_resposta(reader_main, monitor, ENDIPS[monitor], porta,timeout)
@@ -218,17 +221,24 @@ async def transacionar(monitor, porta, timeout, quantidade, agencia, protocolo, 
      # Faz comando M do terminal e obtem o token
     # (NEW)
     msg = comando_terminal(AGEN[monitor],numero_serie,nome_conexao)
+    json_final["comando_M_terminal"] = msg #JJJ
     await envia_mensagem(writer_main,msg,monitor)
     # (NEW)
     resposta = await recebe_resposta(reader_main, monitor, ENDIPS[monitor], porta,timeout)
     await sleep(0.3) #Tempo ente mensagens
     token = resposta[9:59]
+    json_final["resposta_M_terminal"] = resposta #JJJ
+    json_final["token"] = token  #JJJ
+    json_final["quantidade"] = quantidade  #JJJ
 
     limpar_log()
     tempo_total_qtd = 0
     for j in range(quantidade):
-        
         sequencial = int_to_base36(j) # Valor maximo 4 bytes: 1.679.615 
+        # Inicializa um dicionário vazio para o 'sequencial' se ele ainda não existir
+        if sequencial not in json_final:
+            json_final[sequencial] = {}
+
         if servico == "Input":
             if protocolo == "2000A":
                 msg = transacao_2000a(transacao, sequencial,agencia, "HHHHH", entrada, token)
@@ -242,24 +252,27 @@ async def transacionar(monitor, porta, timeout, quantidade, agencia, protocolo, 
         # Início da contagem do tempo
         inicio = time.perf_counter()
         gravar_log("Enviando",msg,sequencial)
+        json_final[sequencial]['enviado'] = msg #JJJ
         await envia_mensagem(writer_main,msg,monitor)
         msg2 = await recebe_resposta(reader_main, monitor, ENDIPS[monitor], porta,timeout)
+        json_final[sequencial]['recebido'] = msg2 #JJJ
         gravar_log("Recebendo",msg2,sequencial)
         # Fim da contagem do tempo
         fim = time.perf_counter()
         # Cálculo do tempo de execução
         tempo_total = (fim - inicio)*10*10*10
+        json_final[sequencial]["tempo_requisicao"] = tempo_total #JJJ
         tempo_total_qtd = tempo_total_qtd +tempo_total
         gravar_log("Performance", f"O processo demorou {tempo_total:.2f} milisegundos para ser executado.",sequencial)
         # await sleep(latencia/1000) #Tempo ente mensagens
     
     tempo_medio = tempo_total_qtd/quantidade
-
+    json_final['resultado_final'] = f"O tempo medio de execucao foi de {tempo_medio:.2f} milisegundos." #JJJ
     gravar_log("Resultado Final", f"O tempo medio de execucao foi de {tempo_medio:.2f} milisegundos.",sequencial)
     # (NEW)
     await encerra_conexao(monitor, ENDIPS[monitor], porta, writer_main)
-    json_teste = {'message':'Todas as transações foram enviadas'}
-    print(json_teste)
+    json_final['mensagem'] = f"Todas as transações foram enviadas" #JJJ
+    print(json.dumps(json_final))
     return
 
 def limpar_log():
@@ -320,7 +333,7 @@ async def main():
     body = sys.argv[1]
 
     # Transforma a string JSON em um objeto Python
-    data = loads(body)
+    data = json.loads(body)
 
     # Define as keys obrigatórias
     keys = ["monitor", "porta", "timeout", "quantidade", "agencia","protocolo", "transacao", "servico", "entrada"]

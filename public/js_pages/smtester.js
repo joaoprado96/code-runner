@@ -1,5 +1,20 @@
+document.addEventListener('DOMContentLoaded', function() {
+    window.onload = function() {
+        criarNavbar();
+    }
+});
+
+let editor;
+
 // Opções disponíveis para o monitor
 var monitorOptions = [`LOCALHOST`,'AGENRT1', 'AGENRT2', 'AGENRT3', 'AGENRT4', 'AGENRT5', 'TESTM26'];
+// Opções disponíveis para a porta
+var portaOptions = ['12345', '25000', '5030', '5031', '5032', '5033', '5034'];
+// Opções disponíveis para o protocolo
+var protocoloOptions = ['2000A','4000A'];
+// Opções disponíveis para o protocolo
+var logsOptions = ['Não','Sim'];
+
 
 // Obtém a referência ao elemento select
 var monitorSelect = document.getElementById("monitor");
@@ -11,10 +26,6 @@ for (var i = 0; i < monitorOptions.length; i++) {
     option.text = monitorOptions[i];
     monitorSelect.appendChild(option);
 }
-
-// Opções disponíveis para a porta
-var portaOptions = ['12345', '25000', '5030', '5031', '5032', '5033', '5034'];
-
 // Obtém a referência ao elemento select
 var portaSelect = document.getElementById("porta");
 
@@ -26,9 +37,6 @@ for (var i = 0; i < portaOptions.length; i++) {
     portaSelect.appendChild(option);
 }
 
-// Opções disponíveis para o protocolo
-var protocoloOptions = ['2000A','4000A'];
-
 // Obtém a referência ao elemento select
 var protocoloSelect = document.getElementById("protocolo");
 
@@ -39,9 +47,6 @@ for (var i = 0; i < protocoloOptions.length; i++) {
     option.text = protocoloOptions[i];
     protocoloSelect.appendChild(option);
 }
-
-// Opções disponíveis para o protocolo
-var logsOptions = ['Não','Sim'];
 
 // Obtém a referência ao elemento select
 var logsSelect = document.getElementById("logs");
@@ -80,38 +85,38 @@ document.getElementById("sendButton").addEventListener("click", function() {
         entrada: entrada
     };
 
-    fetch('/codes/smtester', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'num-scripts': terminais
-        },
-        body: JSON.stringify(data)
-    }).then(function(response) {
-        return response.json();
-    }).then(function(data) {
-        setInterval(updateLog, 1000);
-    });
+    executarPython(data, terminais);
 });
 
-document.getElementById("cancelButton").addEventListener("click", function() {
-    fetch('/codes/smtester', {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    })
-});
-function updateLog() {
-// Faz a requisição para o servidor para obter as logs
-fetch('/page/smtester/sysout.txt') // <-- Endpoint correto do servidor
-.then(response => response.text())
-.then(data => {
-    // Garantir que a variável data seja tratada como uma string
-    data = data.toString();
 
-    // Preenche a div com as informações de logs
-    document.getElementById("logContainer").textContent = data;
-
-});
+function executarPython(data, terminais) {
+    var rota = ''
+    if (terminais == 1) {
+        rota = '/front/smtester'
+    } else {
+        rota = '/codes/smtester'
+    }
+    // var token = localStorage.getItem('token');
+    try {
+        fetch(rota, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json','num-scripts':terminais},
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Cria ou atualiza o jsoneditor com a resposta
+            const container = document.getElementById("jsonOutput");
+            if (!editor) {
+                editor = new JSONEditor(container, {});
+            }
+            editor.set(data);
+        })
+        .catch(error => {
+            console.error('Erro ao enviar POST:', error);
+            document.getElementById('jsonOutput').innerText = 'Erro ao enviar POST.';
+        });
+    } catch (e) {
+        document.getElementById('jsonOutput').innerText = 'JSON inválido.';
+    }
 }

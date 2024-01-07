@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const logger = require('../config/logger');
 
-const ExecutaPythonScript = async (req, res) => {
+  const ExecutaPythonScript = async (req, res) => {
     runningScripts = [];
     // Os dados do formulário estão no req.body
     const scriptName = req.params.scriptName;
@@ -27,16 +27,11 @@ const ExecutaPythonScript = async (req, res) => {
       pythonOptions: ['-u'], // get print results in real-time
       args: [JSON.stringify(req.body)]
     };
-  
-    // Array para guardar promessas de finalização dos scripts
-    let scriptPromises = [];
-  
+
     for (let i = 0; i < numScripts; i++) {
       let pyShell = new PythonShell(path.join('codes', `${scriptName}.py`), options);
       let scriptId = `${scriptName}${i}`; // Identificador do script
       runningScripts[scriptId] = pyShell;
-  
-      let scriptOutput = null; // Variável para armazenar a saída do script
   
       pyShell.on('message', (message) => {
         // Tenta parsear a mensagem como JSON
@@ -49,44 +44,28 @@ const ExecutaPythonScript = async (req, res) => {
         }
       });
   
-      let scriptPromise = new Promise((resolve, reject) => {
-        pyShell.end((err, code, signal) => {
-            if (err) {
-                logger.error({
-                    requestId: req.id, // Você pode gerar um ID para a requisição como antes, se necessário
-                    message: `Erro na execução do script ${scriptName}.py`,
-                    errorName: err.name,
-                    stackTrace: err.stack,
-                    scriptId: scriptId,
-                    exitCode: code,
-                    exitSignal: signal
-                });
-                resolve({ error: err });
+      pyShell.end((err, code, signal) => {
+          if (err) {
+              logger.error({
+                  requestId: req.id, // Você pode gerar um ID para a requisição como antes, se necessário
+                  message: `Erro na execução do script ${scriptName}.py`,
+                  errorName: err.name,
+                  stackTrace: err.stack,
+                  scriptId: scriptId,
+                  exitCode: code,
+                  exitSignal: signal
+              });
           } else {
-            console.log(`${scriptId} Code Runner: O script ${scriptName}.py finalizou com Exit Code: ${code} Exit Signal: ${signal}`);
-            resolve(scriptOutput);
+              console.log(`${scriptId} Code Runner: O script ${scriptName}.py finalizou com Exit Code: ${code} Exit Signal: ${signal}`);
           }
           delete runningScripts[scriptId];
-        });
       });
-      scriptPromises.push(scriptPromise);
     }
-    
-    Promise.all(scriptPromises).then(results => {
-        if (numScripts === 1) {
-            // Se apenas um script foi iniciado, retorna a saída do script
-            res.send(results[0]);
-        } else {
-            // Se múltiplos scripts foram iniciados, retorna uma mensagem geral
-            res.send({ message: `${numScripts} scripts foram iniciados` });
-        }
-    }).catch(err => {
-        res.status(500).send({ error: 'Erro ao executar scripts' });
-    });
 
-  }
+    // Envia a resposta imediatamente após iniciar todos os scripts
+    res.send({ message: `${numScripts} scripts foram iniciados com sucesso` });
+}
 
-  module.exports = {
+module.exports = {
     ExecutaPythonScript,
-  }
-  
+}

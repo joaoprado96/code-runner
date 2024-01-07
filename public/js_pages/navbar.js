@@ -39,7 +39,7 @@ function criarNavbar() {
             <li><a href="/page/admin">panel</a></li>
             <li><a href="/page/regressiverunner">regressive</a></li>
             <li><a href="/page/versionrunner">version</a></li>
-
+            <li><a href="/page/smtester">smtester</a></li>
         </ul>
 
         <i class="uil uil-search search-icon" id="searchIcon"></i>

@@ -288,10 +288,10 @@ function executarPython() {
         })
         .catch(error => {
             console.error('Erro ao enviar POST:', error);
-            document.getElementById('postResponse').innerText = 'Erro ao enviar POST.';
+            document.getElementById('jsonOutput').innerText = 'Erro ao enviar POST.';
         });
     } catch (e) {
-        document.getElementById('postResponse').innerText = 'JSON inválido.';
+        document.getElementById('jsonOutput').innerText = 'JSON inválido.';
     }
 }
 
