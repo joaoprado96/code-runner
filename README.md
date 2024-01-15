@@ -1,3 +1,19 @@
+Booom diaaaa Sahhh, tuuudo bem contigo???? Bora pra mais uma semana.
+Queria falar contigo sobre aquele assunto chatinho do presencial.
+
+Recentemente, tive uma conversa com um colega de universidade que também está empregado no banco, especificamente na equipe de Aiops Itom. Ele começou a trabalhar um pouco antes de mim e me informou que sua modalidade de trabalho foi modificada para Full Home Office. 
+
+Esta informação me levou a refletir sobre a política de trabalho atual e como ela é aplicada, considerando que residimos em locais semelhantes, ambos na divisa das cidades, o que nos coloca praticamente à mesma distância do escritório.
+
+Levando em conta que o tempo de deslocamento dele é de aproximadamente 1h25min e o meu é de 1h18min, gostaria de entender melhor os critérios que definem a elegibilidade para o regime de Full Remote. Como já comentei contigo estou extremamente interessado em explorar essa possibilidade para o meu contrato, visto que acredito que poderia manter minha produtividade trabalhando remotamente.
+
+Para as cerimônias como refinamentos, planings eu pretendo continuar indo presencial, pois elas são muito produtivas , e quero continuar indo!
+
+É isso, queria compartilhar contigo pra ver o que vc acha, por que é uma situação semelhante a minha e acho que abre bastante precedente pro meu caso.
+
+valeu e qualquer coisa é só chamar!!!
+
+
 # CodeRunner
 
 CodeRunner é uma aplicação backend construída com Node.js que permite a execução de scripts Python a partir de requisições HTTP. A aplicação utiliza Express para configurar o servidor, bodyParser para analisar solicitações JSON e a biblioteca PythonShell para executar os scripts Python.
