@@ -4,12 +4,14 @@ const path = require('path');
 const logger = require('../config/logger');
 
   const ExecutaPythonScript = async (req, res) => {
+    console.log("Entrei")
     runningScripts = [];
     // Os dados do formulário estão no req.body
     const scriptName = req.params.scriptName;
     const diretorio = path.join(process.env.BASEDIR, 'codes', `${scriptName}.py`);
     if (!fs.existsSync(diretorio)) {
       res.status(404).send({ message: `CodeRunner: Código não encontrado em ${scriptName}` });
+      console.log("Entrei2")
       return;
     }
   
@@ -19,6 +21,7 @@ const logger = require('../config/logger');
     // Verifica se numScripts é maior que 100
     if (numScripts > 100) {
       res.status(400).send({ message: 'CodeRunner: O número máximo de scripts é 100' });
+      console.log("Entrei3")
       return;
     }
   
@@ -35,6 +38,7 @@ const logger = require('../config/logger');
   
       pyShell.on('message', (message) => {
         // Tenta parsear a mensagem como JSON
+        console.log(message)
         try {
           let jsonMessage = JSON.parse(message);
           scriptOutput = jsonMessage;
