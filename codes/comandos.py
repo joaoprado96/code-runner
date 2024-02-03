@@ -167,7 +167,6 @@ async def transacionar(monitor, entrada):
 
     # Definições padrão para comunicação
     timeout = 1
-    quantidade = 30
 
     #Gera um numero de serie aleatorio e nome da conexao:
     numero_serie = str(randint(50000, 99999))
