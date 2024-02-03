@@ -232,8 +232,12 @@ async def transacionar(monitor, entrada):
     retorno =""
     resultado_final = []
 
+    tentativas = 0  # Inicializa o contador de tentativas
+    MAX_TENTATIVAS = 30
+
     # Loop até receber um retorno que indique finalização ou erro
-    while retorno != "A":
+    while retorno != "A" and tentativas < MAX_TENTATIVAS:
+        tentativas += 1  # Incrementa o contador a cada iteração
         try:
             await envia_mensagem(writer_main, msg, monitor)
         except:
@@ -278,12 +282,18 @@ async def transacionar(monitor, entrada):
             json_final['fim_comando'] = f'RC:{retorno} - Erro Inesperado'
             break  # Sai do loop em caso de erro inesperado
     
+    if tentativas >= MAX_TENTATIVAS:
+        print(json.dumps({"resultado": False, "mensagem": "Limite de tentativas atingido", "monitor": monitor}))
+        encerra_conexao(writer_main)
+        return
+    
     json_final["resultado_comando"] = resultado_final #JJJ   
     # Fim da contagem do tempo
     fim = time.perf_counter()
     # Cálculo do tempo de execução
     tempo_total = (fim - inicio)*10*10*10
     json_final["tempo_requisicao"] = tempo_total #JJJ
+    json_final['resultado'] = True
 
     await encerra_conexao(writer_main)
 
@@ -294,7 +304,37 @@ async def transacionar(monitor, entrada):
 
 def valida_comando(comando, config_comandos):
     """
-    Valida se o comando fornecido é válido com base na configuração de comandos.
+    Valida se o comando fornecido é válido com base em uma configuração predefinida.
+
+    A função verifica a estrutura e os parâmetros de um comando para assegurar que ele
+    atende a todos os requisitos especificados na configuração. Isso inclui a presença de um
+    comando principal válido, a correta utilização de opções (com ou sem valores atribuídos),
+    e a conformidade com as restrições de valores e comprimentos para as opções especificadas.
+
+    Parâmetros:
+    comando (str): O comando a ser validado. Espera-se uma string formatada com o comando principal
+                   e opções subsequentes separadas por vírgulas, onde as opções podem ter valores
+                   atribuídos usando '='.
+    config_comandos (dict): Um dicionário contendo a configuração dos comandos válidos. Cada chave do
+                            dicionário representa um comando principal, e o valor associado é um
+                            dicionário detalhando as opções válidas para esse comando, se elas
+                            requerem valores, valores permitidos, comprimento máximo, e se são obrigatórias.
+
+    Retorna:
+    tuple: Uma tupla contendo um booleano e uma mensagem. O booleano é True se o comando for válido
+           segundo a configuração fornecida, e False caso contrário. A mensagem fornece detalhes sobre
+           o resultado da validação, indicando sucesso ou a natureza de qualquer invalidez detectada.
+
+    Levanta:
+    Não levanta exceções diretamente, mas espera-se que os argumentos fornecidos estejam corretos
+    conforme especificado.
+
+    Exemplos de uso:
+    config = {"TASK": {"options": {"ID": {"assignment": True, "required": True, "length": 5}}}}
+    valida_comando("TASK,ID=12345", config)
+    (True, 'Comando válido.')
+    valida_comando("TASK", config)
+    (False, 'Opção obrigatória 'ID' ausente.')
     """
     # Verifica se o comando é uma string não vazia
     if not isinstance(comando, str) or not comando.strip():
@@ -343,13 +383,34 @@ def valida_comando(comando, config_comandos):
 
 
 def aplicar_modelo(linha, modelo):
+    """
+    Aplica um modelo de dados a uma linha de texto para extrair campos específicos com base em suas larguras definidas.
+    
+    :param linha: Uma string representando a linha de dados a ser processada.
+    :param modelo: Uma lista de dicionários, onde cada dicionário descreve um campo e sua largura.
+                   Cada dicionário deve ter as chaves 'campo' e 'largura'.
+                   Exemplo: [{"campo": "nome", "largura": 10}, {"campo": "idade", "largura": 3}]
+    
+    :return: Um dicionário onde cada chave é um nome de campo especificado no modelo e cada valor é a string extraída
+             da linha de acordo com a largura definida para esse campo.
+    """
     inicio = 0
     dicionario_linha = {}
+    largura_total = sum(campo["largura"] for campo in modelo)
+
+    # Verifica se a linha tem o comprimento necessário para aplicar o modelo
+    if len(linha) < largura_total:
+        raise ValueError("A linha fornecida é mais curta do que a soma das larguras dos campos no modelo.")
+
     for campo in modelo:
         fim = inicio + campo["largura"]
-        dicionario_linha[campo["campo"]] = linha[inicio:fim]
+        # Extrai o valor do campo da linha com base na largura definida, preservando espaços em branco
+        valor_campo = linha[inicio:fim]
+        dicionario_linha[campo["campo"]] = valor_campo
         inicio = fim
+
     return dicionario_linha
+
 
 async def main():
     """
