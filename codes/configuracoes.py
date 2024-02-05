@@ -47,3 +47,15 @@ MODELO = {
     ]
   }
 }
+
+MODELO_IGNORAR = {
+  "IGNORAR": {
+    "TRAN":   ['DISPLAY','----------------'],
+    "TASK":   ['DISPLAY','----------------'],
+    "CON":    ['DISPLAY','----------------'],
+    "CONIP":  ['DISPLAY','----------------','CONEXOES COM OUTRAS','ENVIADAS','RECEBIDAS', 'NOME DA'],
+    "ARQ":    ['DISPLAY','----------------'],
+    "MOD":    ['DISPLAY','----------------'],
+  }
+}
+

@@ -381,34 +381,39 @@ def valida_comando(comando, config_comandos):
     return True, "Comando válido."
 
 
-def aplicar_modelo(linha, modelo):
+def aplicar_modelo(linha, modelo, lista_exclusao):
     """
-    Aplica um modelo de dados a uma linha de texto para extrair campos específicos com base em suas larguras definidas.
+    Aplica um modelo de dados a uma linha de texto para extrair campos específicos com base em suas larguras definidas,
+    a menos que a linha contenha alguma string da lista de exclusão ou seja mais curta que a soma das larguras dos campos.
     
     :param linha: Uma string representando a linha de dados a ser processada.
     :param modelo: Uma lista de dicionários, onde cada dicionário descreve um campo e sua largura.
-                   Cada dicionário deve ter as chaves 'campo' e 'largura'.
                    Exemplo: [{"campo": "nome", "largura": 10}, {"campo": "idade", "largura": 3}]
+    :param lista_exclusao: Uma lista de strings que, se encontradas na linha, indicam que o modelo não deve ser aplicado.
     
     :return: Um dicionário onde cada chave é um nome de campo especificado no modelo e cada valor é a string extraída
-             da linha de acordo com a largura definida para esse campo.
+             da linha de acordo com a largura definida para esse campo, ou `False` se a linha contém qualquer string
+             da lista de exclusão ou não tem o comprimento necessário.
     """
+    # Verifica se a linha contém alguma string da lista de exclusão ou é mais curta do que a soma das larguras dos campos
+    if any(exclusao in linha for exclusao in lista_exclusao):
+        return False
+    
+    largura_total = sum(campo["largura"] for campo in modelo)
+    if len(linha) < largura_total:
+        return False
+
     inicio = 0
     dicionario_linha = {}
-    largura_total = sum(campo["largura"] for campo in modelo)
-
-    # Verifica se a linha tem o comprimento necessário para aplicar o modelo
-    if len(linha) < largura_total:
-        raise ValueError("A linha fornecida é mais curta do que a soma das larguras dos campos no modelo.")
-
+    
     for campo in modelo:
         fim = inicio + campo["largura"]
-        # Extrai o valor do campo da linha com base na largura definida, preservando espaços em branco
         valor_campo = linha[inicio:fim]
         dicionario_linha[campo["campo"]] = valor_campo
         inicio = fim
 
     return dicionario_linha
+
 
 
 async def main():
