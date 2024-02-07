@@ -18,7 +18,7 @@ const splunkConfigs = {
 
 // Função auxiliar para enviar dados ao Splunk com retentativas
 const sendDataToSplunk = async (data, attempts = 3) => {
-  const ambiente = process.env.AMBIENTE || "Des"; // Usa "Des" como padrão se AMBIENTE não estiver definido
+  const ambiente = process.env.AMBIENTE || "DES"; // Usa "DES" como padrão se AMBIENTE não estiver definido
   const { url, authorization } = splunkConfigs[ambiente];
 
   for (let attempt = 1; attempt <= attempts; attempt++) {
