@@ -8,7 +8,16 @@ function removeKeysFromObjects(objectList, keysToRemove) {
     });
   }
   
+  function addKeyValueToObjects(objectList, key, value) {
+    return objectList.map(obj => {
+      let newObj = { ...obj };
+      newObj[key] = value;
+      return newObj;
+    });
+  }
+  
   module.exports = {
-    removeKeysFromObjects
+    removeKeysFromObjects,
+    addKeyValueToObjects
   }
   
