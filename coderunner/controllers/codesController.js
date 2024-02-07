@@ -2,16 +2,15 @@ const { PythonShell } = require('python-shell');
 const fs = require('fs');
 const path = require('path');
 const logger = require('../config/logger');
+const { sendDataToSplunk } = require('../middlewares/splunkMiddleware');
 
   const ExecutaPythonScript = async (req, res) => {
-    console.log("Entrei")
     runningScripts = [];
     // Os dados do formulário estão no req.body
     const scriptName = req.params.scriptName;
     const diretorio = path.join(process.env.BASEDIR, 'codes', `${scriptName}.py`);
     if (!fs.existsSync(diretorio)) {
       res.status(404).send({ message: `CodeRunner: Código não encontrado em ${scriptName}` });
-      console.log("Entrei2")
       return;
     }
   
@@ -21,7 +20,6 @@ const logger = require('../config/logger');
     // Verifica se numScripts é maior que 100
     if (numScripts > 100) {
       res.status(400).send({ message: 'CodeRunner: O número máximo de scripts é 100' });
-      console.log("Entrei3")
       return;
     }
   
@@ -38,10 +36,15 @@ const logger = require('../config/logger');
   
       pyShell.on('message', (message) => {
         // Tenta parsear a mensagem como JSON
-        console.log(message)
         try {
           let jsonMessage = JSON.parse(message);
+          jsonMessage.correlationId = req.headers['correlationId']; // Adiciona o correlation-id ao objeto JSON
           scriptOutput = jsonMessage;
+          sendDataToSplunk({
+          event: jsonMessage
+        }).catch(error => {
+          console.error('Erro ao enviar dados para o Splunk:', error);
+        });
         } catch (err) {
           // Se a mensagem não puder ser parseada como JSON, não faz nada
           scriptOutput = { "resposta": "O código não está devolvendo um JSON, utilize print(json.dumps(json))" };

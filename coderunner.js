@@ -21,6 +21,8 @@ const codesRoutes = require('./coderunner/routes/codesRoutes');
 const loggerRoutes = require('./coderunner/routes/loggerRoutes');
 const authorizationRoutes = require('./coderunner/routes/authorizationRoutes');
 const loggingMiddleware = require('./coderunner/middlewares/loggingMiddleware');
+const correlationIdMiddleware = require('./coderunner/middlewares/correlationIdMiddleware'); // Ajuste o caminho conforme a estrutura do seu projeto
+const splunkMiddleware = require('./coderunner/middlewares/splunkMiddleware'); // Ajuste o caminho conforme a estrutura do seu projeto
 
 // Configurações de conexão com o banco de dados
 const dbConfig = {
@@ -43,6 +45,8 @@ app.use(bodyParser.json());
 // Definição da Porta Local da Aplicação
 const port = 3000;
 
+app.use(correlationIdMiddleware);
+app.use(splunkMiddleware.enviaSplunk);
 app.use(loggingMiddleware);
 app.use('',memoryRoutes);
 app.use('',pythonProcessRoutes);

@@ -29,7 +29,6 @@ const sendDataToSplunk = async (data, attempts = 3) => {
           'Content-Type': 'application/json',
         },
       });
-      console.log(`Dados enviados ao Splunk na tentativa ${attempt}`);
       break; // Sai do loop se o envio for bem-sucedido
     } catch (error) {
       console.error(`Erro ao enviar dados para o Splunk na tentativa ${attempt}:`, error.message);
