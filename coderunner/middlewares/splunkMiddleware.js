@@ -1,12 +1,31 @@
 const axios = require('axios');
 
+// Configurações do Splunk para diferentes ambientes
+const splunkConfigs = {
+  "DES": {
+    "url": "https://splunk-instance-des/services/collector",
+    "authorization": "Splunk SPLUNK_AUTH_TOKEN_DES"
+  },
+  "HOM": {
+    "url": "https://splunk-instance-hom/services/collector",
+    "authorization": "Splunk SPLUNK_AUTH_TOKEN_HOM"
+  },
+  "PROD": {
+    "url": "https://splunk-instance-prod/services/collector",
+    "authorization": "Splunk SPLUNK_AUTH_TOKEN_PROD"
+  }
+};
+
 // Função auxiliar para enviar dados ao Splunk com retentativas
 const sendDataToSplunk = async (data, attempts = 3) => {
+  const ambiente = process.env.AMBIENTE || "Des"; // Usa "Des" como padrão se AMBIENTE não estiver definido
+  const { url, authorization } = splunkConfigs[ambiente];
+
   for (let attempt = 1; attempt <= attempts; attempt++) {
     try {
-      await axios.post('https://your-splunk-instance/services/collector', data, {
+      await axios.post(url, data, {
         headers: {
-          'Authorization': `Splunk SPLUNK_AUTH_TOKEN`,
+          'Authorization': authorization,
           'Content-Type': 'application/json',
         },
       });
@@ -36,7 +55,6 @@ const enviaSplunk = (req, res, next) => {
 
   // Chama a função de envio sem esperar pela resposta para não bloquear o processamento da requisição
   sendDataToSplunk({ event: requestDetails }).catch(error => {
-    // Erros após as retentativas são apenas logados e não bloqueiam a aplicação
     console.error('Falha após máximas retentativas de envio para o Splunk:', error.message);
   });
 
