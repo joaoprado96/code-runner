@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
@@ -19,6 +19,9 @@ interface ApiResponse {
   styleUrls: ['./tabela-dinamica.component.css']
 })
 export class TabelaDinamicaComponent implements OnInit {
+  @Input() monitor: string;
+  @Input() comando: string;
+
   dataSource = new MatTableDataSource<any>([]);
   colunasExibidas: string[] = [];
 
@@ -27,7 +30,10 @@ export class TabelaDinamicaComponent implements OnInit {
   constructor(private http: HttpClient, public dialog: MatDialog) {}
 
   ngOnInit() {
-    this.carregarDados({ monitor: 'nomeDoMonitor', comando: 'comandoEspecifico' });
+    // Ajuste para verificar se monitor e comando estão definidos
+    if (this.monitor && this.comando) {
+      this.carregarDados({ monitor: this.monitor, comando: this.comando });
+    }
   }
 
   carregarDados(payload: { monitor: string; comando: string }): void {
@@ -65,3 +71,5 @@ export class TabelaDinamicaComponent implements OnInit {
     XLSX.writeFile(wb, 'dados_exportados.xlsx');
   }
 }
+// <!-- Outro componente's template -->
+// <app-tabela-dinamica [monitor]="'NomeDoMonitor'" [comando]="'ComandoEspecifico'"></app-tabela-dinamica>

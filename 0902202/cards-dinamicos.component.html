@@ -1,0 +1,14 @@
+<div class="card-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; padding: 20px;" *ngFor="let dado of dados">
+    <mat-card class="example-card" [ngStyle]="{'transition': 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out'}" (mouseenter)="hover = true" (mouseleave)="hover = false" [style.transform]="hover ? 'translateY(-5px)' : 'none'" [style.boxShadow]="hover ? '0 4px 8px rgba(0,0,0,0.2)' : 'none'">
+      <mat-card-header>
+        <mat-card-title>Dados do Comando</mat-card-title>
+        <mat-card-subtitle>{{ dado.monitor || 'Monitor não especificado' }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div *ngFor="let chave of objectKeys(dado)">
+          <p><strong>{{ chave }}:</strong> {{ dado[chave] }}</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  

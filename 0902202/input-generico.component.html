@@ -1,0 +1,28 @@
+<div style="display: flex; align-items: center; gap: 10px;">
+    <mat-form-field appearance="fill">
+      <mat-label>Monitor</mat-label>
+      <mat-select [(value)]="monitorSelecionado">
+        <mat-option *ngFor="let monitor of monitores" [value]="monitor">{{monitor}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  
+    <mat-form-field appearance="fill">
+      <mat-label>Comando</mat-label>
+      <input matInput [(ngModel)]="comando" (input)="onComandoChange($event)" placeholder="Digite o comando" [style.textTransform]=" 'uppercase' ">
+    </mat-form-field>
+  
+    <mat-form-field appearance="fill">
+      <mat-label>Exibir Como</mat-label>
+      <mat-select [(value)]="exibirComo">
+        <mat-option value="tabela">Tabela</mat-option>
+        <mat-option value="cards">Cards</mat-option>
+      </mat-select>
+    </mat-form-field>
+  
+    <button mat-raised-button color="primary" (click)="executarComando()">Executar</button>
+  </div>
+  
+  <!-- Opção para exibir o componente de tabela ou cards dinâmicos -->
+  <app-tabela-dinamica *ngIf="exibirComo === 'tabela'" [monitor]="monitorSelecionado" [comando]="comando.toUpperCase()"></app-tabela-dinamica>
+  <app-cards-dinamicos *ngIf="exibirComo === 'cards'" [monitor]="monitorSelecionado" [comando]="comando.toUpperCase()"></app-cards-dinamicos>
+  
