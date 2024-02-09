@@ -31,3 +31,18 @@ export class TabelaDinamicaComponent implements OnInit {
     });
   }
 }
+
+<table>
+  <thead>
+    <tr>
+      <th *ngFor="let coluna of colunasExibidas">{{ coluna | uppercase }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let dado of dataSource">
+      <td *ngFor="let coluna of colunasExibidas">
+        {{ dado[coluna] }}
+      </td>
+    </tr>
+  </tbody>
+</table>
