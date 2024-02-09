@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import * as XLSX from 'xlsx';
+import { DialogErrorComponent } from './dialog-error.component';
 
 interface ApiResponse {
   resultado: boolean;
@@ -31,28 +32,36 @@ export class TabelaDinamicaComponent implements OnInit {
 
   carregarDados(payload: { monitor: string; comando: string }): void {
     this.http.post<ApiResponse>('https://exemplo.com/api/comandos', payload).subscribe({
-      next: (resposta) => {
-        if (resposta.resultado && resposta.resultado_comando) {
-          this.dataSource.data = resposta.resultado_comando;
-          this.colunasExibidas = Object.keys(resposta.resultado_comando[0]);
+      next: (response) => {
+        if (response.resultado && response.resultado_comando) {
+          this.dataSource.data = response.resultado_comando;
+          this.colunasExibidas = Object.keys(response.resultado_comando[0] || {});
           this.dataSource.sort = this.sort;
         } else {
-          this.mostrarPopupErro(resposta.mensagem, resposta.monitor);
+          this.mostrarPopupErro(response.mensagem || 'Erro desconhecido', response.monitor || 'Desconhecido');
         }
       },
-      error: (erro) => {
-        console.error('Erro ao buscar dados:', erro);
-        this.mostrarPopupErro("Erro de comunicação com a API.", "");
+      error: () => {
+        this.mostrarPopupErro('Erro de comunicação com a API', 'Desconhecido');
       }
     });
   }
 
   mostrarPopupErro(mensagem: string, monitor: string) {
-    this.dialog.open(DialogComponent, {
-      width: '250px',
-      data: {mensagem: mensagem, monitor: monitor}
+    this.dialog.open(DialogErrorComponent, {
+      data: { mensagem, monitor }
     });
   }
 
-  // Métodos para filtragem, ordenação e exportação para Excel...
+  aplicarFiltro(event: Event) {
+    const filtroValor = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filtroValor.trim().toLowerCase();
+  }
+
+  exportarParaExcel(): void {
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.dataSource.data);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'DadosExportados');
+    XLSX.writeFile(wb, 'dados_exportados.xlsx');
+  }
 }
