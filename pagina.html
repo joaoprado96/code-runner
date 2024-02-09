@@ -1,0 +1,25 @@
+<div class="filter-section">
+  <mat-form-field appearance="standard">
+    <mat-label>Filtrar</mat-label>
+    <input matInput (input)="aplicarFiltro($event)" placeholder="Digite para filtrar...">
+  </mat-form-field>
+</div>
+
+<div class="export-section">
+  <button mat-raised-button color="primary" (click)="exportarParaExcel()">Exportar para Excel</button>
+</div>
+
+<div class="table-section">
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+    <!-- Cabeçalho Dinâmico e Células de Dados -->
+    <ng-container *ngFor="let coluna of colunasExibidas" [matColumnDef]="coluna">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ coluna | uppercase }} </th>
+      <td mat-cell *matCellDef="let elemento"> {{ elemento[coluna] }} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="colunasExibidas"></tr>
+    <tr mat-row *matRowDef="let row; columns: colunasExibidas;"></tr>
+
+  </table>
+</div>
